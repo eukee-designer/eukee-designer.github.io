@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Août Package Design — Eukee</title>
+
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f6f7f4;
+      --fg: #1a1a1a;
+      --muted: #6b6b6b;
+      --line: #1a1a1a14;
+      --accent: #ff5722;
+
+      /* 우트 패키지 컬러 */
+      --aout-green: #478c5d;
+      --aout-deep: #2b642f;
+
+      --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      --font-serif: "Instrument Serif", "Pretendard Variable", serif;
+
+      --max-text: 720px;
+      --max-content: 1400px;
+      --pad-x: clamp(20px, 5vw, 64px);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--fg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.7;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+      letter-spacing: -0.005em;
+    }
+    img { max-width: 100%; display: block; width: 100%; height: auto; }
+    a { color: inherit; text-decoration: none; transition: color .2s ease, opacity .2s ease; }
+    a:hover { color: var(--accent); }
+
+    .text-wrap {
+      max-width: var(--max-content);
+      margin: 0 auto;
+      padding-left: var(--pad-x);
+      padding-right: var(--pad-x);
+    }
+    .text-wrap > * { max-width: var(--max-text); }
+
+    /* ===== 네비 ===== */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(16px) saturate(140%);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      background: rgba(255,255,255,.88);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner {
+      max-width: var(--max-content); margin: 0 auto;
+      padding: 0 var(--pad-x);
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 14px; color: var(--muted);
+    }
+    .nav-back:hover { color: var(--fg); }
+    .nav-back .arrow { transition: transform .25s ease; }
+    .nav-back:hover .arrow { transform: translateX(-4px); }
+    .logo {
+      font-family: var(--font-serif); font-style: italic;
+      font-size: 22px; letter-spacing: -0.02em;
+    }
+
+    /* ===== Hero (스크롤 시 축소) ===== */
+    .hero-wrap {
+      position: relative;
+      height: 100vh;
+      max-height: 800px;
+    }
+    .hero {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      max-height: 800px;
+      overflow: hidden;
+      background: var(--bg-soft);
+      transform-origin: center center;
+      will-change: transform, opacity;
+      transition: transform .1s linear, opacity .1s linear;
+    }
+    .hero img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+    }
+    .hero-badge {
+      position: absolute;
+      top: clamp(24px, 3.5vw, 44px);
+      left: var(--pad-x);
+      z-index: 2;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 16px;
+      background: var(--aout-deep);
+      color: #fff;
+      border-radius: 999px;
+      font-size: 13px; font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    .hero-badge .star { font-size: 12px; }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-wrap { height: auto; max-height: none; }
+      .hero { position: relative; height: auto; max-height: none; }
+      .hero img { height: auto; }
+    }
+
+    /* ===== 인트로 ===== */
+    .project-intro {
+      position: relative;
+      z-index: 2;
+      background: var(--bg);
+      border-radius: 24px 24px 0 0;
+      margin-top: -32px;
+      padding: clamp(64px, 9vw, 110px) 0 clamp(48px, 6vw, 72px);
+    }
+    .project-eyebrow {
+      font-family: var(--font-serif); font-style: italic;
+      font-size: clamp(16px, 1.4vw, 20px);
+      color: var(--muted); margin-bottom: 12px;
+    }
+    .project-title {
+      font-size: clamp(32px, 4.6vw, 52px);
+      line-height: 1.2; letter-spacing: -0.03em;
+      font-weight: 700; margin-bottom: 32px;
+    }
+    .project-title .accent {
+      font-family: var(--font-serif); font-style: italic; font-weight: 400;
+      color: var(--aout-green);
+    }
+    .project-desc {
+      font-size: clamp(16px, 1.2vw, 17px);
+      line-height: 1.75; margin-bottom: clamp(40px, 5vw, 60px);
+    }
+    .project-desc p + p { margin-top: 1.2em; color: var(--muted); }
+    .project-desc strong { font-weight: 600; }
+
+    .project-meta {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 28px 24px;
+      padding-top: 32px; border-top: 1px solid var(--line);
+    }
+    @media (min-width: 700px) {
+      .project-meta { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    }
+    .project-meta-item { display: flex; flex-direction: column; gap: 6px; }
+    .project-meta dt { font-size: 13px; color: var(--muted); font-weight: 500; }
+    .project-meta dd { font-size: 15px; }
+
+    /* ===== 수상 스트립 ===== */
+    .award-strip {
+      background: var(--aout-deep);
+      color: #fff;
+      padding: clamp(48px, 6vw, 76px) 0;
+      margin: clamp(24px, 3vw, 40px) 0 0;
+    }
+    .award-inner {
+      max-width: var(--max-content); margin: 0 auto;
+      padding: 0 var(--pad-x);
+      display: grid; grid-template-columns: 1fr; gap: 32px;
+      align-items: center;
+    }
+    @media (min-width: 860px) {
+      .award-inner { grid-template-columns: 1.3fr 1fr; gap: 56px; }
+    }
+    .award-headline {
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 600; letter-spacing: -0.025em;
+      line-height: 1.4; margin-bottom: 16px;
+    }
+    .award-headline em {
+      font-family: var(--font-serif); font-style: italic;
+      font-weight: 400;
+    }
+    .award-sub {
+      font-size: 15px; line-height: 1.8;
+      color: rgba(255,255,255,.72);
+      max-width: 520px;
+    }
+    .award-facts {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 20px 24px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,.18);
+    }
+    .award-facts dt {
+      font-size: 12px; color: rgba(255,255,255,.55);
+      letter-spacing: .04em; margin-bottom: 4px;
+    }
+    .award-facts dd { font-size: 15px; color: #fff; }
+
+    /* ===== 섹션 헤드 ===== */
+    .section-head {
+      max-width: var(--max-content); margin: 0 auto clamp(32px, 4vw, 48px);
+      padding: 0 var(--pad-x);
+      display: flex; align-items: flex-end; justify-content: space-between;
+      gap: 24px; flex-wrap: wrap;
+    }
+    .section-head .label {
+      font-family: var(--font-serif); font-style: italic;
+      font-size: clamp(26px, 3.2vw, 40px);
+      line-height: 1.2; letter-spacing: -0.02em;
+    }
+    .section-head .sub {
+      font-size: 13px; color: var(--muted);
+      letter-spacing: .06em; text-transform: uppercase;
+    }
+    .gallery-section { padding: clamp(64px, 9vw, 110px) 0 0; }
+
+    /* ===== 이미지 블록 ===== */
+    .wide {
+      max-width: var(--max-content); margin: 0 auto;
+      padding: 0 var(--pad-x);
+    }
+    .wide .shot {
+      overflow: hidden; border-radius: 8px; background: var(--bg-soft);
+    }
+    .grid-2 {
+      max-width: var(--max-content); margin: 0 auto;
+      padding: 0 var(--pad-x);
+      display: grid; grid-template-columns: 1fr;
+      gap: clamp(20px, 2.4vw, 32px);
+    }
+    @media (min-width: 760px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+    .grid-2 .shot { overflow: hidden; border-radius: 8px; background: var(--bg-soft); }
+
+    .shot-caption {
+      margin-top: 12px; font-size: 13px; color: var(--muted);
+    }
+
+    /* 설명 블록 (이미지 사이) */
+    .note {
+      max-width: var(--max-content); margin: 0 auto;
+      padding: clamp(48px, 6vw, 76px) var(--pad-x) 0;
+    }
+    .note .head {
+      font-size: clamp(20px, 2.3vw, 26px);
+      font-weight: 600; letter-spacing: -0.02em;
+      line-height: 1.45; margin-bottom: 16px;
+      max-width: var(--max-text);
+    }
+    .note p {
+      font-size: 15.5px; line-height: 1.85; color: var(--muted);
+      max-width: var(--max-text);
+    }
+    .note p + p { margin-top: 1em; }
+    .note .points {
+      list-style: none;
+      max-width: var(--max-text);
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+    .note .points li {
+      font-size: 15px; line-height: 1.75; color: var(--muted);
+      padding: 9px 0;
+    }
+    .note .points li + li { border-top: 1px solid var(--line); }
+    .note .points b {
+      display: inline-block; min-width: 96px;
+      color: var(--aout-green); font-weight: 600;
+    }
+
+    /* ===== 출시 섹션 ===== */
+    .launch { background: var(--bg-soft); margin-top: clamp(80px, 10vw, 120px); padding-bottom: clamp(64px, 8vw, 96px); }
+    .launch .gallery-section { padding-top: clamp(64px, 8vw, 96px); }
+    .launch-grid {
+      max-width: var(--max-content); margin: 0 auto;
+      padding: 0 var(--pad-x);
+      display: grid; grid-template-columns: 1fr;
+      gap: clamp(24px, 3vw, 40px);
+      align-items: start;
+    }
+    @media (min-width: 860px) {
+      .launch-grid { grid-template-columns: 1.15fr .85fr; }
+    }
+    .launch-grid .shot { border-radius: 8px; overflow: hidden; background: #fff; }
+    .review-card {
+      background: #fff; border-radius: 10px; overflow: hidden;
+      border: 1px solid var(--line);
+    }
+    .review-card img { border-radius: 0; }
+    .review-note {
+      padding: 16px 18px;
+      font-size: 13.5px; line-height: 1.7; color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+
+    /* ===== 증명서 ===== */
+    .cert-wrap {
+      max-width: 760px; margin: 0 auto;
+      padding: 0 var(--pad-x);
+    }
+    .cert-wrap .shot {
+      border: 1px solid var(--line); border-radius: 8px; overflow: hidden;
+    }
+
+    /* ===== 페이지네이션 ===== */
+    .pagination {
+      padding: clamp(72px, 9vw, 110px) 0 clamp(60px, 8vw, 90px);
+      border-top: 1px solid var(--line);
+    }
+    .pagination-grid {
+      max-width: var(--max-content); margin: 0 auto;
+      padding: 0 var(--pad-x);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    }
+    .pagination-card { display: flex; flex-direction: column; gap: 8px; }
+    .pagination-card.next { text-align: right; align-items: flex-end; }
+    .pagination-label { font-size: 14px; color: var(--muted); }
+    .pagination-name {
+      font-size: clamp(19px, 2.2vw, 24px); font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .pagination-card:hover .pagination-name { color: var(--accent); }
+
+    /* Reveal */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .8s ease, transform .8s cubic-bezier(0.2,0.8,0.2,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ===== 콘텐츠 가운데 정렬 ===== */
+    .text-wrap > *{ margin-left:auto; margin-right:auto; }
+    .section-head, .featured-note, .frame-caption, .frame-hint,
+    .scroll-notice, .note .head, .note p, .note .points,
+    .shot-caption{ margin-left:auto; margin-right:auto; }
+  
+    /* =========================================
+       다음 프로젝트 — 마퀴 + 커서 원형 프리뷰
+       ========================================= */
+    .nextproj{
+      position:relative;
+      border-top:1px solid var(--line);
+      margin-top:clamp(56px,7vw,88px);
+      padding:clamp(24px,3vw,36px) 0 clamp(34px,4vw,54px);
+      overflow:hidden;
+    }
+    .nextproj-head{
+      display:flex; align-items:baseline; justify-content:space-between;
+      gap:20px; flex-wrap:wrap;
+      padding:0 var(--pad-x);
+      font-size:14px; color:var(--muted);
+    }
+    .nextproj-head a{ color:var(--muted); transition:color .25s ease; }
+    .nextproj-head a:hover{ color:var(--accent); }
+    .nextproj-head .np-name{ color:var(--fg); font-weight:600; }
+
+    .nextproj-band{
+      position:relative; display:block;
+      margin-top:clamp(16px,2.2vw,28px);
+      padding:clamp(10px,1.6vw,20px) 0;
+      color:var(--fg); cursor:pointer;
+    }
+    .nextproj-band:hover{ color:var(--fg); }
+
+    .nextproj-track{
+      display:flex; width:max-content;
+      animation:npscroll 28s linear infinite;
+    }
+    .nextproj-band:hover .nextproj-track{ animation-play-state:paused; }
+    @keyframes npscroll{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    .nextproj-row{
+      position:relative; z-index:2;
+      display:flex; align-items:center;
+      gap:clamp(18px,2.4vw,34px);
+      padding-right:clamp(18px,2.4vw,34px);
+    }
+    .nextproj-row b{
+      font-weight:400;
+      font-size:clamp(40px,7.2vw,100px);
+      letter-spacing:-.035em; line-height:1.16;
+      white-space:nowrap;
+    }
+    .nextproj-row i{
+      flex:0 0 auto; border-radius:99px; background:var(--accent);
+      width:clamp(7px,.8vw,11px); height:clamp(7px,.8vw,11px);
+    }
+
+    .nextproj-bubble{
+      position:absolute; left:0; top:0; z-index:1;
+      width:clamp(130px,14vw,205px); aspect-ratio:1;
+      border-radius:99px; overflow:hidden;
+      opacity:0;
+      transform:translate(calc(var(--bx,50%) - 50%), calc(var(--by,50%) - 50%)) scale(var(--bs,.45));
+      transition:transform .4s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+      pointer-events:none;
+      background:linear-gradient(140deg,#dcdcd6,#b9b9b1);
+    }
+    .nextproj-band.on .nextproj-bubble{ --bs:1; opacity:1; }
+    .nextproj-bubble img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    /* 클릭 시 원이 퍼지며 전환 */
+    .np-wipe{
+      position:fixed; left:0; top:0; z-index:9999;
+      width:var(--w,180px); height:var(--w,180px);
+      border-radius:99px; overflow:hidden; pointer-events:none;
+      transform:translate(calc(var(--x) - 50%), calc(var(--y) - 50%)) scale(1);
+      transition:transform .72s cubic-bezier(.76,0,.24,1);
+      background:linear-gradient(140deg,#dcdcd6,#b9b9b1);
+    }
+    .np-wipe.run{
+      transform:translate(calc(var(--x) - 50%), calc(var(--y) - 50%)) scale(var(--s,16));
+    }
+    .np-wipe img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    .np-sr{
+      position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+      overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+    }
+
+    @media (hover:none){ .nextproj-bubble{ display:none; } }
+    @media (prefers-reduced-motion:reduce){
+      .nextproj-track{ animation:none; }
+      .nextproj-bubble{ display:none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="../index.html#brand" class="nav-back">
+        <span class="arrow">←</span>
+        <span>Brand &amp; Print</span>
+      </a>
+      <a href="../index.html" class="logo">Eukee</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Hero -->
+    <div class="hero-wrap">
+      <div class="hero">
+        <span class="hero-badge"><span class="star">★</span> 라우드소싱 콘테스트 1등</span>
+        <img src="images/aout/01-boxes-three.jpg" alt="Août 풀로 미백 앰플 패키지">
+      </div>
+    </div>
+
+    <!-- 인트로 -->
+    <section class="project-intro">
+      <div class="text-wrap">
+        <div class="project-eyebrow reveal">Août — Pullo Whitening Ampoule</div>
+        <h1 class="project-title reveal">
+          한 방울의 순간을<br><span class="accent">패키지에</span> 담다
+        </h1>
+
+        <div class="project-desc reveal">
+          <p>
+            스킨케어 브랜드 <strong>우트(Août)</strong>의 미백 앰플 라벨·박스 패키지 디자인입니다.
+            라우드소싱 콘테스트에서 <strong>1등으로 선정</strong>되어 실제 제품으로 생산·판매되었습니다.
+          </p>
+          <p>
+            Août는 'All Of Us Together'의 첫 글자를 딴 이름이자, 프랑스 옛말로 <strong>'추수 — 거두어들임'</strong>을 뜻합니다.
+            생태계교란식물을 거두어들여 가치 있는 제품으로 업사이클하는 것이 브랜드의 핵심 프로젝트이고,
+            이 앰플은 단풍잎돼지풀의 자원가치를 활용해 기획된 제품입니다.
+          </p>
+        </div>
+
+        <dl class="project-meta reveal">
+          <div class="project-meta-item"><dt>Year</dt><dd>2023</dd></div>
+          <div class="project-meta-item"><dt>Category</dt><dd>Package · Label Design</dd></div>
+          <div class="project-meta-item"><dt>Client</dt><dd>Août (우트)</dd></div>
+          <div class="project-meta-item"><dt>Role</dt><dd>Package Designer</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- 수상 스트립 -->
+    <section class="award-strip">
+      <div class="award-inner">
+        <div>
+          <div class="award-headline reveal">
+            콘테스트 1등에서 멈추지 않고,<br><em>실제 매대에 오른</em> 디자인
+          </div>
+          <p class="award-sub reveal">
+            공모 단계의 시안으로 끝나지 않고 양산 사양까지 정리해 실제 제품으로 출시되었습니다.
+            지금도 판매 중이며, 구매 고객의 리뷰에서 패키지 디자인이 직접 언급되고 있습니다.
+          </p>
+        </div>
+        <dl class="award-facts reveal">
+          <div>
+            <dt>콘테스트</dt>
+            <dd>우트 라벨 + 박스 콘테스트</dd>
+          </div>
+          <div>
+            <dt>순위</dt>
+            <dd>1등</dd>
+          </div>
+          <div>
+            <dt>주최</dt>
+            <dd>라우드소싱 (loud.kr)</dd>
+          </div>
+          <div>
+            <dt>수상일</dt>
+            <dd>2023.10.17</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- 디자인 -->
+    <section class="gallery-section">
+      <div class="section-head">
+        <div class="label reveal">Design</div>
+        <div class="sub reveal">Box &amp; Label</div>
+      </div>
+
+      <div class="note reveal" style="padding-top:0">
+        <div class="head">로고를 살리고, 나머지는 덜어내는 방향으로</div>
+        <p>
+          출발점은 이미 존재하는 우트의 로고타입이었습니다.
+          새로운 그래픽을 얹어 브랜드를 덮기보다, 로고가 가진 인상을 그대로 살리고
+          주변을 비워 로고가 스스로 말하게 하는 쪽을 택했습니다.
+          자연에서 거두어들인 원료로 만든다는 브랜드의 태도와도,
+          요소를 더하기보다 덜어내는 미니멀한 접근이 맞닿는다고 판단했습니다.
+        </p>
+        <p>
+          그래서 정면에 남긴 것은 <strong>로고타입과 물방울, 단 두 가지</strong>입니다.
+          제품명·용량·성분 같은 정보는 모두 측면과 후면으로 넘겨,
+          매대에서 처음 마주쳤을 때 시선이 분산되지 않도록 했습니다.
+        </p>
+        <p>
+          물방울은 단순한 장식이 아니라 <strong>제품의 성격을 한 컷으로 설명하는 장치</strong>입니다.
+          로고타입 <em>Aoû<span style="letter-spacing:0">t</span></em>의 아래로 앰플 한 방울이 떨어져 흘러내린 듯한 형태를 만들어,
+          이 제품이 피부에 직접 스며드는 고농축 앰플이라는 점을 문구 없이 전달하려 했습니다.
+          위에서 아래로 떨어지는 이 동선이 곧 정면의 읽는 순서가 됩니다.
+        </p>
+        <p>
+          컬러는 브랜드가 다루는 식물성 원료를 그대로 가져와 딥 그린 한 가지로 통일했고,
+          그 위에 얹히는 물방울은 무채색 투명으로 처리해
+          초록 바탕 위에서 실제 액체처럼 보이도록 밀도를 조절했습니다.
+        </p>
+
+        <ul class="points">
+          <li><b>정면</b> — 로고타입 + 물방울. 그 외 요소 없음</li>
+          <li><b>측면·후면</b> — 제품명, 용량, 설명 텍스트 분산 배치</li>
+          <li><b>컬러</b> — 식물성 원료에서 가져온 딥 그린 단일 컬러</li>
+          <li><b>사선</b> — 여백을 나누고 정보 블록을 구분하는 유일한 그래픽 요소</li>
+        </ul>
+      </div>
+
+      <div class="grid-2" style="margin-top: clamp(32px,4vw,48px)">
+        <div class="reveal">
+          <div class="shot"><img src="images/aout/02-boxes-pair.jpg" alt="박스 정면과 후면"></div>
+          <div class="shot-caption">정면 · 후면 — 정보는 측면과 후면으로 분산</div>
+        </div>
+        <div class="reveal">
+          <div class="shot"><img src="images/aout/03-dieline.jpg" alt="박스 전개도"></div>
+          <div class="shot-caption">전개도 — 양산용 도무송 사양</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 제품 -->
+    <section class="gallery-section">
+      <div class="section-head">
+        <div class="label reveal">Product</div>
+        <div class="sub reveal">Bottle &amp; Label</div>
+      </div>
+
+      <div class="note reveal" style="padding-top:0">
+        <div class="head">손에 쥐었을 때 읽히는 순서</div>
+        <p>
+          용기는 반투명 프로스트 유리라 인쇄 면적이 좁고, 배경이 비쳐 대비도 약합니다.
+          박스에서 쓴 물방울을 그대로 옮기면 오히려 지저분해지기 때문에,
+          용기에서는 <strong>사선 하나만 남기고 전부 덜어냈습니다.</strong>
+        </p>
+        <p>
+          제품명 · 사선 · 용량 · 로고 순으로 시선이 떨어지도록 배치해,
+          한 손에 쥔 상태에서 시선을 크게 움직이지 않아도 필요한 정보가 순서대로 읽히게 했습니다.
+          박스는 매대에서 멀리서 보이는 얼굴, 용기는 손 안에서 가까이 읽히는 얼굴로
+          역할을 나눈 셈입니다.
+        </p>
+      </div>
+
+      <div class="grid-2" style="margin-top: clamp(32px,4vw,48px)">
+        <div class="reveal">
+          <div class="shot"><img src="images/aout/04-hand.jpg" alt="손에 쥔 앰플 용기"></div>
+        </div>
+        <div class="reveal">
+          <div class="shot"><img src="images/aout/05-blocks.jpg" alt="앰플 용기 연출컷"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 실제 출시 -->
+    <section class="launch">
+      <div class="gallery-section">
+        <div class="section-head">
+          <div class="label reveal">In the Market</div>
+          <div class="sub reveal">실제 생산 · 판매</div>
+        </div>
+
+        <div class="launch-grid">
+          <div class="reveal">
+            <div class="shot"><img src="images/aout/07-real-product.jpg" alt="실제 생산된 우트 앰플 제품"></div>
+            <div class="shot-caption">양산된 실제 제품</div>
+          </div>
+
+          <div class="reveal">
+            <div class="review-card">
+              <img src="images/aout/08-review.jpg" alt="구매 고객 리뷰">
+              <div class="review-note">
+                구매 고객 리뷰 — 패키지와 제품 디자인이 예쁘다는 언급으로 시작하는 5점 리뷰.
+                브랜드 아이덴티티가 소비자에게 전달됐는지 확인할 수 있었던 지점입니다.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 증명서 -->
+    <section class="gallery-section">
+      <div class="section-head">
+        <div class="label reveal">Certificate</div>
+        <div class="sub reveal">라우드소싱 우승 증명서</div>
+      </div>
+      <div class="cert-wrap reveal">
+        <div class="shot"><img src="images/aout/09-certificate.jpg" alt="라우드소싱 콘테스트 우승 증명서"></div>
+      </div>
+    </section>
+
+  <!-- ===== 다음 프로젝트 ===== -->
+  <section class="nextproj">
+    <div class="nextproj-head">
+      <a href="../index.html#brand">← All Brand Works</a>
+      <span>Next · <span class="np-name">Next Brand</span></span>
+    </div>
+
+    <a class="nextproj-band" href="brand-03.html">
+      <span class="nextproj-bubble" aria-hidden="true"></span>
+      <span class="nextproj-track" aria-hidden="true">
+        <span class="nextproj-row"><b>Next Project</b><i></i><b>Next Project</b><i></i><b>Next Project</b><i></i><b>Next Project</b><i></i><b>Next Project</b><i></i><b>Next Project</b><i></i></span>
+        <span class="nextproj-row"><b>Next Project</b><i></i><b>Next Project</b><i></i><b>Next Project</b><i></i><b>Next Project</b><i></i><b>Next Project</b><i></i><b>Next Project</b><i></i></span>
+      </span>
+      <span class="np-sr">다음 프로젝트: Next Brand</span>
+    </a>
+  </section>
+  </main>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // 히어로 스크롤 축소
+    (function() {
+      const hero = document.querySelector('.hero-wrap .hero');
+      const wrap = document.querySelector('.hero-wrap');
+      if (!hero || !wrap) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      let ticking = false;
+      function update() {
+        const p = Math.min(Math.max(window.scrollY / wrap.offsetHeight, 0), 1);
+        hero.style.transform = `scale(${1 - p * 0.15})`;
+        hero.style.opacity = 1 - p * 0.6;
+        ticking = false;
+      }
+      window.addEventListener('scroll', () => {
+        if (!ticking) { requestAnimationFrame(update); ticking = true; }
+      }, { passive: true });
+      update();
+    })();
+  
+  // ============================
+  // 다음 프로젝트 — 커서 원형 프리뷰 + 확장 전환
+  // ============================
+  (function () {
+    const band = document.querySelector('.nextproj-band');
+    if (!band) return;
+    const bubble = band.querySelector('.nextproj-bubble');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const fine   = window.matchMedia('(hover: hover)').matches;
+
+    if (bubble && fine && !reduce) {
+      band.addEventListener('pointerenter', () => band.classList.add('on'));
+      band.addEventListener('pointerleave', () => band.classList.remove('on'));
+      band.addEventListener('pointermove', (e) => {
+        const r = band.getBoundingClientRect();
+        bubble.style.setProperty('--bx', (e.clientX - r.left) + 'px');
+        bubble.style.setProperty('--by', (e.clientY - r.top) + 'px');
+      }, { passive: true });
+    }
+
+    band.addEventListener('click', (e) => {
+      const href = band.getAttribute('href');
+      if (!href || reduce || !fine) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+      e.preventDefault();
+
+      const img = bubble && bubble.querySelector('img');
+      const w = bubble ? Math.max(bubble.getBoundingClientRect().width, 120) : 180;
+      const x = e.clientX, y = e.clientY;
+      const far = Math.max(
+        Math.hypot(x, y),
+        Math.hypot(window.innerWidth - x, y),
+        Math.hypot(x, window.innerHeight - y),
+        Math.hypot(window.innerWidth - x, window.innerHeight - y)
+      );
+
+      const wipe = document.createElement('div');
+      wipe.className = 'np-wipe';
+      wipe.style.setProperty('--w', w + 'px');
+      wipe.style.setProperty('--x', x + 'px');
+      wipe.style.setProperty('--y', y + 'px');
+      wipe.style.setProperty('--s', ((far / (w / 2)) * 1.08).toFixed(2));
+      if (img) {
+        const c = document.createElement('img');
+        c.src = img.getAttribute('src');
+        c.alt = '';
+        wipe.appendChild(c);
+      }
+      document.body.appendChild(wipe);
+      requestAnimationFrame(() => requestAnimationFrame(() => wipe.classList.add('run')));
+      setTimeout(() => { window.location.href = href; }, 700);
+    });
+  })();
+</script>
+</body>
+</html>

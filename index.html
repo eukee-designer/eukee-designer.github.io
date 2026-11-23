@@ -1,0 +1,2050 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eukee — Product Designer</title>
+
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-cream: #f4f1ea;
+      --bg-white: #ffffff;
+      --bg-beige: #ebe3d2;
+      --bg-dark: #1a1a1a;
+      --fg: #1a1a1a;
+      --fg-on-dark: #f4f1ea;
+      --muted: #6b6b6b;
+      --muted-on-dark: #a8a39a;
+      --line: #1a1a1a14;
+      --line-on-dark: #ffffff14;
+      --accent: #ff5722;
+
+      --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      --font-serif: "Instrument Serif", "Pretendard Variable", serif;
+      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+      --max: 1280px;
+      --pad-x: clamp(20px, 5vw, 64px);
+      --section-y: clamp(120px, 16vw, 200px);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-cream);
+      color: var(--fg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.6;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+      letter-spacing: -0.005em;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; transition: color .2s ease, opacity .2s ease; }
+    a:hover { color: var(--accent); }
+    button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding-left: var(--pad-x);
+      padding-right: var(--pad-x);
+    }
+
+    section:not(.hero) {
+      position: relative;
+      padding: var(--section-y) 0;
+    }
+    section:not(.hero)::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      pointer-events: none;
+      opacity: 0.6;
+      mix-blend-mode: multiply;
+      z-index: 0;
+    }
+    section > .container { position: relative; z-index: 1; }
+
+    .hero { background: var(--bg-cream); }
+    .projects { background: var(--bg-white); }
+    .brand { background: var(--bg-beige); }
+    .footer { background: var(--bg-dark); color: var(--fg-on-dark); position: relative; padding: var(--section-y) 0; }
+    .footer::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      pointer-events: none;
+      opacity: 0.3;
+      mix-blend-mode: screen;
+      z-index: 0;
+    }
+    .footer > .container { position: relative; z-index: 1; }
+
+    /* 네비 - 히어로에서는 숨김, 스크롤 후 등장 */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px) saturate(140%);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      background: rgba(244, 241, 234, 0.6);
+      border-bottom: 1px solid var(--line);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-100%);
+      transition: opacity .35s ease, transform .35s cubic-bezier(0.2, 0.8, 0.2, 1), visibility .35s ease;
+    }
+    .nav.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+    .logo {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 24px;
+      letter-spacing: -0.02em;
+      line-height: 1.4;
+    }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+      font-size: 15px;
+      line-height: 1.4;
+      align-items: center;
+    }
+    .nav-links a,
+    .nav-links .nav-trigger {
+      position: relative;
+      padding: 4px 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+    }
+    .nav-links a::after,
+    .nav-links .nav-trigger::after {
+      content: "";
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width .3s ease;
+    }
+    .nav-links a:hover::after,
+    .nav-links .nav-trigger:hover::after,
+    .has-dropdown.open .nav-trigger::after {
+      width: 100%;
+    }
+
+    .has-dropdown { position: relative; }
+    .dropdown-arrow {
+      font-size: 10px;
+      transition: transform .25s ease;
+    }
+    .has-dropdown.open .dropdown-arrow,
+    .has-dropdown:hover .dropdown-arrow {
+      transform: rotate(180deg);
+    }
+    .dropdown {
+      position: absolute;
+      top: calc(100% + 14px);
+      right: 0;
+      min-width: 220px;
+      background: rgba(244, 241, 234, 0.95);
+      backdrop-filter: blur(20px) saturate(140%);
+      -webkit-backdrop-filter: blur(20px) saturate(140%);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 8px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: opacity .25s ease, transform .25s cubic-bezier(0.2, 0.8, 0.2, 1), visibility .25s ease;
+    }
+    .has-dropdown.open .dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    @media (hover: hover) {
+      .has-dropdown:hover .dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+    }
+    .dropdown a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--fg) !important;
+      transition: background .2s ease;
+    }
+    .dropdown a::after { display: none; }
+    .dropdown a:hover {
+      background: rgba(26, 26, 26, 0.05);
+      color: var(--fg) !important;
+    }
+    .dropdown-label {
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.4;
+    }
+    .dropdown-sub {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      line-height: 1.4;
+    }
+
+    /* 히어로 - 풀화면 별 인터랙션 */
+    .hero {
+      padding: 0;
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+      background: var(--bg-cream);
+    }
+    .hero #stars {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 0;
+    }
+
+    /* 네 모서리 텍스트 공통 */
+    .hero-corner {
+      position: absolute;
+      z-index: 2;
+      color: var(--accent);
+      font-size: clamp(13px, 1vw, 15px);
+      line-height: 1.5;
+      letter-spacing: -0.005em;
+    }
+    .hero-corner a { color: inherit; }
+    .hero-corner a:hover { opacity: 0.7; color: var(--accent); }
+
+    .corner-tl {
+      top: clamp(24px, 3vw, 40px);
+      left: clamp(24px, 3vw, 40px);
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(22px, 1.8vw, 28px);
+      color: var(--accent) !important;
+      letter-spacing: -0.02em;
+    }
+    .corner-tr {
+      top: clamp(24px, 3vw, 40px);
+      right: clamp(24px, 3vw, 40px);
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 4px;
+      max-width: calc(100% - clamp(48px, 6vw, 80px));
+      justify-content: flex-end;
+    }
+    .corner-bl {
+      bottom: clamp(24px, 3vw, 40px);
+      left: clamp(24px, 3vw, 40px);
+      max-width: min(440px, 40vw);
+    }
+    .corner-br {
+      bottom: clamp(24px, 3vw, 40px);
+      right: clamp(24px, 3vw, 40px);
+      text-align: right;
+      max-width: min(360px, 35vw);
+    }
+
+    /* 히어로 네비 (우상단) */
+    .hero-nav { font-size: clamp(13px, 1vw, 15px); }
+    .hero-nav a, .hero-nav-btn {
+      color: var(--accent);
+      font-family: var(--font-sans);
+      font-size: inherit;
+      line-height: 1.5;
+      letter-spacing: -0.005em;
+    }
+    .hero-nav-sep { color: var(--accent); opacity: 0.6; }
+    .hero-nav-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .hero-nav-dropdown { position: relative; display: inline-block; }
+    .hero-nav-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 12px);
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 6px;
+      min-width: 160px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-6px);
+      transition: opacity .25s ease, transform .25s ease, visibility .25s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      z-index: 10;
+    }
+    .hero-nav-dropdown.open .hero-nav-dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .hero-nav-dropdown-menu a {
+      color: var(--fg) !important;
+      padding: 10px 12px;
+      border-radius: 6px;
+      text-align: left;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .hero-nav-dropdown-menu a:hover {
+      background: rgba(0, 0, 0, 0.04);
+      opacity: 1;
+    }
+
+    /* 좌하단: 자기소개 */
+    .hero-bio {
+      font-size: clamp(13px, 1vw, 15px);
+      line-height: 1.55;
+      color: var(--accent);
+    }
+    .hero-bio p + p { margin-top: 8px; }
+
+    /* 우하단: 연락처 */
+    .hero-contact {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      color: var(--accent);
+    }
+    .hero-contact .contact-label {
+      font-size: clamp(13px, 1vw, 15px);
+      line-height: 1.5;
+      margin-bottom: 4px;
+    }
+    .hero-contact a {
+      color: var(--accent);
+      font-size: clamp(13px, 1vw, 15px);
+      line-height: 1.5;
+    }
+
+    /* 다시 보기 버튼 */
+    .replay {
+      position: absolute;
+      top: clamp(70px, 8vw, 100px);
+      right: clamp(24px, 3vw, 40px);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 87, 34, 0.3);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background .2s ease, transform .2s ease;
+      z-index: 3;
+      line-height: 1.4;
+    }
+    .replay:hover {
+      background: #fff;
+      transform: translateY(-1px);
+    }
+    .replay-icon {
+      font-size: 13px;
+      display: inline-block;
+      transition: transform .4s ease;
+    }
+    .replay:hover .replay-icon { transform: rotate(-180deg); }
+
+    /* 모바일에서는 텍스트 위치 살짝 정리 */
+    @media (max-width: 640px) {
+      .corner-bl, .corner-br {
+        max-width: calc(100% - 48px);
+      }
+      .corner-br { text-align: left; }
+      .corner-tr {
+        font-size: 11px;
+        gap: 3px;
+      }
+    }
+
+    /* 페이드인 효과 (별 모인 후) */
+    .post-typing {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity .8s ease, transform .8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .post-typing.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .post-typing { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ===== 마우스 트레일 이미지 카드 ===== */
+    .hero { cursor: crosshair; }
+    .trail-card {
+      position: absolute;
+      top: 0; left: 0;
+      width: 220px;
+      height: 150px;
+      margin-left: -110px;
+      margin-top: -75px;
+      border-radius: 8px;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+      opacity: 0;
+      pointer-events: none;
+      will-change: transform, opacity;
+      z-index: 1;        /* 별 위에, 모서리 텍스트 아래 */
+    }
+    @media (max-width: 640px) {
+      .trail-card {
+        width: 160px;
+        height: 110px;
+        margin-left: -80px;
+        margin-top: -55px;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .trail-card { display: none; }
+      .hero { cursor: default; }
+    }
+
+    .hero-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 56px;
+      margin-top: clamp(80px, 10vw, 140px);
+      align-items: end;
+    }
+    @media (min-width: 768px) {
+      .hero-row { grid-template-columns: 1.2fr 1fr; gap: 96px; }
+    }
+    .hero-bio {
+      font-size: clamp(18px, 1.5vw, 22px);
+      line-height: 1.7;
+      max-width: 540px;
+    }
+    .hero-bio p + p { margin-top: 1.2em; }
+    .hero-contact {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    .hero-contact .label {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+    .hero-contact a { color: var(--fg); line-height: 1.5; }
+
+    /* 섹션 라벨 */
+    .section-label {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 28px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 80px;
+      line-height: 1.5;
+    }
+    .footer .section-label { color: var(--muted-on-dark); border-color: var(--line-on-dark); }
+
+    /* 프로젝트 그리드 */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(48px, 6vw, 80px);
+    }
+    @media (min-width: 768px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: clamp(32px, 4vw, 64px);
+        row-gap: clamp(64px, 8vw, 112px);
+      }
+    }
+    /* 카드마다 원근을 줘서 스크롤 중 3D로 꺾이게 */
+    .card { display: block; cursor: pointer; perspective: 900px; }
+    .card-image {
+      aspect-ratio: 3 / 2;
+      background: var(--bg-cream);
+      overflow: hidden;
+      position: relative;
+      transform: translateY(calc(var(--lift, 0px) + var(--lag, 0px)))
+                 rotateX(var(--rot, 0deg));
+      transform-origin: 50% 50%;
+      transition: transform .5s cubic-bezier(.2,.8,.2,1);
+      will-change: transform;
+      backface-visibility: hidden;
+    }
+    /* 스크롤 중 이미지를 휘게 하는 세로 조각 레이어 */
+    .card-image .warp { position: absolute; inset: 0; z-index: 3; opacity: 0; pointer-events: none; }
+    .card-image .warp i {
+      position: absolute; top: 0; height: 100%; display: block;
+      background-repeat: no-repeat;
+      transform-origin: 50% 100%;   /* 아랫변 고정 → 윗변이 부푼다 */
+    }
+    .grid.bending .warp i { will-change: transform; }
+    .grid.bending.up .card-image .warp i { transform-origin: 50% 0%; }
+    /* 휘는 동안에는 조각 레이어만 보이고, 카드 밖으로 넘칠 수 있게 */
+    .grid.bending .card-image.has-warp { overflow: visible; }
+    .grid.bending .card-image.has-warp .warp { opacity: 1; }
+    .grid.bending .card-image.has-warp > img { visibility: hidden; }
+    /* 휘는 동안 카드 바탕이 띠처럼 드러나지 않도록 */
+    .grid.bending .card-image.has-warp { background: transparent; }
+    .grid.bending .card-image.has-warp .placeholder { visibility: hidden; }
+    .placeholder { position: relative; z-index: 4; }
+    /* 스크롤 중에는 JS가 매 프레임 값을 주므로 전환 없이 */
+    .grid.bending .card-image { transition: none; }
+    .card-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 60%, rgba(0,0,0,0.04));
+      pointer-events: none;
+      z-index: 2;
+    }
+    .card-image::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top,
+        rgba(0, 0, 0, 0.55) 0%,
+        rgba(0, 0, 0, 0.25) 30%,
+        rgba(0, 0, 0, 0) 65%
+      );
+      opacity: 0;
+      transition: opacity .55s cubic-bezier(0.2, 0.8, 0.2, 1);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .card:hover .card-image::before { opacity: 1; }
+    .card:hover .card-image { --lift: -8px; }
+    .card-image img { width: 100%; height: 100%; object-fit: cover; }
+    .placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(40px, 5vw, 60px);
+      line-height: 1.4;
+      color: rgba(0,0,0,0.18);
+    }
+    .ph-1 { background: linear-gradient(135deg, #e8d5c4, #f4f1ea); }
+    .ph-2 { background: linear-gradient(135deg, #d4c5b9, #e8e0d5); }
+    .ph-3 { background: linear-gradient(135deg, #c9d6df, #f4f1ea); }
+    .ph-4 { background: linear-gradient(135deg, #ddd4c0, #efe9dc); }
+    .ph-5 { background: linear-gradient(135deg, #e2c9c9, #f4f1ea); }
+    .ph-6 { background: linear-gradient(135deg, #c9d4c5, #e8ecdf); }
+    .ph-b3 { background: linear-gradient(160deg, #ddd4c0, #c9bfa8); }
+    .ph-b4 { background: linear-gradient(160deg, #e2c9c9, #d1b5b5); }
+    .ph-b5 { background: linear-gradient(160deg, #c9d4c5, #b5c2af); }
+    /* 섹션 제목 + 필터 */
+    .sp-anchor { display: block; position: relative; top: -110px; }
+    .sp-title {
+      text-align: center;
+      font-size: clamp(38px, 5.6vw, 76px);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.1;
+      margin: 0 0 clamp(26px, 3vw, 38px);
+    }
+    .filters {
+      display: flex; flex-wrap: wrap;
+      justify-content: center; gap: 8px;
+      margin-bottom: clamp(48px, 6vw, 80px);
+    }
+    .chip {
+      font: inherit; font-size: 14px; line-height: 1;
+      padding: 10px 18px; border-radius: 99px;
+      border: 1px solid var(--line);
+      background: transparent; color: var(--fg);
+      cursor: pointer; white-space: nowrap;
+      transition: background .3s ease, color .3s ease, border-color .3s ease;
+    }
+    .chip b { font-weight: 400; font-size: 12px; opacity: .5; margin-left: 3px; }
+    .chip:hover { border-color: var(--fg); }
+    .chip.is-on { background: var(--fg); color: var(--bg-cream); border-color: var(--fg); }
+    .chip.is-on b { opacity: .6; }
+    .card[hidden] { display: none; }
+
+    /* 카드 아래 설명 — 제목·분류 왼쪽, 화살표 오른쪽, 아래 구분선 */
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 18px;
+      padding-bottom: 14px;
+      gap: 16px;
+      border-bottom: 1px solid var(--line);
+      transition: border-color .35s ease;
+    }
+    .card:hover .card-meta { border-color: var(--fg); }
+    .card-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .card-title {
+      font-size: clamp(17px, 1.35vw, 20px);
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      line-height: 1.35;
+      transition: color .35s ease;
+    }
+    .card:hover .card-title { color: var(--accent); }
+    .card-tag {
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.01em;
+      line-height: 1.5;
+    }
+    .card-arrow {
+      flex: 0 0 auto;
+      font-size: 18px; line-height: 1;
+      color: var(--muted);
+      transition: transform .4s cubic-bezier(.2,.8,.2,1), color .35s ease;
+    }
+    .card:hover .card-arrow { color: var(--accent); transform: translate(3px, 3px); }
+
+    /* 이미지 위 + 마커 */
+    .card-plus {
+      position: absolute;
+      left: 50%; bottom: 14%;
+      transform: translate(-50%, 8px);
+      z-index: 3;
+      font-family: var(--font-mono);
+      font-size: 22px;
+      color: var(--accent);
+      opacity: 0;
+      transition: opacity .4s ease, transform .4s cubic-bezier(0.2, 0.8, 0.2, 1);
+      pointer-events: none;
+    }
+    .card:hover .card-plus { opacity: 1; transform: translate(-50%, 0); }
+
+    /* 호버 시 펼쳐지는 역할 리스트 */
+    .card-roles {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      transition: grid-template-rows .5s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  opacity .4s ease;
+    }
+    .card:hover .card-roles { grid-template-rows: 1fr; opacity: 1; }
+    .card-roles > div { overflow: hidden; }
+    .roles-head {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      padding-top: 18px;
+      margin-bottom: 12px;
+    }
+    .roles-list { list-style: none; }
+    .roles-list li {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      line-height: 1.9;
+      display: flex; align-items: center; gap: 8px;
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity .4s ease, transform .4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .card:hover .roles-list li { opacity: 1; transform: translateX(0); }
+    .card:hover .roles-list li:nth-child(1) { transition-delay: .10s; }
+    .card:hover .roles-list li:nth-child(2) { transition-delay: .16s; }
+    .card:hover .roles-list li:nth-child(3) { transition-delay: .22s; }
+    .card:hover .roles-list li:nth-child(4) { transition-delay: .28s; }
+    .card:hover .roles-list li:nth-child(5) { transition-delay: .34s; }
+    .card:hover .roles-list li:nth-child(6) { transition-delay: .40s; }
+    .roles-list .arw { opacity: .6; }
+
+    /* 터치 기기: 호버 대신 항상 표시 */
+    @media (hover: none) {
+      .card-roles { grid-template-rows: 1fr; opacity: 1; }
+      .roles-list li { opacity: 1; transform: none; }
+      .card-tag { opacity: 1; }
+      .card-plus { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+    }
+
+    /* Brand 섹션 */
+    .brand-headline {
+      font-size: clamp(32px, 5vw, 56px);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .brand-headline .serif {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+    }
+    .brand-intro {
+      font-size: clamp(16px, 1.4vw, 20px);
+      line-height: 1.65;
+      color: var(--muted);
+      max-width: 540px;
+      margin-bottom: clamp(64px, 8vw, 96px);
+    }
+    .brand-grid {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      padding-bottom: 20px;
+      scrollbar-width: none;
+      scroll-snap-type: x mandatory;
+      margin: 0 calc(var(--pad-x) * -1);
+      padding-left: var(--pad-x);
+      padding-right: var(--pad-x);
+    }
+    .brand-grid::-webkit-scrollbar { display: none; }
+    .brand-item {
+      flex: 0 0 auto;
+      width: clamp(240px, 26vw, 320px);
+      scroll-snap-align: start;
+      cursor: pointer;
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+    .brand-image {
+      aspect-ratio: 3 / 4;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      padding: 24px;
+      transition: transform .5s cubic-bezier(0.2, 0.8, 0.2, 1);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04);
+    }
+    .brand-item:hover .brand-image { transform: translateY(-6px); }
+    .brand-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 55%);
+      opacity: 0;
+      transition: opacity .5s ease;
+      pointer-events: none;
+    }
+    .brand-item:hover .brand-image::after { opacity: 1; }
+    .brand-num {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 16px;
+      color: rgba(0,0,0,0.5);
+      position: relative;
+      z-index: 1;
+    }
+    .brand-item:nth-child(1) .brand-image { background: linear-gradient(160deg, #e8d5c4, #d4c5b9); }
+    .brand-item:nth-child(2) .brand-image { background: linear-gradient(160deg, #c9d6df, #b8c5cf); }
+    .brand-item:nth-child(3) .brand-image { background: linear-gradient(160deg, #ddd4c0, #c9bfa8); }
+    .brand-item:nth-child(4) .brand-image { background: linear-gradient(160deg, #e2c9c9, #d1b5b5); }
+    .brand-item:nth-child(5) .brand-image { background: linear-gradient(160deg, #c9d4c5, #b5c2af); }
+    .brand-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 16px;
+    }
+    .brand-title {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+    }
+    .brand-tag {
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* 푸터 */
+    .footer-quote {
+      font-size: clamp(28px, 4.4vw, 56px);
+      line-height: 1.4;
+      letter-spacing: -0.02em;
+      font-weight: 500;
+      max-width: 20ch;
+      margin: 0 auto 120px;
+      text-align: center;
+    }
+    .footer-quote .serif {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+      padding-bottom: 120px;
+      border-bottom: 1px solid var(--line-on-dark);
+    }
+    @media (min-width: 768px) {
+      .footer-grid { grid-template-columns: repeat(3, 1fr); gap: 64px; }
+    }
+    .footer-contact .label {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted-on-dark);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .footer-contact a {
+      display: block;
+      font-size: 18px;
+      line-height: 1.5;
+      margin-bottom: 6px;
+      color: var(--fg-on-dark);
+    }
+    .footer-thanks {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(48px, 8vw, 60px);
+      line-height: 1.4;
+      letter-spacing: -0.03em;
+      text-align: center;
+      padding: 120px 0 80px;
+      color: var(--fg-on-dark);
+    }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--muted-on-dark);
+      padding-top: 32px;
+      border-top: 1px solid var(--line-on-dark);
+    }
+    .footer-bottom ul { display: flex; gap: 28px; list-style: none; }
+    .footer-bottom a:hover { color: var(--fg-on-dark); }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .9s ease, transform .9s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+    /* =========================================
+       상단 메뉴 — 크게 / 볼드
+       ========================================= */
+    .nav-links{ gap:28px; font-size:18px; font-weight:700; letter-spacing:-.01em; }
+    .nav-links a, .nav-links .nav-trigger{ font-weight:700; }
+    /* 드롭다운 안쪽은 기존 굵기 유지 */
+    .dropdown a{ font-weight:400; font-size:14px; }
+    .dropdown-label{ font-weight:500; }
+    .hero-nav{ font-size:clamp(15px,1.15vw,18px); font-weight:700; gap:18px; }
+    .hero-nav a, .hero-nav-btn{ font-weight:700; }
+    .corner-tr{ gap:18px; }
+
+    /* Menu 버튼 */
+    .menu-btn{
+      display:inline-flex; align-items:center; gap:9px;
+      font-family:inherit; font-size:inherit; font-weight:700;
+      color:inherit; background:none; border:0; padding:4px 0;
+      cursor:pointer; letter-spacing:-.01em; line-height:1.4;
+    }
+    .menu-bars{ display:inline-flex; align-items:center; gap:3px; height:1em; }
+    .menu-bars i{
+      display:block; width:2px; height:13px; background:currentColor;
+      transition:transform .32s cubic-bezier(.2,.8,.2,1), opacity .32s ease;
+    }
+    .menu-btn:hover .menu-bars i:nth-child(1){ transform:scaleY(.62); }
+    .menu-btn:hover .menu-bars i:nth-child(2){ transform:scaleY(1.18); }
+    .menu-btn:hover .menu-bars i:nth-child(3){ transform:scaleY(.78); }
+    .hero-menu-btn{ color:var(--accent); }
+
+    /* =========================================
+       전체화면 메뉴
+       ========================================= */
+    .site-menu{
+      position:fixed; inset:0; z-index:200;
+      background:var(--bg-cream); color:var(--fg);
+      display:flex; flex-direction:column;
+      opacity:0; visibility:hidden;
+      transition:opacity .45s ease, visibility .45s ease;
+      overflow:hidden;
+    }
+    .site-menu.open{ opacity:1; visibility:visible; }
+    body.menu-open{ overflow:hidden; }
+
+    .site-menu-top{
+      position:relative; z-index:2;
+      max-width:var(--max); width:100%; margin:0 auto;
+      padding:0 var(--pad-x); height:72px;
+      display:flex; align-items:center; justify-content:space-between;
+      flex:0 0 auto;
+    }
+    .site-menu-top .logo{ color:var(--fg); }
+    .site-menu-top .logo:hover{ color:var(--accent); }
+    .menu-close{ font-size:18px; color:var(--fg); }
+    .menu-close:hover{ color:var(--accent); }
+    .menu-x{ font-size:17px; line-height:1; transition:transform .35s ease; }
+    .menu-close:hover .menu-x{ transform:rotate(90deg); }
+
+    /* 메뉴 항목 — 가운데 정렬, 크게, 볼드 */
+    .site-menu-list{
+      position:relative; z-index:2;
+      flex:1 1 auto;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      gap:clamp(2px,.6vw,8px);
+      padding:0 var(--pad-x);
+    }
+    .site-menu-list a{
+      display:block;
+      font-size:clamp(42px,8.2vw,108px);
+      font-weight:800; letter-spacing:-.04em; line-height:1.14;
+      color:var(--fg); text-align:center;
+      opacity:0; transform:translateY(26px);
+      transition:opacity .6s ease, transform .6s cubic-bezier(.2,.8,.2,1),
+                 filter .45s ease, color .45s ease;
+    }
+    .site-menu.open .site-menu-list a{ opacity:1; transform:translateY(0); }
+    .site-menu.open .site-menu-list a:nth-child(1){ transition-delay:.10s; }
+    .site-menu.open .site-menu-list a:nth-child(2){ transition-delay:.17s; }
+    .site-menu.open .site-menu-list a:nth-child(3){ transition-delay:.24s; }
+
+    /* 호버한 항목만 선명하게, 나머지는 흐려짐 */
+    .site-menu-list.hovering a{
+      filter:blur(5px);
+      color:rgba(26,26,26,.38);
+      transition-delay:0s;
+    }
+    .site-menu-list.hovering a:hover,
+    .site-menu-list.hovering a:focus-visible{
+      filter:blur(0);
+      color:var(--fg);
+    }
+
+    .site-menu-foot{
+      position:relative; z-index:2;
+      max-width:var(--max); width:100%; margin:0 auto;
+      padding:0 var(--pad-x) clamp(28px,4vw,46px);
+      display:flex; gap:28px; flex-wrap:wrap;
+      justify-content:center;
+      font-size:14px; color:var(--muted);
+      opacity:0; transform:translateY(12px);
+      transition:opacity .5s ease .3s, transform .5s ease .3s;
+      flex:0 0 auto;
+    }
+    .site-menu.open .site-menu-foot{ opacity:1; transform:translateY(0); }
+
+    @media (max-width:640px){ .nav-links{ font-size:16px; gap:20px; } }
+    /* 터치 기기는 블러 없이 */
+    @media (hover:none){
+      .site-menu-list.hovering a{ filter:none; color:var(--fg); }
+    }
+    @media (prefers-reduced-motion:reduce){
+      .site-menu, .site-menu-list a, .site-menu-foot{ transition:none; }
+      .site-menu-list a{ opacity:1; transform:none; }
+      .site-menu-foot{ opacity:1; transform:none; }
+      .site-menu-list.hovering a{ filter:none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="#top" class="logo">Eukee</a>
+      <nav>
+        <ul class="nav-links">
+          <li class="has-dropdown">
+            <button class="nav-trigger" type="button" aria-haspopup="true" aria-expanded="false">
+              Resume <span class="dropdown-arrow" aria-hidden="true">↓</span>
+            </button>
+            <div class="dropdown" role="menu">
+              <a href="files/eukee-resume.pdf" download="Eukee-Resume.pdf" role="menuitem">
+                <span class="dropdown-label">Resume</span>
+                <span class="dropdown-sub">PDF</span>
+              </a>
+              <a href="files/eukee-portfolio.pdf" download="Eukee-Portfolio.pdf" role="menuitem">
+                <span class="dropdown-label">Portfolio</span>
+                <span class="dropdown-sub">PDF</span>
+              </a>
+            </div>
+          </li>
+          <li>
+            <button class="menu-btn" type="button" data-menu-open aria-haspopup="dialog" aria-expanded="false" aria-controls="siteMenu">
+              Menu <span class="menu-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== 전체화면 메뉴 ===== -->
+  <div class="site-menu" id="siteMenu" role="dialog" aria-modal="true" aria-label="사이트 메뉴" tabindex="-1" hidden>
+    <div class="site-menu-top">
+      <a href="#top" class="logo" data-menu-close>Eukee</a>
+      <button class="menu-btn menu-close" type="button" data-menu-close>
+        Close <span class="menu-x" aria-hidden="true">✕</span>
+      </button>
+    </div>
+
+    <nav class="site-menu-list">
+      <a href="#work"  data-menu-close>Work</a>
+      <a href="#brand" data-menu-close>Brand &amp; Print</a>
+      <a href="mailto:eukee.ke@gmail.com" data-menu-close>Contact</a>
+    </nav>
+
+    <div class="site-menu-foot">
+      <span>eukee.ke@gmail.com</span>
+      <span>010-4402-1059</span>
+    </div>
+  </div>
+
+  <main>
+
+    <section class="hero" id="top">
+      <canvas id="stars"></canvas>
+
+      <!-- 좌상단: 로고 -->
+      <a href="#top" class="hero-corner corner-tl logo">Eukee</a>
+
+      <!-- 우상단: 네비 -->
+      <nav class="hero-corner corner-tr hero-nav">
+        <span class="hero-nav-dropdown">
+          <button class="hero-nav-btn" id="hero-resume-btn" type="button">
+            Resume <span aria-hidden="true">↓</span>
+          </button>
+          <span class="hero-nav-dropdown-menu" id="hero-resume-menu">
+            <a href="files/eukee-resume.pdf" download="Eukee-Resume.pdf">Resume PDF</a>
+            <a href="files/eukee-portfolio.pdf" download="Eukee-Portfolio.pdf">Portfolio PDF</a>
+          </span>
+        </span>
+        <button class="menu-btn hero-menu-btn" type="button" data-menu-open aria-haspopup="dialog" aria-expanded="false" aria-controls="siteMenu">
+          Menu <span class="menu-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+        </button>
+      </nav>
+
+      <!-- 좌하단: 자기소개 -->
+      <div class="hero-corner corner-bl hero-bio post-typing">
+        <p>저는 회사의 비즈니스 가치 성장을 위해<br>타당한 근거로 새로운 관점을 제시합니다.</p>
+        <p>새로운 시도를 즐기며,<br>끊임없이 배우고 성장하는 디자이너입니다.</p>
+      </div>
+
+      <!-- 우하단: 연락처 -->
+      <div class="hero-corner corner-br hero-contact post-typing">
+        <span class="contact-label">Get in touch</span>
+        <a href="mailto:eukee.ke@gmail.com">eukee.ke@gmail.com</a>
+        <a href="tel:+821044021059">010-4402-1059</a>
+      </div>
+
+      <!-- 다시 보기 버튼 -->
+      <button class="replay" id="replay" type="button" aria-label="다시 보기">
+        <span class="replay-icon" aria-hidden="true">↺</span>
+        <span class="replay-text">다시 보기</span>
+      </button>
+    </section>
+
+    <section class="projects" id="work">
+      <div class="container">
+        <span class="sp-anchor" id="brand" aria-hidden="true"></span>
+        <h2 class="sp-title reveal">Selected Projects</h2>
+        <div class="filters reveal">
+          <button class="chip is-on" type="button" data-filter="all" aria-pressed="true">All <b>9</b></button>
+          <button class="chip" type="button" data-filter="uiux" aria-pressed="false">UI/UX <b>4</b></button>
+          <button class="chip" type="button" data-filter="brand" aria-pressed="false">Brand &amp; Print <b>5</b></button>
+        </div>
+        <div class="grid" id="workGrid">
+          <a href="projects/hidden-money.html" class="card reveal" data-cat="uiux">
+            <div class="card-image">
+              <img src="projects/images/doosil-search/card-cover-wide.jpg" alt="부분시공 탐색 구조 보강">
+            </div>
+            <div class="card-meta">
+              <span class="card-text">
+                <span class="card-title">부분시공 탐색 구조 보강</span>
+                <span class="card-tag">Product · UX Research</span>
+              </span>
+              <span class="card-arrow" aria-hidden="true">↘</span>
+            </div>
+            <div class="card-roles"><div>
+              <div class="roles-head">DOOSIL · SEARCH STRUCTURE</div>
+              <ul class="roles-list">
+                <li><span class="arw">→</span> VOC ANALYSIS</li>
+                <li><span class="arw">→</span> USABILITY TEST</li>
+                <li><span class="arw">→</span> PROBLEM REDEFINITION</li>
+                <li><span class="arw">→</span> UX/UI DESIGN</li>
+                <li><span class="arw">→</span> STATE DEFINITION</li>
+              </ul>
+            </div></div>
+          </a>
+          <a href="projects/project-02.html" class="card reveal" data-cat="uiux">
+            <div class="card-image">
+              <div class="placeholder ph-2">02</div>
+            </div>
+            <div class="card-meta">
+              <span class="card-text">
+                <span class="card-title">DOOSIL 부분시공 퍼널 재설계</span>
+                <span class="card-tag">Product · UX Research</span>
+              </span>
+              <span class="card-arrow" aria-hidden="true">↘</span>
+            </div>
+            <div class="card-roles"><div>
+              <div class="roles-head">FUNNEL REDESIGN</div>
+              <ul class="roles-list">
+                <li><span class="arw">→</span> UX RESEARCH</li>
+                <li><span class="arw">→</span> DATA ANALYSIS</li>
+                <li><span class="arw">→</span> USABILITY TEST</li>
+                <li><span class="arw">→</span> UX/UI DESIGN</li>
+                <li><span class="arw">→</span> PRODUCT STRATEGY</li>
+              </ul>
+            </div></div>
+          </a>
+          <a href="projects/project-03.html" class="card reveal" data-cat="uiux">
+            <div class="card-image">
+              <div class="placeholder ph-3">03</div>
+            </div>
+            <div class="card-meta">
+              <span class="card-text">
+                <span class="card-title">Project Three</span>
+                <span class="card-tag">Mobile App</span>
+              </span>
+              <span class="card-arrow" aria-hidden="true">↘</span>
+            </div>
+            <div class="card-roles"><div>
+              <div class="roles-head">MOBILE APP</div>
+              <ul class="roles-list">
+                <li><span class="arw">→</span> UX/UI DESIGN</li>
+                <li><span class="arw">→</span> INTERACTION</li>
+                <li><span class="arw">→</span> DESIGN SYSTEM</li>
+              </ul>
+            </div></div>
+          </a>
+          <a href="projects/project-04.html" class="card reveal" data-cat="uiux">
+            <div class="card-image">
+              <div class="placeholder ph-4">04</div>
+            </div>
+            <div class="card-meta">
+              <span class="card-text">
+                <span class="card-title">Project Four</span>
+                <span class="card-tag">Web Design</span>
+              </span>
+              <span class="card-arrow" aria-hidden="true">↘</span>
+            </div>
+            <div class="card-roles"><div>
+              <div class="roles-head">WEB DESIGN</div>
+              <ul class="roles-list">
+                <li><span class="arw">→</span> WEB DESIGN</li>
+                <li><span class="arw">→</span> ART DIRECTION</li>
+                <li><span class="arw">→</span> VISUAL SYSTEM</li>
+              </ul>
+            </div></div>
+          </a>
+          <a href="projects/brand-01.html" class="card reveal" data-cat="brand">
+            <div class="card-image">
+              <img src="projects/images/musinsa/card-cover.jpg" alt="MUSINSA Campaign Archive">
+            </div>
+            <div class="card-meta">
+              <span class="card-text">
+                <span class="card-title">MUSINSA Campaign Archive</span>
+                <span class="card-tag">Editorial · 15 Campaigns</span>
+              </span>
+              <span class="card-arrow" aria-hidden="true">↘</span>
+            </div>
+            <div class="card-roles"><div>
+              <div class="roles-head">MUSINSA · CAMPAIGN</div>
+              <ul class="roles-list">
+                <li><span class="arw">→</span> ART DIRECTION</li>
+                <li><span class="arw">→</span> EDITORIAL DESIGN</li>
+                <li><span class="arw">→</span> VISUAL SYSTEM</li>
+              </ul>
+            </div></div>
+          </a>
+          <a href="projects/brand-02.html" class="card reveal" data-cat="brand">
+            <div class="card-image">
+              <img src="projects/images/aout/01-boxes-three-wide.jpg" alt="Août 앰플 패키지">
+            </div>
+            <div class="card-meta">
+              <span class="card-text">
+                <span class="card-title">Août 앰플 패키지</span>
+                <span class="card-tag">Package · 콘테스트 1등</span>
+              </span>
+              <span class="card-arrow" aria-hidden="true">↘</span>
+            </div>
+            <div class="card-roles"><div>
+              <div class="roles-head">AOÛT · PACKAGE</div>
+              <ul class="roles-list">
+                <li><span class="arw">→</span> PACKAGE DESIGN</li>
+                <li><span class="arw">→</span> BRAND IDENTITY</li>
+                <li><span class="arw">→</span> DIELINE</li>
+              </ul>
+            </div></div>
+          </a>
+          <a href="projects/brand-03.html" class="card reveal" data-cat="brand">
+            <div class="card-image">
+              <div class="placeholder ph-b3">03</div>
+            </div>
+            <div class="card-meta">
+              <span class="card-text">
+                <span class="card-title">Project Name</span>
+                <span class="card-tag">Brand Identity</span>
+              </span>
+              <span class="card-arrow" aria-hidden="true">↘</span>
+            </div>
+            <div class="card-roles"><div>
+              <div class="roles-head">BRAND IDENTITY</div>
+              <ul class="roles-list">
+                <li><span class="arw">→</span> LOGO DESIGN</li>
+                <li><span class="arw">→</span> BRAND SYSTEM</li>
+              </ul>
+            </div></div>
+          </a>
+          <a href="projects/brand-04.html" class="card reveal" data-cat="brand">
+            <div class="card-image">
+              <div class="placeholder ph-b4">04</div>
+            </div>
+            <div class="card-meta">
+              <span class="card-text">
+                <span class="card-title">Project Name</span>
+                <span class="card-tag">Editorial</span>
+              </span>
+              <span class="card-arrow" aria-hidden="true">↘</span>
+            </div>
+            <div class="card-roles"><div>
+              <div class="roles-head">EDITORIAL</div>
+              <ul class="roles-list">
+                <li><span class="arw">→</span> EDITORIAL DESIGN</li>
+                <li><span class="arw">→</span> LAYOUT</li>
+              </ul>
+            </div></div>
+          </a>
+          <a href="projects/brand-05.html" class="card reveal" data-cat="brand">
+            <div class="card-image">
+              <div class="placeholder ph-b5">05</div>
+            </div>
+            <div class="card-meta">
+              <span class="card-text">
+                <span class="card-title">Project Name</span>
+                <span class="card-tag">Print</span>
+              </span>
+              <span class="card-arrow" aria-hidden="true">↘</span>
+            </div>
+            <div class="card-roles"><div>
+              <div class="roles-head">PRINT</div>
+              <ul class="roles-list">
+                <li><span class="arw">→</span> PRINT DESIGN</li>
+                <li><span class="arw">→</span> PRODUCTION</li>
+              </ul>
+            </div></div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="section-label reveal">Get in touch</div>
+      <h2 class="footer-quote reveal">
+        저는 디자인이<br>
+        세상을 <span class="serif">바꿀 수 있다</span>고<br>
+        생각합니다.
+      </h2>
+      <div class="footer-grid">
+        <div class="footer-contact">
+          <div class="label">Email</div>
+          <a href="mailto:eukee.ke@gmail.com">eukee.ke@gmail.com</a>
+        </div>
+        <div class="footer-contact">
+          <div class="label">Phone</div>
+          <a href="tel:+821044021059">010-4402-1059</a>
+        </div>
+        <div class="footer-contact">
+          <div class="label">Social</div>
+          <a href="#">Instagram</a>
+          <a href="#">LinkedIn</a>
+        </div>
+      </div>
+      <div class="footer-thanks">Thank you</div>
+      <div class="footer-bottom">
+        <span>© 2026 Eukee. All rights reserved.</span>
+        <ul>
+          <li><a href="#top">Home</a></li>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#brand">Brand &amp; Print</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ============================
+    // ✨ 별 인터랙션 - EUKEE
+    // ============================
+    (() => {
+      const canvas = document.getElementById('stars');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      let DPR = Math.min(window.devicePixelRatio || 1, 2);
+      let W = 0, H = 0;
+      let particles = [];
+      let startTime = performance.now();
+
+      // 빛 방향 (좌상단)
+      const lightAngle = -2.2;
+
+      // 별 모양 (3D 크롬 메탈 효과)
+      function drawStar3D(x, y, R, rot, alpha) {
+        const spikes = 5;
+        const inner = R * 0.42;
+        const verts = [];
+        for (let i = 0; i < spikes * 2; i++) {
+          const radius = i % 2 === 0 ? R : inner;
+          const a = rot + (Math.PI / spikes) * i - Math.PI / 2;
+          verts.push([x + Math.cos(a) * radius, y + Math.sin(a) * radius]);
+        }
+
+        // 그림자
+        ctx.save();
+        ctx.globalAlpha = alpha * 0.16;
+        ctx.fillStyle = '#3a3d44';
+        ctx.beginPath();
+        for (let i = 0; i < verts.length; i++) {
+          const px = verts[i][0] + R * 0.09, py = verts[i][1] + R * 0.13;
+          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+
+        // 면별 명암
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        for (let i = 0; i < verts.length; i++) {
+          const v1 = verts[i];
+          const v2 = verts[(i + 1) % verts.length];
+          const mx = (v1[0] + v2[0]) / 2 - x;
+          const my = (v1[1] + v2[1]) / 2 - y;
+          const ma = Math.atan2(my, mx);
+          let b = 0.5 + 0.5 * Math.cos(ma - lightAngle);
+          b = 0.32 + b * 0.68;
+          const r = Math.round(150 + 105 * b);
+          const g = Math.round(154 + 101 * b);
+          const bl = Math.round(165 + 90 * b);
+          ctx.fillStyle = `rgb(${r},${g},${bl})`;
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(v1[0], v1[1]);
+          ctx.lineTo(v2[0], v2[1]);
+          ctx.closePath();
+          ctx.fill();
+        }
+        // 윤곽선
+        ctx.lineJoin = 'round';
+        ctx.lineWidth = Math.max(0.6, R * 0.05);
+        ctx.strokeStyle = 'rgba(80,85,100,0.55)';
+        ctx.beginPath();
+        for (let i = 0; i < verts.length; i++) {
+          i === 0 ? ctx.moveTo(verts[i][0], verts[i][1]) : ctx.lineTo(verts[i][0], verts[i][1]);
+        }
+        ctx.closePath();
+        ctx.stroke();
+
+        // 하이라이트
+        const hl = ctx.createRadialGradient(
+          x - R * 0.2, y - R * 0.2, 0,
+          x - R * 0.2, y - R * 0.2, R * 0.5
+        );
+        hl.addColorStop(0, 'rgba(255,255,255,0.85)');
+        hl.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = hl;
+        ctx.beginPath();
+        for (let i = 0; i < verts.length; i++) {
+          i === 0 ? ctx.moveTo(verts[i][0], verts[i][1]) : ctx.lineTo(verts[i][0], verts[i][1]);
+        }
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // "EUKEE" 글자에서 별 위치 추출
+      function sampleText(text) {
+        const off = document.createElement('canvas');
+        const octx = off.getContext('2d');
+        off.width = W;
+        off.height = H;
+
+        // 글자가 길어서 폰트 크기를 좀 더 작게 조정
+        // EUKEE - 5글자 짧은 텍스트, 작게
+        const fontSize = Math.min(W * 0.18, H * 0.42);
+        octx.fillStyle = '#000';
+        octx.font = `${fontSize}px "Great Vibes", cursive`;
+        octx.textAlign = 'center';
+        octx.textBaseline = 'middle';
+        octx.fillText(text, W / 2, H / 2);
+
+        const data = octx.getImageData(0, 0, W, H).data;
+
+        const raw = [];
+        const gap = 3;
+        for (let y = 0; y < H; y += gap) {
+          for (let x = 0; x < W; x += gap) {
+            if (data[(y * W + x) * 4 + 3] > 128) raw.push({ x, y });
+          }
+        }
+        for (let i = raw.length - 1; i > 0; i--) {
+          const j = (Math.random() * (i + 1)) | 0;
+          [raw[i], raw[j]] = [raw[j], raw[i]];
+        }
+
+        // 별 간 최소거리 - 폰트 크기에 비례
+        const MIN = Math.max(14, fontSize * 0.045);
+        const cell = MIN;
+        const grid = new Map();
+        const key = (cx, cy) => cx + ',' + cy;
+        const pts = [];
+        for (const p of raw) {
+          const cx = Math.floor(p.x / cell);
+          const cy = Math.floor(p.y / cell);
+          let ok = true;
+          for (let ox = -1; ox <= 1 && ok; ox++)
+            for (let oy = -1; oy <= 1 && ok; oy++) {
+              const arr = grid.get(key(cx + ox, cy + oy));
+              if (arr) for (const q of arr) {
+                const dx = q.x - p.x, dy = q.y - p.y;
+                if (dx * dx + dy * dy < MIN * MIN) { ok = false; break; }
+              }
+            }
+          if (ok) {
+            pts.push(p);
+            const k = key(cx, cy);
+            if (!grid.has(k)) grid.set(k, []);
+            grid.get(k).push(p);
+          }
+        }
+        return pts;
+      }
+
+      function init() {
+        const targets = sampleText("EUKEE");
+        particles = targets.map((t) => ({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          tx: t.x, ty: t.y,
+          R: 9 + Math.random() * 13,           // 별 크기 (풀화면 기준)
+          rot: Math.random() * Math.PI * 2,
+          spin: (Math.random() - 0.5) * 0.01,
+          bob: Math.random() * Math.PI * 2,
+          delay: Math.random() * 1.0,
+        }));
+        particles.sort((a, b) => a.R - b.R);
+        startTime = performance.now();
+        donePostTyping = false;
+      }
+
+      const HOLD = 0.1;
+      const ASSEMBLE = 2.2;
+      let donePostTyping = false;
+
+      function resize() {
+        const rect = canvas.getBoundingClientRect();
+        W = Math.floor(rect.width);
+        H = Math.floor(rect.height);
+        DPR = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = W * DPR;
+        canvas.height = H * DPR;
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+        init();
+      }
+
+      function frame(now) {
+        if (!heroVisible) return;   // 화면 밖이면 그리지 않는다
+        const t = (now - startTime) / 1000;
+        ctx.clearRect(0, 0, W, H);
+
+        let allAssembled = true;
+        for (const p of particles) {
+          const prog = Math.max(0, Math.min(1, (t - HOLD - p.delay) / ASSEMBLE));
+          const ease = prog * prog * prog * (prog * (prog * 6 - 15) + 10);
+          if (prog < 1) allAssembled = false;
+
+          if (p.sx === undefined) { p.sx = p.x; p.sy = p.y; }
+          p.x = p.sx + (p.tx - p.sx) * ease;
+          p.y = p.sy + (p.ty - p.sy) * ease;
+
+          if (ease > 0.999) {
+            p.bob += 0.03;
+            p.y += Math.sin(p.bob) * 0.5;
+          }
+
+          p.rot += p.spin;
+          drawStar3D(p.x, p.y, p.R, p.rot, 1);
+        }
+
+        // 모든 별이 모이면 hero-bio / hero-contact 페이드인
+        if (allAssembled && !donePostTyping) {
+          donePostTyping = true;
+          document.querySelectorAll('.post-typing').forEach((el, i) => {
+            setTimeout(() => el.classList.add('show'), 200 + i * 150);
+          });
+        }
+
+        requestAnimationFrame(frame);
+      }
+
+      // 히어로가 화면 밖이면 별 애니메이션을 멈춘다 — 스크롤 중 낭비 제거
+      let heroVisible = true;
+      const heroEl = document.getElementById('top');
+      if (heroEl && 'IntersectionObserver' in window) {
+        new IntersectionObserver(es => {
+          const was = heroVisible;
+          heroVisible = es[0].isIntersecting;
+          // 그리기만 멈추면 전체 화면 캔버스의 합성 비용이 남으므로 숨긴다
+          canvas.style.visibility = heroVisible ? '' : 'hidden';
+          if (heroVisible && !was) requestAnimationFrame(frame);
+        }, { threshold: 0 }).observe(heroEl);
+      }
+
+      const replayBtn = document.getElementById('replay');
+      if (replayBtn) {
+        replayBtn.addEventListener('click', () => {
+          // post-typing 다시 숨김 후 별 인터랙션 재시작
+          document.querySelectorAll('.post-typing').forEach(el => el.classList.remove('show'));
+          init();
+        });
+      }
+
+      let rt;
+      window.addEventListener('resize', () => {
+        clearTimeout(rt);
+        rt = setTimeout(resize, 150);
+      });
+
+      function boot() {
+        if (reduceMotion) {
+          // 모션 줄이기 모드: 별 인터랙션 생략, 텍스트 바로 표시
+          resize();
+          document.querySelectorAll('.post-typing').forEach(el => el.classList.add('show'));
+          return;
+        }
+        resize();
+        requestAnimationFrame(frame);
+      }
+
+      if (document.fonts && document.fonts.load) {
+        document.fonts.load('100px "Great Vibes"').then(boot).catch(boot);
+        setTimeout(() => { if (!particles.length) boot(); }, 1500);
+      } else {
+        boot();
+      }
+    })();
+
+    // ============================
+    // 🖼️ 마우스 이미지 트레일
+    // ============================
+    (() => {
+      const hero = document.querySelector('.hero');
+      if (!hero) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      // 터치 디바이스는 비활성 (마우스 이동 기반이라)
+      if (window.matchMedia('(hover: none)').matches) return;
+
+      // 트레일에 사용할 이미지들 (본인 이미지로 교체 가능)
+      // 같은 폴더의 파일명이나 URL 둘 다 가능
+      const IMAGES = [
+        'https://picsum.photos/seed/eukee1/440/300',
+        'https://picsum.photos/seed/eukee2/440/300',
+        'https://picsum.photos/seed/eukee3/440/300',
+        'https://picsum.photos/seed/eukee4/440/300',
+        'https://picsum.photos/seed/eukee5/440/300',
+        'https://picsum.photos/seed/eukee6/440/300',
+        'https://picsum.photos/seed/eukee7/440/300',
+        'https://picsum.photos/seed/eukee8/440/300',
+      ];
+
+      // 카드 풀 생성
+      const cards = IMAGES.map((src) => {
+        const el = document.createElement('div');
+        el.className = 'trail-card';
+        el.style.backgroundImage = `url("${src}")`;
+        hero.appendChild(el);
+        return { el, timer: null };
+      });
+
+      let imgIndex = 0;
+      let zCounter = 1;
+      let lastX = null, lastY = null;
+      const STEP = 80;          // 이만큼 움직일 때마다 새 카드 등장
+      const LIFETIME = 700;     // 카드가 보이는 시간(ms)
+
+      function spawn(x, y) {
+        const card = cards[imgIndex % cards.length];
+        imgIndex++;
+
+        const el = card.el;
+        const rot = 0;                       // 일렬로 정렬 (회전 없음)
+        el.style.zIndex = ++zCounter;
+
+        // 등장
+        el.style.transition = 'none';
+        el.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg) scale(0.85)`;
+        el.style.opacity = '0';
+        el.getBoundingClientRect();   // 강제 리플로우
+        el.style.transition = 'transform 0.5s cubic-bezier(0.2,0.8,0.2,1), opacity 0.4s ease';
+        el.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg) scale(1)`;
+        el.style.opacity = '1';
+
+        // 일정 시간 후 사라짐
+        clearTimeout(card.timer);
+        card.timer = setTimeout(() => {
+          el.style.transition = 'transform 0.6s ease, opacity 0.6s ease';
+          el.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg) scale(0.92)`;
+          el.style.opacity = '0';
+        }, LIFETIME);
+      }
+
+      function onMove(e) {
+        // hero 영역 기준 상대 좌표로 계산
+        const rect = hero.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        // 히어로 영역 밖이면 무시
+        if (x < 0 || x > rect.width || y < 0 || y > rect.height) return;
+
+        // 네 모서리 텍스트(로고/네비/자기소개/연락처) 위에 있으면 트레일 안 나옴
+        // 다시 보기 버튼 위에서도 안 나옴
+        const target = e.target;
+        if (target.closest('.hero-corner') || target.closest('.replay')) {
+          return;
+        }
+
+        if (lastX === null) {
+          lastX = x; lastY = y;
+          spawn(x, y);
+          return;
+        }
+        const dx = x - lastX, dy = y - lastY;
+        const dist = Math.hypot(dx, dy);
+        if (dist > STEP) {
+          const steps = Math.floor(dist / STEP);
+          for (let i = 1; i <= steps; i++) {
+            const t = (STEP * i) / dist;
+            spawn(lastX + dx * t, lastY + dy * t);
+          }
+          lastX = x; lastY = y;
+        }
+      }
+
+      hero.addEventListener('pointermove', onMove);
+      // 히어로 영역 벗어나면 lastX 리셋 (다시 들어왔을 때 자연스럽게)
+      hero.addEventListener('pointerleave', () => {
+        lastX = null; lastY = null;
+      });
+    })();
+
+    // ============================
+    // 📂 전체화면 메뉴
+    // ============================
+    (function () {
+      const menu = document.getElementById('siteMenu');
+      if (!menu) return;
+      const openBtns = document.querySelectorAll('[data-menu-open]');
+      const closeEls = menu.querySelectorAll('[data-menu-close]');
+      const list     = menu.querySelector('.site-menu-list');
+      let lastFocus = null;
+
+      function open() {
+        lastFocus = document.activeElement;
+        menu.hidden = false;
+        // hidden 해제 직후 트랜지션이 걸리도록 한 프레임 뒤에 open
+        requestAnimationFrame(() => {
+          menu.classList.add('open');
+          document.body.classList.add('menu-open');
+        });
+        openBtns.forEach(b => b.setAttribute('aria-expanded', 'true'));
+        // 항목이 아닌 다이얼로그에 포커스 — 열자마자 블러가 걸리지 않도록
+        setTimeout(() => menu.focus({ preventScroll: true }), 60);
+      }
+
+      function close() {
+        menu.classList.remove('open');
+        document.body.classList.remove('menu-open');
+        openBtns.forEach(b => b.setAttribute('aria-expanded', 'false'));
+        list?.classList.remove('hovering');
+        setTimeout(() => { menu.hidden = true; }, 520);
+        if (lastFocus) lastFocus.focus({ preventScroll: true });
+      }
+
+      openBtns.forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); open(); }));
+      closeEls.forEach(b => b.addEventListener('click', close));
+
+      // 목록에 마우스가 올라가 있는 동안만 블러 적용
+      if (list) {
+        list.addEventListener('pointerenter', () => list.classList.add('hovering'));
+        list.addEventListener('pointerleave', () => list.classList.remove('hovering'));
+        // 키보드 이동 시에도 동일하게
+        list.addEventListener('focusin',  () => list.classList.add('hovering'));
+        list.addEventListener('focusout', (e) => {
+          if (!list.contains(e.relatedTarget)) list.classList.remove('hovering');
+        });
+      }
+
+      // ESC 닫기 + 포커스 가두기
+      document.addEventListener('keydown', (e) => {
+        if (menu.hidden) return;
+        if (e.key === 'Escape') { close(); return; }
+        if (e.key !== 'Tab') return;
+        const f = menu.querySelectorAll('a[href], button');
+        if (!f.length) return;
+        const first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      });
+    })();
+
+    // Resume 드롭다운 (sticky 네비용)
+    document.querySelectorAll('.nav-trigger').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const parent = btn.parentElement;
+        const isOpen = parent.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(isOpen));
+      });
+    });
+
+    // Resume 드롭다운 (히어로 우상단 네비용)
+    const heroResumeBtn = document.getElementById('hero-resume-btn');
+    if (heroResumeBtn) {
+      heroResumeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        heroResumeBtn.parentElement.classList.toggle('open');
+      });
+    }
+
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.has-dropdown.open').forEach(el => {
+        el.classList.remove('open');
+        const trigger = el.querySelector('.nav-trigger');
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+      });
+      document.querySelectorAll('.hero-nav-dropdown.open').forEach(el => el.classList.remove('open'));
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.has-dropdown.open').forEach(el => {
+          el.classList.remove('open');
+          const trigger = el.querySelector('.nav-trigger');
+          if (trigger) trigger.setAttribute('aria-expanded', 'false');
+        });
+        document.querySelectorAll('.hero-nav-dropdown.open').forEach(el => el.classList.remove('open'));
+      }
+    });
+
+    // 히어로 영역 지나가면 상단 sticky 네비 등장
+    (function stickyNavToggle() {
+      const heroSection = document.querySelector('.hero');
+      const stickyNav = document.querySelector('.nav');
+      if (!heroSection || !stickyNav) return;
+
+      const navObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            stickyNav.classList.remove('show');
+          } else {
+            stickyNav.classList.add('show');
+          }
+        });
+      }, { threshold: 0, rootMargin: '-80px 0px 0px 0px' });
+
+      navObserver.observe(heroSection);
+    })();
+
+    // ============================
+    // 🔎 프로젝트 필터 (All / UI/UX / Brand & Print)
+    // ============================
+    (function () {
+      const chips = [...document.querySelectorAll('.filters .chip')];
+      const grid  = document.getElementById('workGrid');
+      if (!chips.length || !grid) return;
+      const cards = [...grid.querySelectorAll('.card')];
+
+      function apply(key) {
+        chips.forEach(c => {
+          const on = c.dataset.filter === key;
+          c.classList.toggle('is-on', on);
+          c.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        cards.forEach(c => {
+          c.hidden = !(key === 'all' || c.dataset.cat === key);
+        });
+        // 다시 보이게 된 카드의 휨 조각을 현재 크기에 맞춰 다시 그린다
+        requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
+      }
+
+      chips.forEach(c => c.addEventListener('click', () => apply(c.dataset.filter)));
+      // 메뉴에서 Brand & Print로 들어오면 해당 필터로 시작
+      if (location.hash === '#brand') apply('brand');
+      window.addEventListener('hashchange', () => {
+        if (location.hash === '#brand') apply('brand');
+        else if (location.hash === '#work') apply('all');
+      });
+    })();
+
+    // ============================
+    // 📐 스크롤하면 프로젝트 카드가 휘었다가 멈추면 펴짐
+    // ============================
+    (function () {
+      const grid = document.getElementById('workGrid');
+      if (!grid) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const cards = [...grid.querySelectorAll('.card-image')];
+      if (!cards.length) return;
+
+      const COLS      = 32;   // 이미지를 세로로 몇 조각으로 쪼갤지 (많을수록 매끄럽지만 무거움)
+      const MAX_BOW   = 46;   // 화면을 가로지르는 파도의 높이 (px)
+      const MAX_TOP   = 0.07; // 윗변이 더 부푸는 정도 (0.07 = 카드 높이의 7%)
+      const MAX_ROT   = 12;   // 화면 위아래 끝에서 꺾이는 각도 (deg)
+      const MAX_LAG   = 16;   // 스크롤 반대로 끌리는 거리 (px)
+      const SENS      = 1.70; // 스크롤 속도 민감도 — 올릴수록 천천히 굴려도 많이 휨
+
+      // ── 카드마다 세로 조각(기둥) 레이어를 만든다 ──────────────
+      //    조각마다 이미지의 다른 구간을 보여주고, 조각별로 다르게
+      //    밀어 올리면 이미지 자체가 휘어 보인다.
+      const warped = [];
+      cards.forEach(el => {
+        const img = el.querySelector('img');
+        const ph  = el.querySelector('.placeholder');
+        const src = img ? img.getAttribute('src') : null;
+        if (!src && !ph) return;
+
+        const layer = document.createElement('div');
+        layer.className = 'warp';
+        layer.setAttribute('aria-hidden', 'true');
+        const strips = [];
+        for (let i = 0; i < COLS; i++) {
+          const s = document.createElement('i');
+          s.style.left  = (i * 100 / COLS) + '%';
+          s.style.width = 'calc(' + (100 / COLS) + '% + 2px)';   // 조각 사이 실금 방지용 겹침
+          layer.appendChild(s);
+          strips.push(s);
+        }
+        el.appendChild(layer);
+        el.classList.add('has-warp');
+
+        const rec = { el, strips, layer, src, ph, meta: el.parentElement.querySelector('.card-meta') };
+        warped.push(rec);
+        paint(rec);
+        if (img && !img.complete) img.addEventListener('load', () => paint(rec));
+      });
+
+      // 조각마다 배경 이미지를 알맞은 위치로 잘라 넣는다 (object-fit: cover 재현)
+      function paint(rec) {
+        const w = rec.el.clientWidth, h = rec.el.clientHeight;
+        if (!w || !h) return;
+        const colW = w / COLS;
+        let bg, bgSize, offX = 0, offY = 0;
+
+        const img = rec.el.querySelector('img');
+        if (rec.src && img && img.naturalWidth) {
+          const sc = Math.max(w / img.naturalWidth, h / img.naturalHeight);
+          const cw = img.naturalWidth * sc, ch = img.naturalHeight * sc;
+          bg = 'url("' + rec.src + '")';
+          bgSize = cw + 'px ' + ch + 'px';
+          offX = (w - cw) / 2; offY = (h - ch) / 2;
+        } else if (rec.ph) {
+          bg = getComputedStyle(rec.ph).backgroundImage;
+          if (!bg || bg === 'none') return;
+          bgSize = w + 'px ' + h + 'px';
+        } else { return; }
+
+        rec.strips.forEach((s, i) => {
+          s.style.backgroundImage = bg;
+          s.style.backgroundSize = bgSize;
+          s.style.backgroundPosition = (offX - i * colW) + 'px ' + offY + 'px';
+        });
+      }
+      window.addEventListener('resize', () => warped.forEach(paint));
+
+      let lastY = window.scrollY;
+      let raw = 0;      // 이번 프레임의 스크롤 이동량
+      let vel = 0;      // 부드럽게 따라가는 속도
+      let running = false;
+
+      window.addEventListener('scroll', () => {
+        const y = window.scrollY;
+        // 앵커 점프처럼 한 번에 크게 튀는 값은 제한
+        raw += Math.max(-180, Math.min(180, y - lastY));
+        lastY = y;
+        if (!running) { running = true; requestAnimationFrame(tick); }
+      }, { passive: true });
+
+      function tick() {
+        // 입력값은 감쇠, 실제 속도는 그 값을 부드럽게 추종
+        vel += (raw - vel) * 0.18;
+        raw *= 0.78;
+
+        const amt = Math.min(Math.abs(vel) * SENS, 100) / 100;   // 0~1
+        const dir = vel < 0 ? -1 : 1;
+
+        if (amt > 0.002) {
+          grid.classList.add('bending');
+          const vh = window.innerHeight;
+          // 내려갈 때는 윗변이, 올라갈 때는 아랫변이 부푼다
+          grid.classList.toggle('up', dir < 0);
+
+          cards.forEach((el, i) => {
+            const r = el.getBoundingClientRect();
+            if (r.bottom < -120 || r.top > vh + 120) return;   // 화면 밖은 계산 생략
+            // 카드 중심이 화면 중앙에서 얼마나 떨어져 있는지 (-1 위 ~ +1 아래)
+            const p = Math.max(-1, Math.min(1, (r.top + r.height / 2 - vh / 2) / vh * 2));
+            // 중앙 카드는 거의 평평, 위아래로 갈수록 크게 꺾임 — 원통에 감긴 느낌
+            const bend = Math.sign(p) * Math.min(1, Math.abs(p) * 1.25);
+            const lag  = i % 2 === 0 ? 1 : 0.86;   // 열마다 위상차
+            el.style.setProperty('--rot', (MAX_ROT * amt * bend * lag).toFixed(2) + 'deg');
+            el.style.setProperty('--lag', (-dir * MAX_LAG * amt * lag).toFixed(1) + 'px');
+          });
+
+          // 화면 전체를 가로지르는 하나의 파도로 휜다 — 카드마다 따로가 아니라
+          // 왼쪽 카드는 파도의 왼쪽, 오른쪽 카드는 오른쪽을 나눠 갖는다
+          const W   = window.innerWidth;
+          const bow = MAX_BOW * amt;                  // 파도의 높이
+          const top = MAX_TOP * amt;                  // 윗변이 더 부푸는 양
+          warped.forEach(rec => {
+            const r = rec.el.getBoundingClientRect();
+            if (r.width <= 0) return;
+            // 화면 밖 카드는 계산하지 않는다 — 보이지도 않는데 매 프레임 비용만 든다
+            if (r.bottom < -120 || r.top > vh + 120) {
+              if (rec.off) return;
+              rec.off = true;
+              for (let i = 0; i < COLS; i++) rec.strips[i].style.transform = 'none';
+              if (rec.meta) rec.meta.style.transform = 'none';
+              return;
+            }
+            rec.off = false;
+            const colW = r.width / COLS;
+            const h    = r.height || 1;
+            const eff  = (bow + h * top / 2) * dir;
+            const meta = rec.meta;
+            for (let i = 0; i < COLS; i++) {
+              // 조각의 화면상 가로 위치로 파도의 높이를 구한다
+              const t   = (r.left + (i + 0.5) * colW) / W;
+              const arc = Math.sin(Math.PI * Math.max(0, Math.min(1, t)));
+              const dy  = -bow * arc * dir;
+              const sy  = 1 + top * arc;
+              // 조각 경계가 계단처럼 보이지 않도록 파도의 기울기를 함께 준다
+              const ang = Math.atan(-eff * Math.PI / W * Math.cos(Math.PI * t)) * 180 / Math.PI;
+              rec.strips[i].style.transform =
+                'translateY(' + dy.toFixed(2) + 'px) scaleY(' + sy.toFixed(4) + ')' +
+                ' skewY(' + ang.toFixed(3) + 'deg)';
+            }
+            // 제목·구분선도 같은 파도를 타게 한다
+            if (meta) {
+              const tc  = (r.left + r.width / 2) / W;
+              const arc = Math.sin(Math.PI * Math.max(0, Math.min(1, tc)));
+              const ang = Math.atan(-eff * Math.PI / W * Math.cos(Math.PI * tc)) * 180 / Math.PI;
+              meta.style.transform =
+                'translateY(' + (-bow * arc * dir).toFixed(2) + 'px) skewY(' + ang.toFixed(3) + 'deg)';
+            }
+          });
+          requestAnimationFrame(tick);
+        } else {
+          // 멈추면 전환을 되살려 부드럽게 펴짐
+          grid.classList.remove('bending');
+          cards.forEach(el => {
+            el.style.setProperty('--rot', '0deg');
+            el.style.setProperty('--lag', '0px');
+          });
+          warped.forEach(rec => {
+            for (let i = 0; i < COLS; i++) rec.strips[i].style.transform = 'none';
+            if (rec.meta) rec.meta.style.transform = 'none';
+          });
+          vel = 0; raw = 0; running = false;
+        }
+      }
+    })();
+
+    // 스크롤 reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

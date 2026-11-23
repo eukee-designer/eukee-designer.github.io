@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>___ 브랜드 프로젝트 제목 ___ — Eukee</title>
+
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #ffffff;                        /* Marina Hill 풍 화이트 배경 */
+      --fg: #1a1a1a;
+      --muted: #6b6b6b;
+      --line: #1a1a1a14;
+      --accent: #ff5722;
+
+      --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      --font-serif: "Instrument Serif", "Pretendard Variable", serif;
+
+      --max-text: 720px;                    /* 본문 텍스트 최대 폭 */
+      --max-content: 1200px;                /* 콘텐츠 최대 폭 */
+      --pad-x: clamp(20px, 5vw, 64px);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--fg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.7;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+      letter-spacing: -0.005em;
+    }
+    img { max-width: 100%; display: block; width: 100%; }
+    a { color: inherit; text-decoration: none; transition: color .2s ease, opacity .2s ease; }
+    a:hover { color: var(--accent); }
+
+    .text-wrap {
+      max-width: var(--max-text);
+      margin: 0 auto;
+      padding-left: var(--pad-x);
+      padding-right: var(--pad-x);
+    }
+
+    /* =========================
+       네비
+       ========================= */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px) saturate(140%);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      background: rgba(255, 255, 255, 0.85);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner {
+      max-width: var(--max-content);
+      margin: 0 auto;
+      padding: 0 var(--pad-x);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    .nav-back:hover { color: var(--fg); }
+    .nav-back .arrow { transition: transform .25s ease; }
+    .nav-back:hover .arrow { transform: translateX(-4px); }
+    .logo {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+      line-height: 1.4;
+    }
+
+    /* =========================
+       히어로 썸네일 (Marina Hill 스타일 - 그냥 큰 이미지 한 장)
+       ========================= */
+    .hero-image {
+      width: 100%;
+      max-width: var(--max-content);
+      margin: 0 auto;
+      padding: clamp(40px, 6vw, 80px) var(--pad-x) 0;
+    }
+    .hero-image-inner {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      background: linear-gradient(135deg, #c9d4c5 0%, #8a9d83 60%, #5a6e54 100%);
+      position: relative;
+    }
+    .hero-image-inner::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      pointer-events: none;
+      opacity: 0.4;
+      mix-blend-mode: overlay;
+    }
+    .hero-image-inner img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+
+    /* =========================
+       타이틀 + 설명 + 메타
+       ========================= */
+    .project-intro {
+      padding: clamp(72px, 10vw, 120px) 0 clamp(64px, 8vw, 96px);
+    }
+
+    .project-title {
+      font-size: clamp(40px, 6vw, 60px);    /* ≤60px */
+      line-height: 1.2;
+      letter-spacing: -0.025em;
+      font-weight: 700;
+      margin-bottom: 40px;
+    }
+
+    .project-desc {
+      font-size: clamp(16px, 1.2vw, 17px);
+      line-height: 1.75;
+      color: var(--fg);
+      margin-bottom: clamp(40px, 6vw, 64px);
+    }
+    .project-desc p + p {
+      margin-top: 1.4em;
+      color: var(--muted);
+    }
+
+    /* 메타 - Marina Hill 스타일 (가로 한 줄, 단순) */
+    .project-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px 24px;
+      padding-top: 32px;
+      border-top: 1px solid var(--line);
+    }
+    @media (min-width: 700px) {
+      .project-meta { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    }
+    .project-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .project-meta dt {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+    .project-meta dd {
+      font-size: 15px;
+      color: var(--fg);
+      line-height: 1.5;
+    }
+
+    /* =========================
+       이미지 블록 (Marina Hill 핵심 - 풀폭 이미지)
+       ========================= */
+    .image-block {
+      width: 100%;
+      max-width: var(--max-content);
+      margin: 0 auto;
+      padding: 0 var(--pad-x);
+    }
+    /* 연속 이미지 사이 간격 (작게) */
+    .image-block + .image-block {
+      margin-top: 0;
+    }
+    .image-block-inner {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      position: relative;
+    }
+    .image-block-inner.tall { aspect-ratio: 4 / 5; }
+    .image-block-inner.square { aspect-ratio: 1 / 1; }
+    .image-block-inner.wide { aspect-ratio: 16 / 9; }
+    .image-block-inner img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* placeholder 그라데이션 */
+    .ph-sage { background: linear-gradient(135deg, #e2c9c9, #c69b8e); }
+    .ph-mint { background: linear-gradient(135deg, #c9d6df, #8fa9bb); }
+    .ph-cream { background: linear-gradient(135deg, #e8d5c4, #c69b6f); }
+    .ph-stone { background: linear-gradient(135deg, #c9d4c5, #8a9d83); }
+    .ph-warm { background: linear-gradient(135deg, #ddd4c0, #b3a684); }
+    .ph-blue { background: linear-gradient(135deg, #d4dec9, #95a888); }
+    .ph-rose { background: linear-gradient(135deg, #d6d0c5, #918579); }
+
+    .ph-label {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(14px, 1.4vw, 18px);
+      color: rgba(0, 0, 0, 0.4);
+      pointer-events: none;
+    }
+
+    /* =========================
+       캡션 섹션 (이미지 사이의 텍스트)
+       ========================= */
+    .caption-section {
+      padding: clamp(64px, 9vw, 112px) 0 clamp(48px, 7vw, 88px);
+    }
+
+    .caption-label {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .caption-heading {
+      font-size: clamp(22px, 2.6vw, 28px);
+      line-height: 1.45;
+      letter-spacing: -0.015em;
+      font-weight: 600;
+      margin-bottom: 32px;
+      color: var(--fg);
+    }
+
+    .caption-body {
+      font-size: clamp(15px, 1.15vw, 16px);
+      line-height: 1.8;
+      color: var(--fg);
+    }
+    .caption-body p + p {
+      margin-top: 1.4em;
+      color: var(--muted);
+    }
+
+    /* =========================
+       Next/Prev (Marina Hill 스타일 - 단순 텍스트)
+       ========================= */
+    .pagination {
+      padding: clamp(80px, 10vw, 120px) 0 clamp(64px, 8vw, 96px);
+      border-top: 1px solid var(--line);
+      margin-top: clamp(64px, 8vw, 96px);
+    }
+    .pagination-grid {
+      max-width: var(--max-content);
+      margin: 0 auto;
+      padding: 0 var(--pad-x);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .pagination-card {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .pagination-card.next {
+      text-align: right;
+      align-items: flex-end;
+    }
+    .pagination-label {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+      transition: color .25s ease;
+    }
+    .pagination-name {
+      font-size: clamp(20px, 2.2vw, 24px);
+      font-weight: 600;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+      transition: color .25s ease;
+    }
+    .pagination-card:hover .pagination-label { color: var(--fg); }
+    .pagination-card:hover .pagination-name { color: var(--accent); }
+
+    /* =========================
+       Sticky Hero Scroll (이전과 동일한 효과)
+       ========================= */
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-image-inner {
+        will-change: transform, opacity;
+      }
+    }
+
+    /* =========================
+       Reveal
+       ========================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .9s ease, transform .9s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 네비 -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="../index.html#brand" class="nav-back">
+        <span class="arrow">←</span>
+        <span>Brand &amp; Print</span>
+      </a>
+      <a href="../index.html" class="logo">Eukee</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- 히어로 이미지 (큰 썸네일 한 장) -->
+    <div class="hero-image">
+      <div class="hero-image-inner">
+        <!-- <img src="images/brand-01/hero.jpg" alt="___ 프로젝트 ___"> -->
+      </div>
+    </div>
+
+    <!-- 타이틀 + 설명 + 메타 -->
+    <section class="project-intro">
+      <div class="text-wrap">
+        <h1 class="project-title reveal">___ 프로젝트 제목 ___</h1>
+
+        <div class="project-desc reveal">
+          <p>
+            ___ 한국어 프로젝트 설명. 어떤 프로젝트이고 어떤 컨셉인지 2~4문장으로 ___
+          </p>
+          <p>
+            ___ English description of the project. What is it about and what's the concept? ___
+          </p>
+        </div>
+
+        <dl class="project-meta reveal">
+          <div class="project-meta-item">
+            <dt>Year</dt>
+            <dd>___ 2024 ___</dd>
+          </div>
+          <div class="project-meta-item">
+            <dt>Category</dt>
+            <dd>___ Brand Identity ___</dd>
+          </div>
+          <div class="project-meta-item">
+            <dt>Company</dt>
+            <dd>___ Freelancer ___</dd>
+          </div>
+          <div class="project-meta-item">
+            <dt>Role</dt>
+            <dd>___ Brand Designer (100%) ___</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ===== 이미지 2장 연속 (마리나힐 패턴) ===== -->
+    <div class="image-block reveal">
+      <div class="image-block-inner ph-sage">
+        <span class="ph-label">대표 이미지 01</span>
+      </div>
+    </div>
+    <div class="image-block reveal">
+      <div class="image-block-inner ph-mint">
+        <span class="ph-label">대표 이미지 02</span>
+      </div>
+    </div>
+
+    <!-- ===== 캡션 1: 아이데이션 ===== -->
+    <section class="caption-section">
+      <div class="text-wrap">
+        <div class="caption-label reveal">아이데이션</div>
+        <h2 class="caption-heading reveal">
+          ___ 컨셉 / 키워드 한 줄로 ___
+        </h2>
+        <div class="caption-body reveal">
+          <p>
+            ___ 컨셉 설명, 키워드 도출 과정 등을 한국어로 자세히 ___
+          </p>
+          <p>
+            ___ Detailed concept and ideation process in English ___
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 이미지: 시안 ===== -->
+    <div class="image-block reveal">
+      <div class="image-block-inner ph-cream">
+        <span class="ph-label">시안 / 변형 모음</span>
+      </div>
+    </div>
+
+    <!-- ===== 캡션 2: 최종안 ===== -->
+    <section class="caption-section">
+      <div class="text-wrap">
+        <div class="caption-label reveal">최종안</div>
+        <h2 class="caption-heading reveal">
+          ___ 최종 결과물 한 줄 설명 ___
+        </h2>
+        <div class="caption-body reveal">
+          <p>
+            ___ 최종 디자인에 대한 설명 ___
+          </p>
+          <p>
+            ___ Final design description in English ___
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 이미지: 최종 심볼/로고 ===== -->
+    <div class="image-block reveal">
+      <div class="image-block-inner tall ph-stone">
+        <span class="ph-label">최종 심볼</span>
+      </div>
+    </div>
+
+    <!-- ===== 캡션 3: 타입페이스 ===== -->
+    <section class="caption-section">
+      <div class="text-wrap">
+        <div class="caption-label reveal">타입페이스</div>
+        <h2 class="caption-heading reveal">
+          ___ 사용한 폰트 / 시스템 한 줄 설명 ___
+        </h2>
+        <div class="caption-body reveal">
+          <p>
+            ___ 폰트 선택 이유, 컬러 시스템 등에 대한 설명 ___
+          </p>
+          <p>
+            ___ Typography and system explanation in English ___
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 마지막 갤러리: 이미지 3장 연속 (Marina Hill 패턴) ===== -->
+    <div class="image-block reveal">
+      <div class="image-block-inner ph-warm">
+        <span class="ph-label">애플리케이션 01</span>
+      </div>
+    </div>
+    <div class="image-block reveal">
+      <div class="image-block-inner ph-blue">
+        <span class="ph-label">애플리케이션 02</span>
+      </div>
+    </div>
+    <div class="image-block reveal">
+      <div class="image-block-inner ph-rose">
+        <span class="ph-label">애플리케이션 03</span>
+      </div>
+    </div>
+
+    <!-- Next/Prev -->
+    <section class="pagination">
+      <div class="pagination-grid">
+        <a href="../index.html#brand" class="pagination-card prev">
+          <span class="pagination-label">← All Brand Works</span>
+          <span class="pagination-name">Back to list</span>
+        </a>
+        <a href="brand-05.html" class="pagination-card next">
+          <span class="pagination-label">Next Project →</span>
+          <span class="pagination-name">Next Brand</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // 스크롤 reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
