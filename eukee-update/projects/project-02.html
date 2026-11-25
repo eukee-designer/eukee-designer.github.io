@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOOSIL 부분시공 퍼널 재설계 — Eukee</title>
+
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-cream: #f4f1ea;
+      --bg-white: #ffffff;
+      --fg: #1a1a1a;
+      --muted: #6b6b6b;
+      --line: #1a1a1a14;
+      --line-strong: #1a1a1a22;
+      --accent: #ff5722;
+      --doosil-green: #00b642;
+
+      --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      --font-serif: "Instrument Serif", "Pretendard Variable", serif;
+
+      --max: 1080px;
+      --max-wide: 1280px;
+      --pad-x: clamp(20px, 5vw, 64px);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-cream);
+      color: var(--fg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.6;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+      letter-spacing: -0.005em;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; transition: color .2s ease, opacity .2s ease; }
+    a:hover { color: var(--accent); }
+
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding-left: var(--pad-x);
+      padding-right: var(--pad-x);
+    }
+    .container-wide {
+      max-width: var(--max-wide);
+      margin: 0 auto;
+      padding-left: var(--pad-x);
+      padding-right: var(--pad-x);
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px) saturate(140%);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      background: rgba(244, 241, 234, 0.7);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    .nav-back:hover { color: var(--fg); }
+    .nav-back .arrow { transition: transform .25s ease; }
+    .nav-back:hover .arrow { transform: translateX(-4px); }
+    .logo {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+      line-height: 1.4;
+    }
+
+    /* Hero 비주얼 + Sticky 효과 */
+    .hero-wrap {
+      position: relative;
+      height: 100vh;
+      max-height: 800px;
+      overflow: visible;
+    }
+    .hero-wrap .hero-visual {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      max-height: 800px;
+      background: var(--doosil-green);
+      overflow: hidden;
+      transform-origin: center center;
+      will-change: transform, opacity;
+      transition: transform .1s linear, opacity .1s linear;
+    }
+    .hero-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .project-header {
+      position: relative;
+      background: var(--bg-cream);
+      border-radius: 24px 24px 0 0;
+      margin-top: -32px;
+      z-index: 2;
+      padding: clamp(72px, 10vw, 128px) 0 clamp(64px, 8vw, 96px);
+      border-bottom: 1px solid var(--line);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-wrap { height: auto; max-height: none; }
+      .hero-wrap .hero-visual {
+        position: relative;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        max-height: 75vh;
+      }
+    }
+
+    .project-section-label {
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .project-title {
+      font-size: clamp(36px, 5.4vw, 60px);
+      line-height: 1.25;
+      letter-spacing: -0.025em;
+      font-weight: 700;
+      margin-bottom: 32px;
+    }
+    .project-summary {
+      font-size: clamp(17px, 1.4vw, 19px);
+      line-height: 1.7;
+      color: var(--fg);
+      max-width: 760px;
+      margin-bottom: clamp(48px, 6vw, 80px);
+    }
+    .project-summary p + p { margin-top: 1em; }
+    .project-summary .en {
+      color: var(--muted);
+      margin-top: 1.4em;
+    }
+
+    .project-meta {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 0;
+      max-width: 760px;
+    }
+    .project-meta dt,
+    .project-meta dd {
+      padding: 20px 0;
+      border-top: 1px solid var(--line);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .project-meta dt { font-weight: 500; color: var(--fg); }
+    .project-meta dd { color: var(--muted); }
+    .project-meta dt:last-of-type,
+    .project-meta dd:last-of-type {
+      border-bottom: 1px solid var(--line);
+    }
+    .project-meta dd strong { color: var(--fg); font-weight: 500; }
+
+    .project-section {
+      padding: clamp(72px, 10vw, 120px) 0;
+    }
+    .project-section + .project-section { padding-top: 0; }
+
+    .section-visual {
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: clamp(48px, 6vw, 80px);
+      background: var(--bg-white);
+      aspect-ratio: 16 / 10;
+      position: relative;
+    }
+    .section-visual img { width: 100%; height: 100%; object-fit: cover; }
+    /* placeholder 색상 (이미지가 없을 때 대비) */
+    .section-visual.ph-green { background: linear-gradient(135deg, #d3ecd6, #a8d8b0); }
+    .section-visual.ph-light { background: linear-gradient(135deg, #f0f0f5, #d8d8e0); }
+    .section-visual.ph-dark { background: linear-gradient(135deg, #2a2a2a, #1a1a1a); }
+    .section-visual.ph-cream { background: linear-gradient(135deg, #ebe3d2, #d4c5b9); }
+
+    .section-label {
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .section-heading {
+      font-size: clamp(26px, 3.6vw, 40px);
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+      font-weight: 600;
+      margin-bottom: 28px;
+      max-width: 900px;
+    }
+    .section-body {
+      font-size: clamp(16px, 1.2vw, 17px);
+      line-height: 1.75;
+      color: var(--fg);
+      max-width: 760px;
+    }
+    .section-body p + p { margin-top: 1em; }
+    .section-body .en {
+      color: var(--muted);
+      margin-top: 1.6em;
+    }
+    .section-body strong {
+      font-weight: 600;
+      color: var(--fg);
+    }
+
+    /* 결과 하이라이트 박스 */
+    .highlight-metric {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(0, 182, 66, 0.1);
+      color: #008a30;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.95em;
+    }
+
+    .section-divider {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 var(--pad-x);
+    }
+    .section-divider::after {
+      content: "";
+      display: block;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .credits {
+      padding: clamp(80px, 10vw, 120px) 0;
+      border-top: 1px solid var(--line);
+    }
+    .credits-title {
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 48px;
+      line-height: 1.5;
+    }
+    .credits-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      max-width: 760px;
+    }
+    @media (min-width: 600px) {
+      .credits-grid { grid-template-columns: 200px 1fr; gap: 24px 48px; }
+    }
+    .credits-grid dt {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--fg);
+      line-height: 1.5;
+    }
+    .credits-grid dd {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .pagination {
+      padding: clamp(48px, 6vw, 80px) 0 clamp(80px, 10vw, 120px);
+      border-top: 1px solid var(--line-strong);
+      background: var(--bg-white);
+    }
+    .pagination-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    @media (min-width: 768px) {
+      .pagination-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    }
+    .pagination-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 32px 28px;
+      border-radius: 14px;
+      background: var(--bg-cream);
+      transition: transform .35s cubic-bezier(0.2, 0.8, 0.2, 1), background .25s ease;
+    }
+    .pagination-card:hover {
+      transform: translateY(-4px);
+      background: #ede9df;
+      color: var(--fg);
+    }
+    .pagination-card.next { text-align: right; align-items: flex-end; }
+    .pagination-label {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .pagination-name {
+      font-size: clamp(20px, 2.2vw, 26px);
+      font-weight: 600;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+    }
+    .pagination-name .arrow {
+      display: inline-block;
+      margin: 0 6px;
+      transition: transform .3s ease;
+    }
+    .pagination-card:hover .arrow { transform: translateX(6px); }
+    .pagination-card.prev:hover .arrow { transform: translateX(-6px); }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .9s ease, transform .9s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ===== 콘텐츠 가운데 정렬 ===== */
+    .project-section-label, .project-title, .project-summary, .project-meta,
+    .section-label, .section-heading, .section-body,
+    .credits-title, .credits-grid{
+      margin-left:auto; margin-right:auto;
+    }
+    .section-heading{ max-width:840px }
+    .section-body, .project-summary, .project-meta{ max-width:840px }
+    .project-section-label, .section-label, .credits-title{ max-width:840px }
+  
+    /* =========================================
+       다음 프로젝트 — 마퀴 + 커서 원형 프리뷰
+       ========================================= */
+    .nextproj{
+      position:relative;
+      border-top:1px solid var(--line);
+      margin-top:clamp(56px,7vw,88px);
+      padding:clamp(24px,3vw,36px) 0 clamp(34px,4vw,54px);
+      overflow:hidden;
+    }
+    .nextproj-head{
+      display:flex; align-items:baseline; justify-content:space-between;
+      gap:20px; flex-wrap:wrap;
+      padding:0 var(--pad-x);
+      font-size:14px; color:var(--muted);
+    }
+    .nextproj-head a{ color:var(--muted); transition:color .25s ease; }
+    .nextproj-head a:hover{ color:var(--accent); }
+    .nextproj-head .np-name{ color:var(--fg); font-weight:600; }
+
+    .nextproj-band{
+      position:relative; display:block;
+      margin-top:clamp(16px,2.2vw,28px);
+      padding:clamp(10px,1.6vw,20px) 0;
+      color:var(--fg); cursor:pointer;
+    }
+    .nextproj-band:hover{ color:var(--fg); }
+
+    .nextproj-track{
+      display:flex; width:max-content;
+      animation:npscroll 28s linear infinite;
+    }
+    .nextproj-band:hover .nextproj-track{ animation-play-state:paused; }
+    @keyframes npscroll{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    .nextproj-row{
+      position:relative; z-index:2;
+      display:flex; align-items:center;
+      gap:clamp(18px,2.4vw,34px);
+      padding-right:clamp(18px,2.4vw,34px);
+    }
+    .nextproj-row b{
+      font-weight:400;
+      font-size:clamp(40px,7.2vw,100px);
+      letter-spacing:-.035em; line-height:1.16;
+      white-space:nowrap;
+    }
+    .nextproj-row i{
+      flex:0 0 auto; border-radius:99px; background:var(--accent);
+      width:clamp(7px,.8vw,11px); height:clamp(7px,.8vw,11px);
+    }
+
+    .nextproj-bubble{
+      position:absolute; left:0; top:0; z-index:1;
+      width:clamp(130px,14vw,205px); aspect-ratio:1;
+      border-radius:99px; overflow:hidden;
+      opacity:0;
+      transform:translate(calc(var(--bx,50%) - 50%), calc(var(--by,50%) - 50%)) scale(var(--bs,.45));
+      transition:transform .4s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+      pointer-events:none;
+      background:linear-gradient(140deg,#dcdcd6,#b9b9b1);
+    }
+    .nextproj-band.on .nextproj-bubble{ --bs:1; opacity:1; }
+    .nextproj-bubble img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    /* 클릭 시 원이 퍼지며 전환 */
+    .np-wipe{
+      position:fixed; left:0; top:0; z-index:9999;
+      width:var(--w,180px); height:var(--w,180px);
+      border-radius:99px; overflow:hidden; pointer-events:none;
+      transform:translate(calc(var(--x) - 50%), calc(var(--y) - 50%)) scale(1);
+      transition:transform .72s cubic-bezier(.76,0,.24,1);
+      background:linear-gradient(140deg,#dcdcd6,#b9b9b1);
+    }
+    .np-wipe.run{
+      transform:translate(calc(var(--x) - 50%), calc(var(--y) - 50%)) scale(var(--s,16));
+    }
+    .np-wipe img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    .np-sr{
+      position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+      overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+    }
+
+    @media (hover:none){ .nextproj-bubble{ display:none; } }
+    @media (prefers-reduced-motion:reduce){
+      .nextproj-track{ animation:none; }
+      .nextproj-bubble{ display:none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="container-wide nav-inner">
+      <a href="../index.html" class="nav-back">
+        <span class="arrow">←</span>
+        <span>All Projects</span>
+      </a>
+      <a href="../index.html" class="logo">Eukee</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- 히어로 비주얼 -->
+    <div class="hero-wrap">
+      <div class="hero-visual">
+        <img src="images/doosil/01.jpg" alt="DOOSIL 부분시공 퍼널 재설계">
+      </div>
+    </div>
+
+    <section class="project-header">
+      <div class="container">
+        <div class="project-section-label reveal">Summary</div>
+        <h1 class="project-title reveal">전화 문의 중심이던 상담 흐름을,<br>탐색 중심 퍼널로 전환하기</h1>
+
+        <div class="project-summary reveal">
+          <p>
+            DOOSIL은 하이엔드 디자이너와 사용자를 잇는 O2O 시공 중개 플랫폼입니다.
+            부분시공 문의의 <strong>93.5%가 전화</strong>로 발생하고 있었고,
+            문제는 전화 자체가 아니라 <strong>사용자가 스스로 판단할 수 있는 정보가 없다는 점</strong>이었습니다.
+            탐색 전 필요한 정보를 먼저 제공하는 구조로 퍼널을 재설계했습니다.
+          </p>
+        </div>
+
+        <dl class="project-meta reveal">
+          <dt>Year</dt>
+          <dd>2023.07.20 – 2023.09.25 (2개월)</dd>
+
+          <dt>Company</dt>
+          <dd>DOOSIL — 하이엔드 디자이너와 사용자를 잇는 O2O 시공 중개 플랫폼</dd>
+
+          <dt>Role</dt>
+          <dd>Product Designer (본인)</dd>
+
+          <dt>Team</dt>
+          <dd>PL 1명, PM 1명(본인), iOS 개발자, Android 개발자, 영업팀</dd>
+
+          <dt>Contribution</dt>
+          <dd>
+            <strong>주도</strong> — 1차 가설(유입 부족)을 데이터로 반증하고 문제를 '전환'으로 재정의 / GA·UT 분석부터 Web·App 화면 설계<br><br>
+            <strong>협업</strong> — PM과 푸시 정책 조율, 개발자와 사진 배열 가이드 정의, 영업팀 인터뷰로 VOC 확보<br><br>
+            <strong>방식</strong> — 영업팀 상담 DB를 정성 분석해 문제를 정의하고, PL·개발자와 합의하며 시공 범위를 좁혀나감
+          </dd>
+
+          <dt>Tool</dt>
+          <dd>Figma, MAZE, Google Analytics, Notion</dd>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ===== 섹션 1: 배경 ===== -->
+    <section class="project-section">
+      <div class="container">
+        <div class="section-visual ph-light reveal">
+          <img src="images/doosil/02.jpg" alt="부분시공 관련 VOC 및 전화 문의 비중 93.5%">
+        </div>
+        <div class="section-label reveal">배경</div>
+        <h2 class="section-heading reveal">
+          부분시공 수요는 명확하지만,<br>진입점이 없어 전화로 문의가 몰렸습니다
+        </h2>
+        <div class="section-body reveal">
+          <p>
+            영업팀 상담 DB를 분석한 결과, 부분시공 문의의 대부분이 전화로 유입되고 있었습니다.
+            사용자는 스스로 확인할 진입점이 없어 <strong>간단한 문의도 상담을 거쳐야</strong> 했습니다.
+          </p>
+          <p>
+            상담 DB 총 56건 중 부분시공 문의 35건을 정성 분석한 결과,
+            반복적으로 등장한 키워드는 <strong>전체 시공에 대한 부담(18건)</strong>,
+            <strong>견적 확인 불가(12건)</strong>, <strong>응대 인력 문제(5건)</strong>였습니다.
+            부분시공 문의의 <span class="highlight-metric">93.5%가 전화에만 의존</span>하는 구조였고,
+            스스로 확인할 방법이 없으니 간단한 질문조차 사람을 거쳐야 했습니다.
+          </p>
+          <p>
+            견적과 고객 응대를 개선하는 건 이미 진입한 사용자를 위한 해결이기에,
+            견적 단계를 개선하기보다 <strong>사용자가 스스로 판단할 수 있는 진입 구조부터 재설계</strong>했습니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ===== 섹션 2: 개선 과정 - 1차 ===== -->
+    <section class="project-section">
+      <div class="container">
+        <div class="section-visual ph-dark reveal">
+          <img src="images/doosil/03.jpg" alt="As-is / To-Be 퍼널 구조 비교">
+        </div>
+        <div class="section-label reveal">개선 과정 — 1차</div>
+        <h2 class="section-heading reveal">
+          부분시공 상품을 추가했지만,<br>문제는 상품이 아니라 구조였습니다
+        </h2>
+        <div class="section-body reveal">
+          <p>
+            첫 가설은 <strong>부분시공 상품 자체가 없어서 이탈한다</strong>고 판단했습니다.
+            그래서 상품화를 진행하여 유입을 시도했습니다. 하지만 상품 유입은 늘었지만,
+            사용자는 여전히 전화를 거쳐야 했습니다.
+          </p>
+          <p>
+            <strong>WHY — 왜 전화에서 멈췄나</strong><br>
+            견적 신청 버튼은 이미 화면에 있었습니다. 그런데 왜 굳이 전화를 걸었을까?
+            <strong>견적 신청 폼에 부분시공 항목이 없어서 바로 신청할 수 없었다는 것</strong>이 원인이었습니다.
+            부분시공 문의 35건 중 33건(93.5%)이 전화로 유입 — 멈춤의 대부분이 부분시공 때문이었습니다.
+          </p>
+          <p>
+            <strong>SO — 그래서 왜 이 흐름인지</strong><br>
+            전화 단계를 지우는 것이 아닌, <strong>전화로 이어지는 이유를 지워야</strong> 했습니다.
+            견적 신청 폼에 항목을 넣으니 전화가 필요 없는 흐름이 되었고,
+            사람을 거쳐야 끝나던 흐름에서 <span class="highlight-metric">4단계 → 3단계</span>로,
+            사용자가 직접 끝낼 수 있는 흐름으로 바뀌었습니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ===== 섹션 3: 사용성 테스트 ===== -->
+    <section class="project-section">
+      <div class="container">
+        <div class="section-visual ph-light reveal">
+          <img src="images/doosil/04.jpg" alt="사용성 테스트 결과 - 히트맵과 유저 플로우 분석">
+        </div>
+        <div class="section-label reveal">사용성 테스트 — UT</div>
+        <h2 class="section-heading reveal">
+          상품에는 관심이 있었지만,<br>탐색을 시작할 이유는 없었습니다
+        </h2>
+        <div class="section-body reveal">
+          <p>
+            정량 데이터로 이탈 시점을 확인하고, 정성 데이터로 그 이유를 검증했습니다.
+            사용자는 상품은 탐색했지만, <strong>탐색을 이어갈 이유는 없었습니다</strong>.
+            자신의 상황에 적용할 수 있는 판단 기준이 없어 탐색을 이어가지 못했습니다.
+            <strong>문제는 콘텐츠가 아니라 탐색 전 행동 동기의 부재</strong>였습니다.
+          </p>
+          <p>
+            <strong>정량 (MAZE, 유효 참여자 13명)</strong>:
+            평균 체류 시간 30초 이내, 평균 클릭 1회 미만, 참여자의 절반 이상이 6~10초 내 이탈.
+            사용자는 30초 안에 탐색할 이유를 찾지 못하면 서비스를 떠났습니다.
+          </p>
+          <p>
+            <strong>정성 (사용자 인터뷰)</strong>:
+            "상품은 마음에 드는데, 내 집에 실제로 적용될 수 있을지 판단할 정보가 없어요"
+          </p>
+          <p>
+            <strong>솔루션 방향 전환</strong> — 기존 UI는 탐색의 결과는 보여줬지만,
+            탐색의 목적과 동기는 보여주지 못했습니다. 그래서 <strong>탐색 전에 가치와 선택 기준을 먼저 제공하는 퍼널</strong>로 방향을 전환했습니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ===== 섹션 4: 해결방안 ===== -->
+    <section class="project-section">
+      <div class="container">
+        <div class="section-visual ph-dark reveal">
+          <img src="images/doosil/05.jpg" alt="해결방안 - 5단계 온보딩 흐름">
+        </div>
+        <div class="section-label reveal">해결방안</div>
+        <h2 class="section-heading reveal">
+          탐색 전에 필요한 정보를 먼저 제공하여,<br>사용자가 스스로 판단할 수 있는 흐름을 설계했습니다
+        </h2>
+        <div class="section-body reveal">
+          <p>
+            사용자가 탐색을 시작하기 전에 <strong>필요한 가치와 판단 기준을 먼저 제공</strong>했습니다.
+            배너에서 온보딩을 거쳐 부분시공으로 이어지는 5단계 흐름으로 재설계했습니다.
+          </p>
+          <p>
+            <strong>1. 진입 배너</strong> — 부분시공 가능 여부를 먼저 인지하도록 설계<br>
+            <strong>2. 가치 인지</strong> — 서비스의 핵심 가치를 먼저 전달<br>
+            <strong>3. 선택 기준 제시</strong> — 사용자가 스스로 시공 범위를 선택 가능 (전화 상담 없이 원하는 범위를 직접 결정)<br>
+            <strong>4. 판단 돕기</strong> — 세트와 단일 비교로 의사결정 부담 감소 (사용 목적에 맞는 시공 방식을 쉽게 선택)<br>
+            <strong>5. 탐색 시작</strong> — 결정에 필요한 정보를 확인한 뒤 탐색 시작
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ===== 섹션 5: VOC 반영 ===== -->
+    <section class="project-section">
+      <div class="container">
+        <div class="section-visual ph-dark reveal">
+          <img src="images/doosil/06.jpg" alt="VOC 수집 및 기능 요구사항으로 전환">
+        </div>
+        <div class="section-label reveal">사용자 데이터 반영</div>
+        <h2 class="section-heading reveal">
+          VOC를 기능 요구사항으로 전환했습니다
+        </h2>
+        <div class="section-body reveal">
+          <p>
+            프로젝트 시작 전 수집했던 VOC에서 정리한 내용을 바탕으로 반복적으로 등장한 VOC를
+            유형별로 분류하고, <strong>빈도가 높은 문제부터 기능 요구사항으로 정의</strong>했습니다.
+          </p>
+          <p>
+            <strong>대표 VOC</strong>:<br>
+            · "화장실만 고치고 싶은데 전체 시공만 가능해요? 집 전체는 예산이 안 맞아서요." (전체 시공에 대한 부담 · 18건)<br>
+            · "A35 상품이 마음에 드는데 화장실만 인테리어 하고싶어요..불가능할까요?" (부분시공 판단 불가 · 12건)<br>
+            · "몇번 전화를 걸었는데도 매번 담당자가 부재중이네요. 간단한 문의인데.." (응대 인력 문제 · 5건)
+          </p>
+          <p>
+            <strong>VOC → 기능 전환</strong>:<br>
+            · 전체시공과 부분시공을 분리하여 원하는 시공만 빠르게 탐색<br>
+            · 시공 범위 필터로 원하는 시공만 선택, 필요한 범위를 직접 탐색 가능<br>
+            · 최근 30일 내에 포트폴리오 3회 이상 열람한 유저를 선별, 타겟팅하여 재유입 푸시 노출
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ===== 섹션 6: 결과 및 회고 ===== -->
+    <section class="project-section">
+      <div class="container">
+        <div class="section-visual ph-cream reveal">
+          <img src="images/doosil/07.jpg" alt="결과 - 상담 신청 폼 도달자 중 73%가 신청 완료">
+        </div>
+        <div class="section-label reveal">결과 및 회고</div>
+        <h2 class="section-heading reveal">
+          사용자는 탐색에서 멈추지 않고,<br>실제 상담 신청까지 이어졌습니다
+        </h2>
+        <div class="section-body reveal">
+          <p>
+            상담 신청 폼 도달자 중 <span class="highlight-metric">73%가 실제 신청 완료</span>로 이어졌습니다.
+            (측정: GA 실측 폼 이벤트 — 상담 신청 폼 도달 대비 신청 완료)
+          </p>
+          <p>
+            <strong>배운 점</strong> — 처음에는 '상품이 없어서 사용자가 이탈한다'고 생각했습니다.
+            하지만 정량·정성 데이터를 함께 분석하며 문제는 콘텐츠가 아니라
+            <strong>사용자가 스스로 판단할 수 없는 탐색 구조</strong>라는 점을 확인했습니다.
+            이 경험 이후 화면보다 먼저 <strong>사용자의 의사결정 구조를 정의하는 것</strong>을
+            프로젝트의 출발점으로 삼고 있습니다.
+          </p>
+          <p>
+            <strong>한계와 개선점</strong> — 단계별 GA 이벤트가 충분하지 않아 개선안별 효과를
+            분리해 검증하지 못했습니다. 또한 1차 UT로 문제는 확인했지만
+            개선안을 후속 UT나 A/B 테스트로 재검증하지 못한 점은 아쉬움으로 남았습니다.
+          </p>
+          <p>
+            <strong>다음 프로젝트에서 적용한 원칙</strong> — 이후 프로젝트에서는 디자인과 동시에
+            측정 지표를 함께 설계하고, <strong>가설 → 검증 → 개선 → 재검증</strong>의 사이클을
+            처음부터 포함하는 것을 원칙으로 삼았습니다.
+            디자인 결과보다 <strong>검증 가능한 의사결정 과정을 만드는 것</strong>이
+            제품 디자이너의 역할이라고 생각하게 되었습니다.
+          </p>
+          <p style="color: var(--muted); font-size: 14px; margin-top: 2em;">
+            * 견적 전환 0.21% → 0.69% (영업팀 인바운드 수기 집계, 개선 전 3개월 / 후 1개월).
+            트래픽·기간 조건이 달라 참고용으로만 사용.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="credits">
+      <div class="container">
+        <div class="credits-title reveal">Credits</div>
+        <dl class="credits-grid reveal">
+          <dt>Product Designer</dt>
+          <dd>Eukee Kang (본인)</dd>
+          <dt>PL</dt>
+          <dd>1명</dd>
+          <dt>iOS Developer</dt>
+          <dd>1명</dd>
+          <dt>Android Developer</dt>
+          <dd>1명</dd>
+          <dt>Sales Team</dt>
+          <dd>VOC 인터뷰 협업</dd>
+        </dl>
+      </div>
+    </section>
+
+  <!-- ===== 다음 프로젝트 ===== -->
+  <section class="nextproj">
+    <div class="nextproj-head">
+      <a href="../index.html#work">← All Projects</a>
+      <span>Next · <span class="np-name">두실빌더스</span></span>
+    </div>
+
+    <a class="nextproj-band" href="project-03.html">
+      <span class="nextproj-bubble" aria-hidden="true"></span>
+      <span class="nextproj-track" aria-hidden="true">
+        <span class="nextproj-row"><b>Next Project</b><i></i><b>Next Project</b><i></i><b>Next Project</b><i></i><b>Next Project</b><i></i><b>Next Project</b><i></i><b>Next Project</b><i></i></span>
+        <span class="nextproj-row"><b>Next Project</b><i></i><b>Next Project</b><i></i><b>Next Project</b><i></i><b>Next Project</b><i></i><b>Next Project</b><i></i><b>Next Project</b><i></i></span>
+      </span>
+      <span class="np-sr">다음 프로젝트: 두실빌더스</span>
+    </a>
+  </section>
+  </main>
+
+  <script>
+    // 스크롤 reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Sticky Hero Shrink
+    (function() {
+      const hero = document.querySelector('.hero-wrap .hero-visual');
+      if (!hero) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const heroWrap = document.querySelector('.hero-wrap');
+      let ticking = false;
+      function update() {
+        const scrollY = window.scrollY;
+        const wrapHeight = heroWrap.offsetHeight;
+        const progress = Math.min(Math.max(scrollY / wrapHeight, 0), 1);
+        const scale = 1 - progress * 0.15;
+        const opacity = 1 - progress * 0.6;
+        hero.style.transform = `scale(${scale})`;
+        hero.style.opacity = opacity;
+        ticking = false;
+      }
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(update);
+          ticking = true;
+        }
+      }, { passive: true });
+      update();
+    })();
+  
+  // ============================
+  // 다음 프로젝트 — 커서 원형 프리뷰 + 확장 전환
+  // ============================
+  (function () {
+    const band = document.querySelector('.nextproj-band');
+    if (!band) return;
+    const bubble = band.querySelector('.nextproj-bubble');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const fine   = window.matchMedia('(hover: hover)').matches;
+
+    if (bubble && fine && !reduce) {
+      band.addEventListener('pointerenter', () => band.classList.add('on'));
+      band.addEventListener('pointerleave', () => band.classList.remove('on'));
+      band.addEventListener('pointermove', (e) => {
+        const r = band.getBoundingClientRect();
+        bubble.style.setProperty('--bx', (e.clientX - r.left) + 'px');
+        bubble.style.setProperty('--by', (e.clientY - r.top) + 'px');
+      }, { passive: true });
+    }
+
+    band.addEventListener('click', (e) => {
+      const href = band.getAttribute('href');
+      if (!href || reduce || !fine) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+      e.preventDefault();
+
+      const img = bubble && bubble.querySelector('img');
+      const w = bubble ? Math.max(bubble.getBoundingClientRect().width, 120) : 180;
+      const x = e.clientX, y = e.clientY;
+      const far = Math.max(
+        Math.hypot(x, y),
+        Math.hypot(window.innerWidth - x, y),
+        Math.hypot(x, window.innerHeight - y),
+        Math.hypot(window.innerWidth - x, window.innerHeight - y)
+      );
+
+      const wipe = document.createElement('div');
+      wipe.className = 'np-wipe';
+      wipe.style.setProperty('--w', w + 'px');
+      wipe.style.setProperty('--x', x + 'px');
+      wipe.style.setProperty('--y', y + 'px');
+      wipe.style.setProperty('--s', ((far / (w / 2)) * 1.08).toFixed(2));
+      if (img) {
+        const c = document.createElement('img');
+        c.src = img.getAttribute('src');
+        c.alt = '';
+        wipe.appendChild(c);
+      }
+      document.body.appendChild(wipe);
+      requestAnimationFrame(() => requestAnimationFrame(() => wipe.classList.add('run')));
+      setTimeout(() => { window.location.href = href; }, 700);
+    });
+  })();
+</script>
+</body>
+</html>
