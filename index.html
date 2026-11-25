@@ -524,39 +524,16 @@
         row-gap: clamp(64px, 8vw, 112px);
       }
     }
-    /* 카드마다 원근을 줘서 스크롤 중 3D로 꺾이게 */
-    .card { display: block; cursor: pointer; perspective: 900px; }
+    .card { display: block; cursor: pointer; }
     .card-image {
       aspect-ratio: 3 / 2;
       background: var(--bg-cream);
       overflow: hidden;
       position: relative;
-      transform: translateY(calc(var(--lift, 0px) + var(--lag, 0px)))
-                 rotateX(var(--rot, 0deg));
-      transform-origin: 50% 50%;
-      transition: transform .5s cubic-bezier(.2,.8,.2,1);
-      will-change: transform;
-      backface-visibility: hidden;
+      border-radius: 14px;
+      transform: translateY(var(--lift, 0px));
+      transition: transform .45s cubic-bezier(.2,.8,.2,1);
     }
-    /* 스크롤 중 이미지를 휘게 하는 세로 조각 레이어 */
-    .card-image .warp { position: absolute; inset: 0; z-index: 3; opacity: 0; pointer-events: none; }
-    .card-image .warp i {
-      position: absolute; top: 0; height: 100%; display: block;
-      background-repeat: no-repeat;
-      transform-origin: 50% 100%;   /* 아랫변 고정 → 윗변이 부푼다 */
-    }
-    .grid.bending .warp i { will-change: transform; }
-    .grid.bending.up .card-image .warp i { transform-origin: 50% 0%; }
-    /* 휘는 동안에는 조각 레이어만 보이고, 카드 밖으로 넘칠 수 있게 */
-    .grid.bending .card-image.has-warp { overflow: visible; }
-    .grid.bending .card-image.has-warp .warp { opacity: 1; }
-    .grid.bending .card-image.has-warp > img { visibility: hidden; }
-    /* 휘는 동안 카드 바탕이 띠처럼 드러나지 않도록 */
-    .grid.bending .card-image.has-warp { background: transparent; }
-    .grid.bending .card-image.has-warp .placeholder { visibility: hidden; }
-    .placeholder { position: relative; z-index: 4; }
-    /* 스크롤 중에는 JS가 매 프레임 값을 주므로 전환 없이 */
-    .grid.bending .card-image { transition: none; }
     .card-image::after {
       content: "";
       position: absolute;
@@ -581,6 +558,11 @@
     }
     .card:hover .card-image::before { opacity: 1; }
     .card:hover .card-image { --lift: -8px; }
+    /* 한 장에 호버하면 나머지는 뒤로 물러난다 */
+    .card { transition: opacity .45s ease, filter .45s ease, transform .45s cubic-bezier(.2,.8,.2,1); }
+    .grid.is-hovering .card:not(:hover) { opacity: .35; filter: blur(6px) saturate(.6); }
+    @media (hover: none) { .grid.is-hovering .card:not(:hover) { opacity: 1; filter: none; } }
+    @media (prefers-reduced-motion: reduce) { .grid.is-hovering .card:not(:hover) { filter: none; opacity: .5; } }
     .card-image img { width: 100%; height: 100%; object-fit: cover; }
     .placeholder {
       width: 100%; height: 100%;
@@ -1861,178 +1843,12 @@
       });
     })();
 
-    // ============================
-    // 📐 스크롤하면 프로젝트 카드가 휘었다가 멈추면 펴짐
-    // ============================
+    // 카드 호버 시 나머지 흐리게
     (function () {
       const grid = document.getElementById('workGrid');
       if (!grid) return;
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-      const cards = [...grid.querySelectorAll('.card-image')];
-      if (!cards.length) return;
-
-      const COLS      = 32;   // 이미지를 세로로 몇 조각으로 쪼갤지 (많을수록 매끄럽지만 무거움)
-      const MAX_BOW   = 46;   // 화면을 가로지르는 파도의 높이 (px)
-      const MAX_TOP   = 0.07; // 윗변이 더 부푸는 정도 (0.07 = 카드 높이의 7%)
-      const MAX_ROT   = 12;   // 화면 위아래 끝에서 꺾이는 각도 (deg)
-      const MAX_LAG   = 16;   // 스크롤 반대로 끌리는 거리 (px)
-      const SENS      = 1.70; // 스크롤 속도 민감도 — 올릴수록 천천히 굴려도 많이 휨
-
-      // ── 카드마다 세로 조각(기둥) 레이어를 만든다 ──────────────
-      //    조각마다 이미지의 다른 구간을 보여주고, 조각별로 다르게
-      //    밀어 올리면 이미지 자체가 휘어 보인다.
-      const warped = [];
-      cards.forEach(el => {
-        const img = el.querySelector('img');
-        const ph  = el.querySelector('.placeholder');
-        const src = img ? img.getAttribute('src') : null;
-        if (!src && !ph) return;
-
-        const layer = document.createElement('div');
-        layer.className = 'warp';
-        layer.setAttribute('aria-hidden', 'true');
-        const strips = [];
-        for (let i = 0; i < COLS; i++) {
-          const s = document.createElement('i');
-          s.style.left  = (i * 100 / COLS) + '%';
-          s.style.width = 'calc(' + (100 / COLS) + '% + 2px)';   // 조각 사이 실금 방지용 겹침
-          layer.appendChild(s);
-          strips.push(s);
-        }
-        el.appendChild(layer);
-        el.classList.add('has-warp');
-
-        const rec = { el, strips, layer, src, ph, meta: el.parentElement.querySelector('.card-meta') };
-        warped.push(rec);
-        paint(rec);
-        if (img && !img.complete) img.addEventListener('load', () => paint(rec));
-      });
-
-      // 조각마다 배경 이미지를 알맞은 위치로 잘라 넣는다 (object-fit: cover 재현)
-      function paint(rec) {
-        const w = rec.el.clientWidth, h = rec.el.clientHeight;
-        if (!w || !h) return;
-        const colW = w / COLS;
-        let bg, bgSize, offX = 0, offY = 0;
-
-        const img = rec.el.querySelector('img');
-        if (rec.src && img && img.naturalWidth) {
-          const sc = Math.max(w / img.naturalWidth, h / img.naturalHeight);
-          const cw = img.naturalWidth * sc, ch = img.naturalHeight * sc;
-          bg = 'url("' + rec.src + '")';
-          bgSize = cw + 'px ' + ch + 'px';
-          offX = (w - cw) / 2; offY = (h - ch) / 2;
-        } else if (rec.ph) {
-          bg = getComputedStyle(rec.ph).backgroundImage;
-          if (!bg || bg === 'none') return;
-          bgSize = w + 'px ' + h + 'px';
-        } else { return; }
-
-        rec.strips.forEach((s, i) => {
-          s.style.backgroundImage = bg;
-          s.style.backgroundSize = bgSize;
-          s.style.backgroundPosition = (offX - i * colW) + 'px ' + offY + 'px';
-        });
-      }
-      window.addEventListener('resize', () => warped.forEach(paint));
-
-      let lastY = window.scrollY;
-      let raw = 0;      // 이번 프레임의 스크롤 이동량
-      let vel = 0;      // 부드럽게 따라가는 속도
-      let running = false;
-
-      window.addEventListener('scroll', () => {
-        const y = window.scrollY;
-        // 앵커 점프처럼 한 번에 크게 튀는 값은 제한
-        raw += Math.max(-180, Math.min(180, y - lastY));
-        lastY = y;
-        if (!running) { running = true; requestAnimationFrame(tick); }
-      }, { passive: true });
-
-      function tick() {
-        // 입력값은 감쇠, 실제 속도는 그 값을 부드럽게 추종
-        vel += (raw - vel) * 0.18;
-        raw *= 0.78;
-
-        const amt = Math.min(Math.abs(vel) * SENS, 100) / 100;   // 0~1
-        const dir = vel < 0 ? -1 : 1;
-
-        if (amt > 0.002) {
-          grid.classList.add('bending');
-          const vh = window.innerHeight;
-          // 내려갈 때는 윗변이, 올라갈 때는 아랫변이 부푼다
-          grid.classList.toggle('up', dir < 0);
-
-          cards.forEach((el, i) => {
-            const r = el.getBoundingClientRect();
-            if (r.bottom < -120 || r.top > vh + 120) return;   // 화면 밖은 계산 생략
-            // 카드 중심이 화면 중앙에서 얼마나 떨어져 있는지 (-1 위 ~ +1 아래)
-            const p = Math.max(-1, Math.min(1, (r.top + r.height / 2 - vh / 2) / vh * 2));
-            // 중앙 카드는 거의 평평, 위아래로 갈수록 크게 꺾임 — 원통에 감긴 느낌
-            const bend = Math.sign(p) * Math.min(1, Math.abs(p) * 1.25);
-            const lag  = i % 2 === 0 ? 1 : 0.86;   // 열마다 위상차
-            el.style.setProperty('--rot', (MAX_ROT * amt * bend * lag).toFixed(2) + 'deg');
-            el.style.setProperty('--lag', (-dir * MAX_LAG * amt * lag).toFixed(1) + 'px');
-          });
-
-          // 화면 전체를 가로지르는 하나의 파도로 휜다 — 카드마다 따로가 아니라
-          // 왼쪽 카드는 파도의 왼쪽, 오른쪽 카드는 오른쪽을 나눠 갖는다
-          const W   = window.innerWidth;
-          const bow = MAX_BOW * amt;                  // 파도의 높이
-          const top = MAX_TOP * amt;                  // 윗변이 더 부푸는 양
-          warped.forEach(rec => {
-            const r = rec.el.getBoundingClientRect();
-            if (r.width <= 0) return;
-            // 화면 밖 카드는 계산하지 않는다 — 보이지도 않는데 매 프레임 비용만 든다
-            if (r.bottom < -120 || r.top > vh + 120) {
-              if (rec.off) return;
-              rec.off = true;
-              for (let i = 0; i < COLS; i++) rec.strips[i].style.transform = 'none';
-              if (rec.meta) rec.meta.style.transform = 'none';
-              return;
-            }
-            rec.off = false;
-            const colW = r.width / COLS;
-            const h    = r.height || 1;
-            const eff  = (bow + h * top / 2) * dir;
-            const meta = rec.meta;
-            for (let i = 0; i < COLS; i++) {
-              // 조각의 화면상 가로 위치로 파도의 높이를 구한다
-              const t   = (r.left + (i + 0.5) * colW) / W;
-              const arc = Math.sin(Math.PI * Math.max(0, Math.min(1, t)));
-              const dy  = -bow * arc * dir;
-              const sy  = 1 + top * arc;
-              // 조각 경계가 계단처럼 보이지 않도록 파도의 기울기를 함께 준다
-              const ang = Math.atan(-eff * Math.PI / W * Math.cos(Math.PI * t)) * 180 / Math.PI;
-              rec.strips[i].style.transform =
-                'translateY(' + dy.toFixed(2) + 'px) scaleY(' + sy.toFixed(4) + ')' +
-                ' skewY(' + ang.toFixed(3) + 'deg)';
-            }
-            // 제목·구분선도 같은 파도를 타게 한다
-            if (meta) {
-              const tc  = (r.left + r.width / 2) / W;
-              const arc = Math.sin(Math.PI * Math.max(0, Math.min(1, tc)));
-              const ang = Math.atan(-eff * Math.PI / W * Math.cos(Math.PI * tc)) * 180 / Math.PI;
-              meta.style.transform =
-                'translateY(' + (-bow * arc * dir).toFixed(2) + 'px) skewY(' + ang.toFixed(3) + 'deg)';
-            }
-          });
-          requestAnimationFrame(tick);
-        } else {
-          // 멈추면 전환을 되살려 부드럽게 펴짐
-          grid.classList.remove('bending');
-          cards.forEach(el => {
-            el.style.setProperty('--rot', '0deg');
-            el.style.setProperty('--lag', '0px');
-          });
-          warped.forEach(rec => {
-            for (let i = 0; i < COLS; i++) rec.strips[i].style.transform = 'none';
-            if (rec.meta) rec.meta.style.transform = 'none';
-          });
-          vel = 0; raw = 0; running = false;
-        }
-      }
+      grid.addEventListener('pointerenter', () => grid.classList.add('is-hovering'), true);
+      grid.addEventListener('pointerleave', () => grid.classList.remove('is-hovering'));
     })();
 
     // 스크롤 reveal
