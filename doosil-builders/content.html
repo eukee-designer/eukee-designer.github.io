@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CONTENT | 두실빌더스</title>
+<meta name="description" content="두실빌더스가 전하는 인테리어 트렌드와 공간 이야기.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=7">
+<script>(function(){var r=document.documentElement;r.classList.add('js');try{if(localStorage.getItem('doosil-mode')==='dark')r.setAttribute('data-mode','dark')}catch(e){}document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('#mode');if(!b)return;var d=r.getAttribute('data-mode')!=='dark';if(d)r.setAttribute('data-mode','dark');else r.removeAttribute('data-mode');b.setAttribute('aria-pressed',d);b.setAttribute('aria-label',d?'라이트 모드로 전환':'다크 모드로 전환');try{localStorage.setItem('doosil-mode',d?'dark':'light')}catch(e){}});})();</script>
+</head>
+<body>
+<header id="top">
+ <div class="wrap bar">
+  <a class="logo" href="index.html" aria-label="두실빌더스 홈"><img class="ink" src="img/logo.png" alt="DOOSIL BUILDERS"></a>
+  <nav id="nav" aria-label="주요 메뉴">
+   <a href="info.html">INFO</a><a href="project.html">PROJECT</a><a href="content.html" aria-current="page">CONTENT</a>
+  </nav>
+  <button class="mode" id="mode" type="button" aria-label="다크 모드 켜기" aria-pressed="false"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1Z"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8 6 18M18 6l1.8-1.8"/></svg></button>
+  <button class="btn solid" data-open>견적 신청</button>
+  <button class="menu" id="menu" aria-label="메뉴 열기" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+ </div>
+</header>
+<main>
+<section class="wrap">
+ <div class="page-head pj-head">
+  <div>
+   <span class="eyebrow">Content</span>
+   <h1>공간을 고르기 전에<br>읽어 보면 좋은 이야기</h1>
+  </div>
+  <p>두실빌더스가 현장에서 보고 고른 인테리어 트렌드와 스타일 가이드를 소개합니다.</p>
+ </div>
+ <ul class="ct-grid" id="ctList"></ul>
+</section>
+</main>
+<footer>
+ <div class="wrap foot">
+  <div>
+   <a class="logo" href="index.html"><img class="ink" src="img/logo.png" alt="DOOSIL BUILDERS"></a>
+   <p>서울 강남구 논현로 656 유건빌딩 4F</p>
+  </div>
+  <div class="contact">
+   <div><span>문의</span><a href="tel:025457879">02-545-7879</a></div>
+   <div><span>메일</span><a href="mailto:hello@doosil.com">hello@doosil.com</a></div>
+  </div>
+  <ul class="biz">
+   <li>개인정보 처리방침</li><li>주식회사 두꺼비선생</li><li>대표자 : 이정수</li><li>사업자등록번호 : 127-87-01834</li><li>통신판매신고번호 : 2022-서울강남-00868</li><li>통신판매업 정보 확인</li>
+  </ul>
+  <p class="disc">두꺼비실장은 통신판매중개자로서 계약의 당사자가 아니며 고객과 시공사 간 계약의 취소, 해제, 해지 등에 개입하거나 이에 대해 책임지지 아니하며, 시공사가 제공한 견적 및 공사 시공서비스 또한 일체 책임을 지지 않습니다.</p>
+  <div class="copy">© (주)두꺼비선생 All rights reserved.</div>
+ </div>
+</footer>
+<script>
+{
+const A=[
+ {k:'planterior',cat:'인테리어 트렌드',title:'싱그러움을 더하는 인테리어, 플랜테리어',date:'2023.09.11',img:'planterior',href:'content-planterior.html'},
+ {k:'curve',cat:'인테리어 트렌드',title:'공간에 부드러움을 주는 곡선 인테리어',date:'2023.09.07',img:'curve'},
+ {k:'ceiling',cat:'인테리어 트렌드',title:'트렌디한 천장 인테리어, 장단점 알아보기',date:'2023.09.07',img:'ceiling'}
+];
+document.getElementById('ctList').innerHTML=A.map((a,i)=>{
+ const inner=`<div class="plate"><img src="img/ct/${a.img}.jpg" alt="" loading="lazy"><span class="ct-cat">${a.cat}</span></div>
+  <h3>${a.title}</h3><p><time>${a.date}</time>${a.href?'<span class="ct-go">읽어보기 →</span>':'<span class="ct-soon">준비 중</span>'}</p>`;
+ return `<li class="ct rv">${a.href?`<a href="${a.href}">${inner}</a>`:`<div aria-disabled="true">${inner}</div>`}</li>`}).join('');
+}
+</script>
+<script src="js/site.js?v=7"></script>
+</body>
+</html>

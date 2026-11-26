@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>두실빌더스 DOOSIL BUILDERS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=7">
+<script>(function(){var r=document.documentElement;r.classList.add('js');try{if(localStorage.getItem('doosil-mode')==='dark')r.setAttribute('data-mode','dark')}catch(e){}document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('#mode');if(!b)return;var d=r.getAttribute('data-mode')!=='dark';if(d)r.setAttribute('data-mode','dark');else r.removeAttribute('data-mode');b.setAttribute('aria-pressed',d);b.setAttribute('aria-label',d?'라이트 모드로 전환':'다크 모드로 전환');try{localStorage.setItem('doosil-mode',d?'dark':'light')}catch(e){}});})();</script>
+</head>
+<body>
+<header id="top">
+ <div class="wrap bar">
+  <a class="logo" href="index.html" aria-label="두실빌더스 홈"><img class="ink" src="img/logo.png" alt="DOOSIL BUILDERS"></a>
+  <nav id="nav" aria-label="주요 메뉴">
+   <a href="info.html">INFO</a><a href="project.html">PROJECT</a><a href="content.html">CONTENT</a>
+  </nav>
+  <button class="mode" id="mode" type="button" aria-label="다크 모드 켜기" aria-pressed="false"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1Z"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8 6 18M18 6l1.8-1.8"/></svg></button>
+  <button class="btn solid" data-open>견적 신청</button>
+  <button class="menu" id="menu" aria-label="메뉴 열기" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+ </div>
+</header>
+
+<main>
+<section class="wrap hero">
+ <div class="hero-l">
+  <img class="wordmark ink" src="img/wordmark.png" alt="HIGHEND INTERIOR" width="635" height="267">
+  <hr class="rule">
+  <div class="plate"><img src="img/hero-a.jpg" alt="원목 바닥과 라운드 테이블이 놓인 밝은 라운지"></div>
+ </div>
+ <div class="hero-r">
+  <div class="slides" id="slides" aria-roledescription="carousel" aria-label="대표 프로젝트">
+   <div class="plate slide on"><img src="img/hero-b.jpg" alt="블랙 가죽 소파와 플로어 램프가 있는 라운지"></div>
+   <div class="plate slide"><img src="img/pj/esc-1.jpg" alt="ESC 카페 내부, 은하 그래픽 월" loading="lazy"></div>
+   <div class="plate slide"><img src="img/pj/moraebeach-1.jpg" alt="모래비치 카페 내부, 푸른 바닥" loading="lazy"></div>
+   <div class="plate slide"><img src="img/pj/spacemonster-1.jpg" alt="스페이스몬스터 사무실 라운지" loading="lazy"></div>
+  </div>
+  <a class="tag" id="slideTag" href="project.html">DOOSIL BUILDERS</a>
+  <div class="dots" id="dots" role="tablist" aria-label="슬라이드 선택"></div>
+  <div class="hero-copy">
+   <h1>인테리어의 다양한 문제점을<br>해결합니다.</h1>
+   <p>인테리어의 하이엔드 퀄리티를 지금 바로 두실에서 경험해 보세요.</p>
+   <a class="btn light" href="project.html">포트폴리오 보러가기 <span aria-hidden="true">→</span></a>
+  </div>
+ </div>
+</section>
+
+<div class="marquee" aria-label="시공 프로젝트">
+ <div class="mq-track" id="mq"></div>
+</div>
+
+<section class="wrap statement rv">
+ <h2><span class="ln">공간의 본질과 기능에 충실하며,</span> <span class="ln">창조적인 공간을 설계합니다.</span></h2>
+ <div>
+  <span class="eyebrow">About</span>
+  <p>소비자가 겪고 있는 Pain Point와 Needs를 해결하고, 누구보다 소비자의 입장에 서서 차별화된 서비스를 제공하고자 출범했습니다.</p>
+ </div>
+</section>
+
+<section class="wrap stats" aria-label="두실빌더스 시공 실적">
+ <div class="stat rv"><b data-to="17">17</b><span>포트폴리오 프로젝트</span></div>
+ <div class="stat rv"><b><em data-to="7">7</em>–<em data-to="120">120</em><small>평</small></b><span>시공 면적 범위</span></div>
+ <div class="stat rv"><b data-to="6">6</b><span>공간 유형 · 카페, 사무실, 매장 외</span></div>
+</section>
+
+<section class="wrap" id="services" aria-label="서비스">
+ <div class="services" id="svcList"></div>
+</section>
+
+<section class="band-soft" id="how" style="margin-top:clamp(72px,8vw,120px)">
+ <div class="wrap how">
+  <div class="sticky rv">
+   <span class="eyebrow">How it works</span>
+   <h2><span class="ln">두실의 이용방법에 대해</span> <span class="ln">알려드립니다.</span></h2>
+   <p>포트폴리오를 고르고 요구서만 작성하면, 나머지는 두실이 준비합니다.</p>
+   <div class="how-prog" aria-hidden="true"><b id="howNo">01</b><i><em id="howBar"></em></i><span>04</span></div>
+   <button class="btn solid how-cta" data-open>요구서 작성하기 <span aria-hidden="true">→</span></button>
+  </div>
+  <ol class="steps-list" id="useList"></ol>
+ </div>
+</section>
+
+<section class="wrap" id="process">
+ <div class="process-head rv">
+  <div><span class="eyebrow">Process</span><h2><span class="ln">누구보다 투명하게</span> <span class="ln">시공과정을 제공합니다.</span></h2></div>
+  <p>견적 신청부터 공사 시작까지, 여섯 단계를 모두 공유합니다.</p>
+ </div>
+ <ol class="process" id="procList"></ol>
+</section>
+
+<section id="portfolio" class="show">
+ <div class="wrap pf-head rv">
+  <div><span class="eyebrow">Project</span><h2>공간으로 증명합니다</h2></div>
+  <div class="show-ctl">
+   <button class="btn" id="shPrev" aria-label="이전">←</button><button class="btn" id="shNext" aria-label="다음">→</button>
+   <a class="btn" href="project.html">전체 포트폴리오 <span aria-hidden="true">→</span></a>
+  </div>
+ </div>
+ <ul class="show-track" id="pfList"></ul>
+</section>
+
+<section class="cta wrap-full">
+ <img src="img/banner.jpg" alt="" loading="lazy">
+ <div class="rv">
+  <h2><span class="ln">“DOOSIL BUILDERS”는 합리적이고</span> <span class="ln">투명한 시공문화를 선도합니다.</span></h2>
+  <div class="row">
+   <button class="btn solid" data-open>인테리어 요구서 작성</button>
+   <a class="btn light" href="project.html">포트폴리오 보러가기</a>
+  </div>
+ </div>
+</section>
+</main>
+
+<footer>
+ <div class="wrap foot">
+  <div>
+   <a class="logo" href="index.html"><img class="ink" src="img/logo.png" alt="DOOSIL BUILDERS"></a>
+   <p>서울 강남구 논현로 656 유건빌딩 4F</p>
+  </div>
+  <div class="contact">
+   <div><span>문의</span><a href="tel:025457879">02-545-7879</a></div>
+   <div><span>메일</span><a href="mailto:hello@doosil.com">hello@doosil.com</a></div>
+  </div>
+  <ul class="biz">
+   <li>개인정보 처리방침</li><li>주식회사 두꺼비선생</li><li>대표자 : 이정수</li><li>사업자등록번호 : 127-87-01834</li><li>통신판매신고번호 : 2022-서울강남-00868</li><li>통신판매업 정보 확인</li>
+  </ul>
+  <p class="disc">두꺼비실장은 통신판매중개자로서 계약의 당사자가 아니며 고객과 시공사 간 계약의 취소, 해제, 해지 등에 개입하거나 이에 대해 책임지지 아니하며, 시공사가 제공한 견적 및 공사 시공서비스 또한 일체 책임을 지지 않습니다.</p>
+  <div class="copy">© (주)두꺼비선생 All rights reserved.</div>
+ </div>
+</footer>
+
+
+<script>
+{
+const svc=[
+ ['인테리어','Interior','의(衣)와 식(食)의 영역에는 라이프스타일에 맞는 취향과 선택지가 있는 반면, 주(住)의 영역은 선택지가 극히 제한적입니다. 두꺼비실장은 그 공백을 메우는 역할을 하고자 합니다.','svc-interior','라운드 테이블이 놓인 미팅룸'],
+ ['리모델링','Remodeling','공간의 가치를 극대화하는 하이엔드 인테리어 디자이너와 함께 공간별 고유의 매력과 잠재력을 발견하고, 개인의 취향을 가득 담은 공간을 만들어 냅니다.','svc-remodel','도면 위의 안전모와 제도 도구'],
+ ['전시 기획','Exhibition Planning','시공문화를 선도하는 브랜드로서 차별화된 디자인과 소재로 ‘공간’ 그 이상의 가치를 창조합니다. 기획 목적을 정확하게 이해하고 고객의 니즈를 충분히 반영합니다.','svc-exhibit','흰 벽에 작품이 걸린 갤러리'],
+ ['컨설팅','Consulting','전문성을 갖춘 인테리어 전담 매니저가 라이프스타일에 맞춘 인테리어를 제안하고 시공 전 과정에 참여합니다. 사전 점검부터 사후 점검까지 꼼꼼히 살핍니다.','svc-consult','도면에 자를 대고 그리는 손']];
+const use=[
+ ['내 공간에 맞는 인테리어 선택','포트폴리오 리스트에서 취향에 맞는 포트폴리오를 확인하고 ‘문의하기’ 버튼을 선택해 주세요.'],
+ ['간단 인테리어 요구서 작성','상담 전 사전 파악을 위한 요구서를 작성해 주세요. 작성 후 ‘제출’ 버튼을 선택하면 신청이 완료됩니다.'],
+ ['취향 분석 및 컨설팅 준비','작성해 주신 요구서를 토대로 클라이언트의 정보를 수집·분석해 인테리어 컨설팅을 준비합니다.'],
+ ['유선 상담 또는 방문 상담 진행','분석한 정보로 최적의 공간을 제안하며 1차 유선 상담 및 방문 상담을 진행합니다.']];
+const proc=[['견적신청','서류에 펜으로 체크하는 손'],['전문가 컨설팅','서류철에 메모하는 담당자'],['방문실측','벽면을 줄자로 재는 모습'],['견적제출','노트북 화면을 함께 보는 두 사람'],['계약서 작성','계약서에 서명하는 손'],['공사시작','도면 위의 안전모와 라바콘']];
+const pf=[['카페','32평','강남구','ESC','esc'],['사무실','116평','강남구','스페이스몬스터','spacemonster'],['카페','37평','부평구','모래비치','moraebeach'],['의류매장','80평','강남구','DINT','dint'],['카페','70평','팔달구','143 BAKERY & CAFE','143'],['미용실','25평','마포구','EEN','een'],['사무실','120평','마포구','EQC','eqc'],['펍','7평','종로구','보글하우스','boglehouse']];
+const $=s=>document.querySelector(s);
+$('#svcList').innerHTML=svc.map(s=>`<article class="svc rv"><h3>${s[0]} <small>${s[1]}</small></h3><p>${s[2]}</p><div class="plate"><img src="img/${s[3]}.jpg" alt="${s[4]}" loading="lazy"></div></article>`).join('');
+$('#useList').innerHTML=use.map((u,i)=>`<li class="st"><span class="num"><img class="ink" src="img/n${i+1}.png" alt="${String(i+1).padStart(2,'0')}"></span><div class="st-t"><h3>${u[0]}</h3><p>${u[1]}</p></div><span class="st-go" aria-hidden="true">→</span></li>`).join('');
+$('#procList').innerHTML=proc.map((p,i)=>`<li class="rv"><div class="plate"><img src="img/step${i+1}.jpg" alt="${p[1]}" loading="lazy"></div><div class="lbl"><b style="font-weight:500">STEP ${String(i+1).padStart(2,'0')}</b><span>${i+1} / 6</span></div><h3>${p[0]}</h3></li>`).join('');
+$('#pfList').innerHTML=pf.map((p,i)=>`<li><a class="sh-card" href="project.html#p-${p[4]}"><div class="plate"><img src="img/pj/${p[4]}-thumb.jpg" alt="${p[3]} ${p[0]} 인테리어" loading="lazy"></div><h3>${p[3]}</h3><p>${p[0]} · ${p[1]} · ${p[2]}</p></a></li>`).join('');
+
+}
+</script>
+<script src="js/site.js?v=7"></script>
+</body>
+</html>

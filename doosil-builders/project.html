@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROJECT | 두실빌더스</title>
+<meta name="description" content="두실빌더스가 시공한 카페·사무실·의류매장 등 상업공간 프로젝트 포트폴리오.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=7">
+<script>(function(){var r=document.documentElement;r.classList.add('js');try{if(localStorage.getItem('doosil-mode')==='dark')r.setAttribute('data-mode','dark')}catch(e){}document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('#mode');if(!b)return;var d=r.getAttribute('data-mode')!=='dark';if(d)r.setAttribute('data-mode','dark');else r.removeAttribute('data-mode');b.setAttribute('aria-pressed',d);b.setAttribute('aria-label',d?'라이트 모드로 전환':'다크 모드로 전환');try{localStorage.setItem('doosil-mode',d?'dark':'light')}catch(e){}});})();</script>
+</head>
+<body>
+<header id="top">
+ <div class="wrap bar">
+  <a class="logo" href="index.html" aria-label="두실빌더스 홈"><img class="ink" src="img/logo.png" alt="DOOSIL BUILDERS"></a>
+  <nav id="nav" aria-label="주요 메뉴">
+   <a href="info.html">INFO</a><a href="project.html" aria-current="page">PROJECT</a><a href="content.html">CONTENT</a>
+  </nav>
+  <button class="mode" id="mode" type="button" aria-label="다크 모드 켜기" aria-pressed="false"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1Z"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8 6 18M18 6l1.8-1.8"/></svg></button>
+  <button class="btn solid" data-open>견적 신청</button>
+  <button class="menu" id="menu" aria-label="메뉴 열기" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+ </div>
+</header>
+
+<main>
+<section class="wrap">
+ <div class="page-head pj-head">
+  <div>
+   <span class="eyebrow">Project</span>
+   <h1>두실빌더스가<br>완성한 공간들</h1>
+  </div>
+  <p class="pj-count"><b id="count">17</b><span>Projects</span></p>
+  <p>카페, 사무실, 의류매장까지. 국내 디자이너의 설계를 검증된 시공사가 구현한 상업공간 프로젝트입니다.</p>
+ </div>
+ <div class="filters" role="toolbar" aria-label="공간 유형 필터" id="filters"></div>
+ <ul class="pj-grid" id="grid"></ul>
+ <p class="empty" id="empty" hidden>해당 유형의 프로젝트가 아직 없어요.</p>
+</section>
+
+<section class="cta" style="min-height:clamp(320px,30vw,420px)">
+ <img src="img/banner.jpg" alt="" loading="lazy">
+ <div class="rv">
+  <h2><span class="ln">마음에 드는 공간을 찾으셨나요?</span></h2>
+  <div class="row"><button class="btn solid" data-open>이 스타일로 견적 문의</button></div>
+ </div>
+</section>
+</main>
+
+<footer>
+ <div class="wrap foot">
+  <div>
+   <a class="logo" href="index.html"><img class="ink" src="img/logo.png" alt="DOOSIL BUILDERS"></a>
+   <p>서울 강남구 논현로 656 유건빌딩 4F</p>
+  </div>
+  <div class="contact">
+   <div><span>문의</span><a href="tel:025457879">02-545-7879</a></div>
+   <div><span>메일</span><a href="mailto:hello@doosil.com">hello@doosil.com</a></div>
+  </div>
+  <ul class="biz">
+   <li>개인정보 처리방침</li><li>주식회사 두꺼비선생</li><li>대표자 : 이정수</li><li>사업자등록번호 : 127-87-01834</li><li>통신판매신고번호 : 2022-서울강남-00868</li><li>통신판매업 정보 확인</li>
+  </ul>
+  <p class="disc">두꺼비실장은 통신판매중개자로서 계약의 당사자가 아니며 고객과 시공사 간 계약의 취소, 해제, 해지 등에 개입하거나 이에 대해 책임지지 아니하며, 시공사가 제공한 견적 및 공사 시공서비스 또한 일체 책임을 지지 않습니다.</p>
+  <div class="copy">© (주)두꺼비선생 All rights reserved.</div>
+ </div>
+</footer>
+
+<dialog id="pv" class="pv" aria-labelledby="pvTitle">
+ <div class="pv-bar">
+  <button class="btn" id="pvPrev" aria-label="이전 프로젝트">←</button>
+  <span id="pvPos" class="en"></span>
+  <button class="btn" id="pvNext" aria-label="다음 프로젝트">→</button>
+  <button class="x" id="pvClose" aria-label="닫기">×</button>
+ </div>
+ <div class="pv-body">
+  <div class="pv-imgs" id="pvImgs"></div>
+  <aside class="pv-info">
+   <p class="eyebrow" id="pvLoc"></p>
+   <h2 id="pvTitle"></h2>
+   <dl id="pvMeta"></dl>
+   <button class="btn solid" id="pvAsk">이 공간처럼 견적 문의하기</button>
+   <p class="pv-note">사진을 누르면 크게 볼 수 있어요.</p>
+  </aside>
+ </div>
+</dialog>
+
+<script>
+{
+/* 프로젝트 데이터: [키, 공간유형, 평수, 지역, 이름, 스타일, 사진 수] */
+const P=[
+ ['cafehomes','카페',12,'구래동','카페홈즈','미니멀 모던',8],
+ ['homesmeal','무인매장',13,'송파구','홈스밀','',8],
+ ['office43','사무실',43,'강남구','사무공간','모던 미니멀',7],
+ ['office87','사무실',87,'강남구','사무공간','',6],
+ ['moraebeach','카페',37,'부평구','모래비치','내추럴',7],
+ ['dint','의류매장',80,'강남구','DINT','모던 미니멀',6],
+ ['royal','카페',13,'영통구','ROYAL ROASTARY','',1],
+ ['basure','의류매장',12,'마포구','BASURE','미니멀',6],
+ ['eqc','사무실',120,'마포구','EQC','내추럴',6],
+ ['een','미용실',25,'마포구','EEN','모던',6],
+ ['ddp','의류매장',90,'중구','DDP HISEOUL SHOWROOM','',6],
+ ['endot','의류매장',7,'중구','ENDOT','모던 미니멀',6],
+ ['boglehouse','펍',7,'종로구','보글하우스','',6],
+ ['spacemonster','사무실',116,'강남구','스페이스몬스터','모던',6],
+ ['143','카페',70,'팔달구','143 BAKERY & CAFE','레트로 모던',7],
+ ['id','의류매장',11,'중구','ID','미니멀',6],
+ ['esc','카페',32,'강남구','ESC','모던 미니멀',6]
+].map(([k,type,size,loc,name,style,n])=>({k,type,size,loc,name,style,n}));
+const MAIN=['카페','사무실','의류매장'];
+const group=p=>MAIN.includes(p.type)?p.type:'기타';
+const $=s=>document.querySelector(s);
+const grid=$('#grid'),filters=$('#filters');
+let cur='전체',list=P;
+
+const cats=['전체',...MAIN,'기타'];
+filters.innerHTML=cats.map(c=>{const n=c==='전체'?P.length:P.filter(p=>group(p)===c).length;return `<button class="chip" data-c="${c}" aria-pressed="${c==='전체'}">${c} <span>${n}</span></button>`}).join('');
+
+function render(){
+ list=cur==='전체'?P:P.filter(p=>group(p)===cur);
+ grid.innerHTML=list.map((p,i)=>`<li class="pj in-${i%5}"><a href="#p-${p.k}" data-k="${p.k}">
+  <div class="plate"><img src="img/pj/${p.k}-thumb.jpg" alt="${p.name} ${p.type} 인테리어" loading="lazy">${p.style?`<span class="pj-tag">${p.style}</span>`:''}</div>
+  <h3>${p.type} <i>|</i> ${p.size}평</h3><p>[${p.loc}] ${p.name}</p></a></li>`).join('');
+ $('#count').textContent=list.length;
+ $('#empty').hidden=list.length>0;
+}
+filters.addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;cur=b.dataset.c;filters.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===b));render()});
+render();
+
+/* 프로젝트 상세 보기 */
+const pv=$('#pv');let idx=0;
+function show(k){
+ const i=list.findIndex(p=>p.k===k);idx=i<0?0:i;const p=i<0?P.find(x=>x.k===k):list[idx];if(!p)return;
+ $('#pvLoc').textContent=p.loc;
+ $('#pvTitle').textContent=p.name;
+ $('#pvMeta').innerHTML=[['공간',p.type],['면적',p.size+'평'],['지역',p.loc],p.style?['스타일',p.style]:null].filter(Boolean).map(([a,b])=>`<div><dt>${a}</dt><dd>${b}</dd></div>`).join('');
+ $('#pvImgs').innerHTML=Array.from({length:p.n},(_,j)=>`<figure><img src="img/pj/${p.k}-${j+1}.jpg" alt="${p.name} 현장 사진 ${j+1}" ${j?'loading="lazy"':''}></figure>`).join('');
+ $('#pvPos').textContent=`${String(idx+1).padStart(2,'0')} / ${String(list.length).padStart(2,'0')}`;
+ if(!pv.open){pv.showModal?pv.showModal():pv.setAttribute('open','')}
+ pv.querySelector('.pv-body').scrollTop=0;document.body.style.overflow='hidden';
+}
+function hide(){if(pv.open){pv.close?pv.close():pv.removeAttribute('open')}document.body.style.overflow='';if(location.hash.startsWith('#p-'))history.replaceState(null,'',location.pathname)}
+const go=d=>{const p=list[(idx+d+list.length)%list.length];location.hash='p-'+p.k};
+$('#pvPrev').onclick=()=>go(-1);$('#pvNext').onclick=()=>go(1);$('#pvClose').onclick=hide;
+pv.addEventListener('close',()=>{document.body.style.overflow='';if(location.hash.startsWith('#p-'))history.replaceState(null,'',location.pathname)});
+pv.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1)});
+$('#pvImgs').addEventListener('click',e=>{const f=e.target.closest('figure');if(f)f.classList.toggle('big')});
+$('#pvAsk').onclick=()=>{hide();setTimeout(()=>document.querySelector('.bar [data-open]').click(),50)};
+const route=()=>{const h=location.hash;if(h.startsWith('#p-'))show(h.slice(3));else if(pv.open)hide()};
+addEventListener('hashchange',route);route();
+}
+</script>
+<script src="js/site.js?v=7"></script>
+</body>
+</html>
