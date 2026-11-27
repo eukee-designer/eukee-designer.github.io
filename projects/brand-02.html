@@ -483,10 +483,10 @@
     .ax-meta small{display:block;opacity:.6;margin-top:4px}
     .ax-badge{display:inline-block;font-size:13px;border:1px solid rgba(255,255,255,.45);border-radius:99px;padding:7px 16px;margin-bottom:clamp(10px,2vw,24px)}
     .ax-title{font-family:var(--font-serif);font-weight:400;font-size:clamp(120px,30vw,460px);line-height:.82;letter-spacing:-.04em;margin:0 0 -.04em -.03em}
-    .ax-split{display:flex;flex-direction:column;justify-content:space-between;gap:clamp(60px,12vw,200px);min-height:clamp(260px,36vw,520px)}
-    .ax-h{font-size:clamp(26px,4.6vw,74px);font-weight:500;letter-spacing:-.045em;line-height:1.18;word-break:keep-all}
-    .ax-stat{display:flex;flex-direction:column;justify-content:space-between;gap:clamp(48px,9vw,150px);min-height:clamp(240px,26vw,400px)}
-    .ax-stat b{display:block;font-size:clamp(34px,4.4vw,72px);font-weight:400;letter-spacing:-.05em;line-height:1.05}
+    .ax-split{display:flex;flex-direction:column;justify-content:space-between;gap:clamp(24px,3vw,44px)}
+    .ax-h{font-size:clamp(22px,2.9vw,42px);font-weight:500;letter-spacing:-.045em;line-height:1.18;word-break:keep-all}
+    .ax-stat{display:flex;flex-direction:column;justify-content:space-between;gap:clamp(24px,3vw,44px);min-height:clamp(170px,15vw,230px)}
+    .ax-stat b{display:block;font-size:clamp(26px,2.8vw,42px);font-weight:400;letter-spacing:-.05em;line-height:1.05}
     .ax-stat b.sf{font-family:var(--font-serif);font-style:italic;letter-spacing:-.02em}
     .ax-stat p,.ax-p{font-size:15px;line-height:1.8;opacity:.78;word-break:keep-all}
     .ax-stat p{margin-top:16px;max-width:24em}.ax-p p+p{margin-top:1em}
@@ -494,9 +494,12 @@
     .ax-img.tall{aspect-ratio:3/4}
     .ax-side{display:flex;flex-direction:column;justify-content:space-between;gap:clamp(40px,8vw,120px)}
     .ax-h2{font-size:clamp(22px,2.4vw,36px);font-weight:600;letter-spacing:-.035em;line-height:1.3;margin-bottom:16px;word-break:keep-all}
-    .ax-h2.big{font-size:clamp(30px,4.6vw,72px);font-weight:500;line-height:1.12;margin:0}
-    .ax-split2{display:grid;grid-template-columns:1fr;gap:clamp(28px,4vw,56px);align-items:end;min-height:clamp(240px,30vw,440px)}
-    @media(min-width:900px){.ax-split2{grid-template-columns:1.2fr 1fr}}
+    .ax-h2.big{font-size:clamp(26px,3vw,46px);font-weight:500;line-height:1.12;margin:0}
+    .ax-split2{display:grid;grid-template-columns:1fr;gap:clamp(22px,3vw,44px);align-items:center}
+    .ax-split2 .ax-hand{margin:0;border-radius:14px;overflow:hidden;aspect-ratio:3/4;max-height:420px}
+    .ax-split2 .ax-hand img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+    .ax-split2:hover .ax-hand img{transform:scale(1.05)}
+    @media(min-width:900px){.ax-split2{grid-template-columns:1fr 1.1fr minmax(0,.75fr)}}
     .ax-facts{margin-top:clamp(20px,3vw,36px);display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;border-top:1px solid rgba(255,255,255,.25);padding-top:20px}
     .ax-facts dt{font-size:12px;opacity:.6}.ax-facts dd{font-size:15px;margin-top:4px}
     .ax-review{display:flex;justify-content:center;align-items:center;padding:clamp(24px,5vw,72px)}
@@ -606,6 +609,7 @@
         <h2 class="ax-h2 big">손에 쥐었을 때<br>읽히는 순서</h2>
         <div class="ax-p"><p>용기는 반투명 프로스트 유리라 인쇄 면적이 좁고, 배경이 비쳐 대비도 약합니다. 박스에서 쓴 물방울을 그대로 옮기면 오히려 지저분해지기 때문에, 용기에서는 사선 하나만 남기고 전부 덜어냈습니다.</p>
         <p>제품명 · 사선 · 용량 · 로고 순으로 시선이 떨어지도록 배치했습니다. 박스는 매대에서 멀리서 보이는 얼굴, 용기는 손 안에서 가까이 읽히는 얼굴입니다.</p></div>
+        <figure class="ax-hand"><img src="images/aout/04-hand.jpg" alt="손에 쥔 앰플 용기" loading="lazy"></figure>
       </section></div>
 
       <!-- 출시 -->
@@ -773,7 +777,7 @@
       var scene=new T.Scene(),cam=new T.PerspectiveCamera(32,1,.1,60);
       scene.environment=new T.PMREMGenerator(R).fromScene(new T.RoomEnvironment(),.03).texture;
       var key=new T.DirectionalLight(0xffffff,.9);key.position.set(3,5,4);scene.add(key);
-      var tex=new T.TextureLoader().load('images/aout/tex-front.jpg',function(){st.classList.add('is-3d');size();frame()});
+      var tex=new T.TextureLoader().load('images/aout/tex-front-2x.jpg',function(){st.classList.add('is-3d');size();frame()});
       tex.encoding=T.sRGBEncoding;tex.anisotropy=R.capabilities.getMaxAnisotropy();
       var W=1,H=2.37,D=1,green=new T.Color(0x488d5e).convertSRGBToLinear();
       var paper=function(map){return new T.MeshStandardMaterial({map:map||null,color:map?0xffffff:green,roughness:.8,metalness:0,envMapIntensity:.38})};
@@ -790,10 +794,10 @@
       (function(){var c=document.createElement('canvas');c.width=c.height=256;var x=c.getContext('2d'),g=x.createRadialGradient(128,128,10,128,128,128);g.addColorStop(0,'rgba(0,0,0,.55)');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(0,0,256,256);var sh=new T.Mesh(new T.PlaneGeometry(3.4,3.4),new T.MeshBasicMaterial({map:new T.CanvasTexture(c),transparent:true,depthWrite:false}));sh.rotation.x=-Math.PI/2;sh.position.y=-H/2-.03;scene.add(sh)})();
       // 키프레임: [진행도, 카메라 위치, 바라보는 점, 박스 회전Y, 용기 높이/옆, 옆 박스 등장]
       var K=[
-        {p:0,   c:[1.3,1.2,2.0],  t:[.05,.72,.4],  ry:.5,  bo:0,side:0},
+        {p:0,   c:[1.7,1.05,3.3],  t:[.05,.45,.2],  ry:.5,  bo:0,side:0},
         {p:.2,  c:[1.9,.7,4.2],   t:[0,0,0],       ry:.25, bo:0,side:0},
         {p:.42, c:[-2.5,.4,4.4],  t:[0,0,0],       ry:-.45,bo:0,side:0},
-        {p:.6,  c:[.9,-.15,2.3],  t:[0,0,.5],      ry:.3,  bo:0,side:0},
+        {p:.6,  c:[1.2,-.1,3.5],  t:[0,0,.3],      ry:.3,  bo:0,side:0},
         {p:.76, c:[0,.1,5.6],     t:[0,0,0],       ry:0,   bo:0,side:0},
         {p:1,   c:[0,.1,5.6],     t:[0,0,0],       ry:0,   bo:0,side:0}
       ];
