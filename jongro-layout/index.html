@@ -7,7 +7,7 @@
 <title>레이아웃 재현 — 빈대떡 프랜차이즈 웹사이트 (포트폴리오)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{--y:#f9cf30;--y2:#f5a623;--ink:#111;--mute:#777;--line:#e6e6e6;--soft:#f5f5f5}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
@@ -21,14 +21,14 @@ nav{display:flex;gap:26px;font-size:13px;font-weight:500;overflow-x:auto;white-s
 nav a{padding:6px 0;border-bottom:2px solid transparent}nav a.on{color:var(--y2);border-color:var(--y)}
 .page{display:none}.page.on{display:block}
 /* hero */
-.hero{position:relative;height:min(74vh,720px);min-height:380px;overflow:hidden;background:#222}
+.hero{position:relative;aspect-ratio:2000/1210;overflow:hidden;background:#222}
 .hero .s{position:absolute;inset:0;opacity:0;transition:opacity 1s}.hero .s.on{opacity:1}
 .hero .s img{width:100%;height:100%;object-fit:cover}
 .hero .box{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(40,40,40,.55);color:#fff;text-align:center;padding:26px 48px;width:min(760px,86%)}
 .hero .box small{display:block;font-size:12px;opacity:.9;margin-bottom:6px}
-.hero .box b{font-family:'Nanum Brush Script',cursive;font-weight:400;font-size:clamp(34px,5.4vw,64px);line-height:1.15;display:block}
-.hero .ar{position:absolute;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--y);font-size:34px;padding:12px}
-.hero .ar.l{left:8px}.hero .ar.r{right:8px}
+.hero .box b{font-family:'East Sea Dokdo',cursive;font-weight:400;font-size:clamp(38px,6vw,72px);line-height:1.05;display:block}
+.hero .ar{position:absolute;top:0;bottom:0;width:9%;background:none;border:0;padding:0}
+.hero .ar.l{left:0}.hero .ar.r{right:0}
 .hero .scr{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);color:#fff;font-size:10px;text-align:center}
 .hero .scr i{display:block;width:22px;height:36px;border:1.5px solid #fff;border-radius:12px;margin:0 auto 4px}
 .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
@@ -36,6 +36,7 @@ h2.t{font-size:clamp(24px,2.6vw,32px);margin:0 0 14px;font-weight:700}
 .rule{width:96px;height:3px;background:var(--y);border:0;margin:0 0 26px}
 .story{display:grid;grid-template-columns:1fr 240px;gap:48px;align-items:center;padding:clamp(56px,7vw,110px) 0}
 .story .lead{color:var(--y2);font-weight:500;font-size:16px;margin:0 0 14px}.story p{margin:0 0 6px;font-size:13.5px;max-width:640px}
+.story-pic{width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px}
 .pill{display:inline-block;margin-top:24px;background:var(--y);border:0;border-radius:40px 40px 40px 0;padding:11px 54px;font-size:12px}
 .comp{text-align:center;padding-bottom:clamp(56px,7vw,100px)}.comp .rule{margin:0 auto 26px}.comp>p{font-size:13px;max-width:720px;margin:0 auto 36px}
 .cards{background:var(--soft);padding:56px 24px;display:grid;grid-template-columns:repeat(3,minmax(0,200px));gap:28px;justify-content:center}
@@ -63,12 +64,15 @@ footer{background:var(--y);padding:56px 0 36px;font-size:12px}
 .items .hot{display:inline-block;background:#e0002a;color:#fff;font-size:9px;padding:1px 6px;margin-top:8px}
 .items small{display:block;color:var(--mute);font-size:11px;line-height:1.5;margin-top:4px}
 .stores{background:var(--soft);padding:36px 28px;display:grid;grid-template-columns:repeat(4,1fr);gap:40px 28px;margin-bottom:80px}
-.store .im{aspect-ratio:1/1.05;background:repeating-linear-gradient(135deg,#e4e4e4 0 12px,#ececec 12px 24px);display:grid;place-items:center;color:#aaa;font-size:11px;letter-spacing:.1em}
+.store .im{width:100%;aspect-ratio:1/1.02;object-fit:cover;display:block}
 .store div.tx{background:#fff;padding:10px 12px;margin:-18px 0 0 12px;position:relative;font-size:11px;color:var(--mute)}.store b{display:block;color:var(--ink);font-size:13px;margin-bottom:2px}
 .open-h{text-align:center;padding:52px 24px 30px}.open-h h1{font-weight:400;font-size:clamp(24px,3vw,36px);margin:0}.open-h p{margin:6px 0 0;font-size:13px}
 .zz{display:grid;grid-template-columns:1fr 1fr}.zz img{width:100%;height:100%;min-height:340px;object-fit:cover}
 .zz .tx{display:grid;place-content:center;text-align:center;padding:48px 32px}.zz h3{font-weight:400;font-size:24px;margin:0}.zz h4{font-weight:500;font-size:13px;margin:4px 0 18px}.zz p{font-size:12px;max-width:300px;margin:0 auto;color:#444}
 .zz .c{font-size:11px;color:var(--mute);margin-top:18px}
+.zz .stp{font-size:12px;letter-spacing:.16em;color:var(--y2);margin-bottom:14px;display:block}.zz .stp b{font-size:44px;letter-spacing:-.03em;font-weight:300;color:var(--ink);margin-left:6px;vertical-align:-6px}
+.zz p{font-size:13.5px;max-width:340px;line-height:1.75}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:22px}.chips span{border:1.5px solid var(--y);border-radius:99px;padding:6px 14px;font-size:13px;font-weight:500;background:#fffbe9}
 .zz.flip .tx{order:-1}
 @media(max-width:760px){
  .bar{gap:16px;padding:0 14px}.story{grid-template-columns:1fr}.story img{max-height:260px;object-fit:cover;width:100%}
@@ -88,13 +92,10 @@ footer{background:var(--y);padding:56px 0 36px;font-size:12px}
 <main>
 <section class="page" id="p-home">
  <div class="hero" id="hero">
-  <div class="s on"><img src="img/b-season.jpg" alt="전 모둠"></div>
-  <div class="s"><img src="img/b-jjigae.jpg" alt="찌개"></div>
-  <div class="s"><img src="img/b-fish.jpg" alt="생선구이"></div>
-  <div class="s"><img src="img/b-special.jpg" alt="볶음 요리"></div>
-  <div class="box"><small>슬로건 한 줄이 들어가는 자리</small><b>최상급 재료로 정직하게 조리하는<br>빈대떡</b></div>
-  <button class="ar l" id="hl" aria-label="이전">‹</button><button class="ar r" id="hr" aria-label="다음">›</button>
-  <div class="scr"><i></i>Scroll</div>
+  <div class="s on"><img src="img/hero-plate.jpg" alt="첫 화면 슬라이드 — 전 모둠"></div>
+  <div class="s"><img src="img/hero-green.jpg" alt="첫 화면 슬라이드 — 전"></div>
+  <div class="s"><img src="img/hero-cut.jpg" alt="첫 화면 슬라이드 — 재료 손질"></div>
+  <button class="ar l" id="hl" aria-label="이전 슬라이드"></button><button class="ar r" id="hr" aria-label="다음 슬라이드"></button>
  </div>
  <div class="wrap">
   <div class="story">
@@ -102,7 +103,7 @@ footer{background:var(--y);padding:56px 0 36px;font-size:12px}
     <p class="lead">브랜드가 어디서, 어떻게 시작했는지 한 문장으로 소개하는 자리입니다.</p>
     <p>브랜드 소개 본문이 들어가는 자리입니다. 재현본에서는 실제 브랜드 문구 대신 자리 표시 문장을 넣었습니다.</p>
     <a class="pill" href="#open">자세히 보기</a></div>
-   <img src="img/story.jpg" alt="철판 위에서 굽는 전">
+   <img class="story-pic" src="img/jeon2.jpg" alt="녹두빈대떡">
   </div>
   <div class="comp"><h2 class="t">Brand competence</h2><hr class="rule">
    <p>브랜드의 경쟁력을 세 가지로 요약해 보여주는 구간입니다.</p>
@@ -130,7 +131,7 @@ footer{background:var(--y);padding:56px 0 36px;font-size:12px}
 </section>
 
 <section class="page" id="p-stores">
- <div class="wrap ph-head"><h1>지점 위치</h1><hr class="rule"><p style="font-size:12px;color:#555;margin:0">지점 안내 문구가 들어가는 자리입니다.</p></div>
+ <div class="wrap ph-head"><h1>지점 위치</h1><hr class="rule"><p style="font-size:12px;color:#555;margin:0">제작 당시 지점 목록입니다. 전화번호는 넣지 않았습니다.</p></div>
  <div class="wrap"><div class="stores" id="storeBox"></div></div>
 </section>
 
@@ -175,10 +176,11 @@ const M=[
 ];
 $('#menuBox').innerHTML=M.map(c=>`<div class="cat"><img src="img/${c[1]}.jpg" alt="" loading="lazy"><h2>${c[0]}</h2></div><div class="items">${c[2].map(i=>`<figure><img src="img/${i[0]}.jpg" alt="${i[1]}" loading="lazy">${i[2]?'<span class="hot">추천 메뉴</span>':''}<figcaption>${i[1]}<small>메뉴 설명 자리</small></figcaption></figure>`).join('')}</div>`).join('');
 /* 지점 */
-$('#storeBox').innerHTML=Array.from({length:14},(_,i)=>`<div class="store"><div class="im">매장 외관 사진</div><div class="tx"><b>지점 ${String(i+1).padStart(2,'0')}</b>주소 자리<br>TEL 자리</div></div>`).join('');
+const ST=[["인천 연수점", "인천 연수구 샘말로 67-2"], ["인천 계산점", "인천 계양구 계산로 107"], ["인천 구월로데오점", "인천 남동구 인하로507번길 9 1층 105호"], ["인천 논현점", "인천 남동구 논현남로26번길"], ["인천 주안점", "인천 미추홀구 석정로 382-7"], ["인천 선학점", "인천 연수구 학나래로118번길 40 1층"], ["인천 검단신도시점", "인천광역시 서구 이음2로29 파라곤센트럴파크 상가 211호"], ["인천 간석점", "인천 남동구 남동대로916번길 3 스타빌딩 102호"], ["인천 용현점", "인천 미추홀구 토금중로 27"], ["경주 용강점", "경북 경주시 용황로 11길 15 104호"], ["김포구래점", "경기 김포시 김포한강9로 75번길 102"], ["김포 사우점", "경기 김포시 돌문로62번길 16"], ["인천 동춘점", "인천 연수구 맹고개로246번길 39-23 1층"], ["인천 아라점", "인천 서구 발산로5번길 12 1층"], ["인천 청학점", "인천 연수구 청명로3번길 8-16 1층 1호"], ["서울 방화점", "서울특별시 강서구 금낭화로 69 평화빌딩 1층 일부호"], ["인천 검단사거리먹거리타점", "인천 서구 검단로 455"], ["인천 관교점", "인천 남동구 문화로89번길 35"]];
+$('#storeBox').innerHTML=ST.map((t,i)=>`<div class="store"><img class="im" src="img/store${String(i+1).padStart(2,'0')}.jpg" alt="${t[0]} 매장 외관" loading="lazy"><div class="tx"><b>${t[0]}</b>${t[1]}</div></div>`).join('');
 /* 가맹 절차 */
-const O=[['open1','매장 입지 선정','내 매장이 될 곳을 찾아라!'],['open2','인테리어 공사 시작','내 매장으로 만들어 가보자!'],['open3','조리교육시작','조리교육이 시작됩니다!'],['open4','매장오픈!','멋진 대표님이 되시는 날입니다.']];
-$('#openBox').innerHTML=O.map((o,i)=>`<div class="zz${i%2?' flip':''}"><img src="img/${o[0]}.jpg" alt="" loading="lazy"><div class="tx"><h3>${o[1]}</h3><h4>${o[2]}</h4><p>단계 설명 문구가 들어가는 자리입니다.</p><div class="c">연락처 자리</div></div></div>`).join('');
+const O=[["open1", "매장 입지 선정", "내 매장이 될 곳을 찾아라!", "계약 전에 주소를 알려주면 본사 직원이 직접 방문해, 오픈할 수 있는 자리인지 확인해 드립니다.", ["계약 전 상담", "본사 방문 확인"]], ["open2", "인테리어 공사 시작", "내 매장으로 만들어 가보자!", "매장 계약이 끝나면 바로 공사에 들어갑니다. 간판 · 온수기 · 주방집기 같은 옵션은 별도입니다.", ["평당 180만원", "7 ~ 40일", "리모델링은 비용 절감"]], ["open3", "조리교육 시작", "더종로의 조리교육이 시작됩니다!", "공사 기간 동안 본사 교육장에서 조리의 기본 원리와 조리 철학을 배웁니다. 원팩이 아닌 직접 조리 방식입니다.", ["10일", "하루 8시간", "본사 교육장"]], ["open4", "매장 오픈!", "멋진 대표님이 되시는 날입니다.", "교육을 모두 마치면 매장을 엽니다. 오픈 뒤에도 본사가 뒤에서 돕습니다.", ["교육 이수 후 오픈", "본사 지원"]]];
+$('#openBox').innerHTML=O.map((o,i)=>`<div class="zz${i%2?' flip':''}"><img src="img/${o[0]}.jpg" alt="" loading="lazy"><div class="tx"><span class="stp">STEP <b>${String(i+1).padStart(2,'0')}</b></span><h3>${o[1]}</h3><h4>${o[2]}</h4><p>${o[3]}</p><div class="chips">${o[4].map(c=>`<span>${c}</span>`).join('')}</div></div></div>`).join('');
 /* 문의 버튼 */
 let tt;$('#fab').onclick=()=>{const t=$('#toast');t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2200);};
 }
