@@ -421,8 +421,9 @@
     .dk-sum .hl b{color:var(--dk-green-d);font-weight:700;font-size:1.08em}
     .dk-sum small{display:block;font-size:.88em;color:var(--dk-mute);margin-top:6px}
     .dk-roles{margin-top:auto;padding-top:clamp(36px,5vw,64px);display:grid;grid-template-columns:1fr;gap:18px}
-    @media(min-width:700px){.dk-roles{grid-template-columns:1.1fr 1.25fr 1fr;gap:0}
+    @media(min-width:700px){.dk-roles{display:flex;gap:0 22px}.dk-roles>div{flex:1 1 auto}
       .dk-roles>div+div{border-left:1px solid var(--dk-line);padding-left:18px}}
+    .dk-roles p span{white-space:nowrap}.dk-roles p span+span::before{content:"•";margin-right:.4em}
     .dk-roles b{font-size:12.5px;font-weight:600;color:var(--dk-mute)}
     .dk-roles p{font-size:12.5px;color:var(--dk-mute);line-height:1.8;margin-top:6px}
     .dk-cover-r{background:var(--dk-mint);display:flex;align-items:center;justify-content:center;padding:clamp(28px,4vw,56px) clamp(16px,2vw,28px)}
@@ -463,8 +464,8 @@
     .dk-bar em{grid-column:2/-1;font-style:normal;font-size:13.5px;color:var(--dk-green-d)}
     .dk-bar.gray .n,.dk-bar.gray em{color:var(--dk-mute)}
     .dk-bar.gray .t i{background:#a5a8ad}
-    .dk-foot{display:grid;grid-template-columns:1fr;gap:18px;margin-top:clamp(40px,6vw,84px);border-top:1px solid var(--dk-line);padding-top:22px}
-    @media(min-width:860px){.dk-foot{grid-template-columns:.9fr 2.3fr 2.4fr;gap:0}.dk-foot>div+div{border-left:1px solid var(--dk-line);padding-left:26px}}
+    .dk-foot{display:grid;grid-template-columns:1fr;gap:18px;margin-top:clamp(36px,5vw,64px);border-top:1px solid var(--dk-line);padding-top:26px}
+    @media(min-width:860px){.dk-foot{grid-template-columns:fit-content(320px) 1fr 1fr;gap:0}.dk-foot>div{padding-right:32px}.dk-foot>div:last-child{padding-right:0}.dk-foot>div+div{border-left:1px solid var(--dk-line);padding-left:32px}}
     .dk-foot b{font-size:12px;font-weight:700;color:var(--dk-mute)}
     .dk-foot p{font-size:13px;color:var(--dk-sub);margin-top:4px;line-height:1.7}
 
@@ -859,6 +860,83 @@
     .dk-dot::before{content:"";width:8px;height:8px;border-radius:99px;background:currentColor}.dk-dot.y{color:#b97b10}
     .dk-order{font-size:clamp(15px,1.4vw,19px);font-weight:600;text-align:center;margin-top:18px}.dk-order em{font-style:normal;color:var(--dk-green)}
   </style>
+<style id="eukee-1127">
+/* 표지 이미지: 아래가 잘린 화면을 배경으로 자연스럽게 */
+.dk-cover-r>img{-webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent)}
+/* 사용자 정의: 두 카드 높이 통일 */
+@media(min-width:940px){.dk.dark .dk-2.start{align-items:stretch}}
+.dk.dark .dk-2.start>.dk-card{display:flex;flex-direction:column}.dk.dark .dk-2.start .dk-in{flex:1}
+/* 배경: 두 사람 → 같은 첫 화면 */
+.dk-vs.bg3 .dk-shot{position:relative}
+.dk-vs.bg3 .dk-shot::after{content:"";position:absolute;inset:0;border-radius:20px;box-shadow:inset 0 0 0 3px var(--ring,transparent);transition:box-shadow .4s;pointer-events:none}
+.dk-vs.bg3[data-on=a]{--ring:#1fb445}.dk-vs.bg3[data-on=b]{--ring:#3b6ef5}.dk-vs.bg3[data-on=ab]{--ring:#111}
+.dk-vs.bg3>.dk-card{cursor:default;transition:opacity .45s,transform .9s cubic-bezier(.2,.8,.2,1),box-shadow .4s}
+.dk-vs.bg3[data-on]>.dk-card:not(.on){opacity:.4}
+.dk-vs.bg3>.dk-card.on{box-shadow:0 18px 40px rgba(0,0,0,.07)}
+@media(min-width:940px){.dk-vs.bg3>.dk-card.reveal:first-child{transform:translateX(-56px)}.dk-vs.bg3>.dk-card.reveal:last-child{transform:translateX(56px)}
+  .dk-vs.bg3>.dk-card.reveal.visible{transform:none}.dk-vs.bg3>.dk-card.reveal.visible.on{transform:translateY(-6px)}}
+/* 배경: 두 카드 → 같은 첫 화면으로 흐르는 선 */
+@media(min-width:940px){
+  .dk-vs.bg3{--g:clamp(40px,4.4vw,72px);column-gap:var(--g)}
+  .dk-vs.bg3>.dk-card{position:relative;overflow:visible}
+  .dk-vs.bg3>.dk-card::after,.dk-vs.bg3>.dk-card::before{content:"";position:absolute;top:50%;pointer-events:none;transition:opacity .4s}
+  .dk-vs.bg3>.dk-card::after{width:var(--g);height:2px;margin-top:-1px;opacity:.35;
+    background:repeating-linear-gradient(90deg,var(--lc) 0 6px,transparent 6px 12px);background-size:12px 2px;animation:vsflow .9s linear infinite}
+  .dk-vs.bg3>.dk-card::before{width:9px;height:9px;margin-top:-4.5px;border-radius:50%;background:var(--lc);opacity:0}
+  .dk-vs.bg3>.dk-card:first-child{--lc:#1fb445}.dk-vs.bg3>.dk-card:last-child{--lc:#3b6ef5}
+  .dk-vs.bg3>.dk-card:first-child::after{left:100%}
+  .dk-vs.bg3>.dk-card:last-child::after{right:100%;animation-direction:reverse}
+  .dk-vs.bg3>.dk-card:first-child::before{left:100%;animation:vsdotR 1.6s cubic-bezier(.5,0,.5,1) infinite}
+  .dk-vs.bg3>.dk-card:last-child::before{right:100%;animation:vsdotL 1.6s cubic-bezier(.5,0,.5,1) infinite}
+  .dk-vs.bg3>.dk-card.on::after{opacity:1;height:3px;margin-top:-1.5px;background-size:12px 3px}
+  .dk-vs.bg3>.dk-card.on::before{opacity:1}
+  .dk-vs.bg3 .dk-shot{transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+  .dk-vs.bg3[data-on] .dk-shot{transform:scale(1.025)}
+  .dk-vs.bg3[data-on] .dk-shot img{filter:none}
+}
+@keyframes vsflow{to{background-position:12px 0}}
+@keyframes vsdotR{0%{transform:translateX(0);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateX(var(--g));opacity:0}}
+@keyframes vsdotL{0%{transform:translateX(0);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateX(calc(-1 * var(--g)));opacity:0}}
+@media(prefers-reduced-motion:reduce){.dk-vs.bg3>.dk-card::after,.dk-vs.bg3>.dk-card::before{animation:none}}
+/* 채택하지 않은 안 */
+@media(min-width:860px){.dk-foot.dk-nx{grid-template-columns:repeat(3,auto);justify-content:start;row-gap:6px}.dk-foot.dk-nx>b{grid-column:1/-1}
+  .dk-foot.dk-nx>p{padding-right:28px}.dk-foot.dk-nx>p+p{border-left:1px solid var(--dk-line);padding-left:28px}.dk-foot.dk-nx>p:last-child{padding-right:0}}
+/* 해결 A·B: 가운데 화면 두 장, 양옆에 번호별 설명 */
+.sv2{--tint:#ecf6ee;--pt:#1fb445;position:relative;display:grid;grid-template-columns:1fr;gap:24px;margin-top:clamp(32px,4.4vw,56px);
+  background:var(--tint);border-radius:28px;padding:clamp(20px,2.6vw,40px)}
+.sv2.blue{--tint:#edf2fd;--pt:#3b6ef5}
+@media(min-width:1000px){.sv2{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:clamp(16px,2.2vw,40px)}}
+.sv2-c{display:grid;gap:10px;align-content:center}
+.sv2 .sv-t{word-break:keep-all;padding:14px 16px;border-radius:16px;cursor:pointer;outline:none;transition:background .2s,opacity .2s,box-shadow .2s}
+.sv2 .sv-t+.sv-t{border-top:0;padding-top:14px}
+.sv2 .sv-t h3{margin-top:4px;font-size:clamp(17px,1.35vw,20px);text-wrap:balance}.sv2 .sv-t p{margin-top:6px;font-size:14px}
+.sv2 .sv-t.on{background:#fff;box-shadow:0 10px 28px rgba(20,40,25,.06)}
+.sv2[data-on] .sv-t:not(.on){opacity:.42}
+.sv2-asis{display:flex;flex-direction:column-reverse;gap:12px;margin-top:18px;padding:14px 16px 16px;border:1.5px dashed rgba(0,0,0,.16);border-radius:14px;transition:opacity .2s;position:relative}
+.sv2[data-on] .sv2-asis{opacity:.42}
+.sv2-asis img{width:auto;max-width:100%;max-height:300px;height:auto;display:block;align-self:center;transform-origin:50% 100%;transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s;cursor:zoom-in;position:relative;z-index:1}
+.sv2-asis img:hover{transform:scale(1.7);z-index:5}
+.sv2-asis p{word-break:keep-all;font-size:13px;line-height:1.6;color:var(--dk-sub);margin-top:2px}
+.sv2-r{display:flex;gap:clamp(12px,1.4vw,22px);justify-content:center;align-items:flex-start}
+.sv2-ph{margin:0;min-width:0;flex:0 0 auto;height:min(58vh,520px);aspect-ratio:393/852;cursor:pointer;transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .22s}
+.sv2-fr{position:relative;height:100%;border:7px solid #151515;border-radius:46px;overflow:hidden;background:#fff;box-shadow:0 24px 50px rgba(20,30,25,.14)}
+.sv2-fr::before{content:"";position:absolute;z-index:3;top:9px;left:50%;width:29%;height:3.6%;transform:translateX(-50%);background:#151515;border-radius:99px}
+.scr{position:relative;transform:translateY(var(--oy,0));transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.scr>img{display:block;width:100%;height:auto}
+.hl{position:absolute;border-radius:12px;pointer-events:none;background-repeat:no-repeat;background-color:transparent;box-shadow:0 0 0 999px rgba(20,20,20,0);transition:box-shadow .22s,transform .3s cubic-bezier(.2,.9,.3,1.2)}
+.hl svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.hl:not(.on){background-image:none!important}
+.hl rect{fill:none;stroke:var(--pt);stroke-width:3.5;transition:stroke-dashoffset .42s cubic-bezier(.5,0,.2,1)}
+.hl b{position:absolute;left:-9px;top:-11px;width:26px;height:26px;border-radius:50%;background:var(--pt);color:#fff;font-size:11px;font-weight:700;
+  display:grid;place-items:center;box-shadow:0 0 0 3px #fff;transform:scale(0);transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.hl.on{transform:scale(1.045);z-index:2;box-shadow:0 0 0 999px rgba(20,20,20,.52),0 16px 34px rgba(0,0,0,.35)}
+.hl.on rect{stroke-dashoffset:0!important}
+.hl.on b{transform:scale(1);transition-delay:.28s}
+.sv2[data-on] .sv2-ph:not(.on){opacity:.45}
+.sv2-ph.on{transform:translateY(-10px)}
+@media(max-width:999px){.sv2-r{order:-1}.sv2-ph{height:auto;flex:1 1 0;max-width:240px}.sv2-fr{border-width:5px;border-radius:32px}}
+@media(prefers-reduced-motion:reduce){.dk-vs.bg3>.dk-card.reveal{transform:none!important}}
+</style>
 </head>
 <body>
 
@@ -879,7 +957,7 @@
       <div class="h1w"><h1 class="reveal">오래 보는 사람과 바로 나가는 사람에게,<br>홈은 같은 화면만 보여줬습니다.</h1></div>
       <p class="dk-lead reveal">인테리어는 금액이 크고 자주 하지 않는 결정이기에, 서비스에 들어오는 사람마다 준비된 정도가 달랐습니다. 하지만 기존의 홈은 모든 사용자에게 동일한 첫 화면을 보여줬고, 견적 신청까지 가는 흐름도 한 가지뿐이었습니다.</p>
       <dl class="dk-sum reveal"><div><dt>발견</dt><dd>반복 탐색 집단(기준 충족 524명)은 신청 직전에, 광고로 들어온 초기 방문 흐름은 첫 화면에서 멈춤</dd></div><div><dt>해결</dt><dd>같은 홈에 비교카드 및 취향 선택지를 제공하고, 신청 전 예상 비용, 상담, 절차 안내 및 새 포트폴리오 알림</dd></div><div class="hl"><dt>관찰</dt><dd><b>월 평균 시공 상담 신청 3.9건 → 6.3건</b><small>개편 전 9개월 / 후 4개월 · 영업팀 상담 DB · 유입 구성과 결제 조건도 함께 바뀜</small></dd></div></dl>
-      <div class="dk-roles reveal"><div><b class="c-g">내가 주도한 것</b><p>GA 행동 데이터 분석 • 행동 기준 집단 정의<br>• 관여도별 진입 구조 설계 • 핵심 화면 제작</p></div><div><b>협업하여 결정한 것</b><p>PL 노출 위치·우선순위 조율 • 개발 구현 범위 협의<br>• 영업팀 집계 데이터 협의</p></div><div><b>하지 않은 것</b><p>최종 KPI 승인 • GA 이벤트 구현<br>• 영업 운영 정책</p></div></div>
+      <div class="dk-roles reveal"><div><b class="c-g">내가 주도한 것</b><p><span>GA 행동 데이터 분석</span> <span>행동 기준 집단 정의</span> <span>관여도별 진입 구조 설계</span> <span>핵심 화면 제작</span></p></div><div><b>협업하여 결정한 것</b><p><span>PL 노출 위치·우선순위 조율</span> <span>개발 구현 범위 협의</span> <span>영업팀 집계 데이터 협의</span></p></div><div><b>하지 않은 것</b><p><span>최종 KPI 승인</span> <span>GA 이벤트 구현</span> <span>영업 운영 정책</span></p></div></div>
     </div>
     <div class="dk-cover-r" style="background:#e7f2e9"><img class="reveal" src="images/deck2/home-cover.jpg" alt="반복 탐색하는 사용자용 스타일 비교 카드와 첫 방문 사용자용 인테리어 취향 선택 화면"></div>
   </section>
@@ -901,21 +979,21 @@
     <div class="wrap">
       <p class="dk-k reveal">가설</p>
       <h2 class="reveal">두 집단이 멈춘 자리에, 서로 다른 화면을 두기로 했습니다.</h2>
-      <div class="dk-hy reveal"><span class="who dk-bd ok">반복 탐색 집단</span><div class="dk-card"><span class="dk-cap">멈춘 지점</span><p>깊게 본 뒤, 신청 직전에 멈춤</p></div><span class="ar">→</span><div class="dk-card fill"><span class="dk-cap" style="color:rgba(255,255,255,.8)">바꾼 것</span><p>비교 카드 · 예상 비용 범위 · 상담 4단계 안내</p></div><span class="ar">→</span><div class="dk-card"><span class="dk-cap">기대 행동</span><p>비용과 절차를 알고 신청한다</p></div></div><p class="dk-hyn reveal"><b>주 지표</b> · 방문견적 신청 전환율 (개편 전 기준값 미확보) → 해결 A<br><b>보조 지표</b> · 상담 후 취소 · 예상가 관련 불만 · 영업팀 부담 (나빠지는지 함께 볼 지표로 정했지만, 측정은 다음 검증 계획으로 남음)</p><div class="dk-hy reveal"><span class="who dk-bd b">초기 방문 집단</span><div class="dk-card"><span class="dk-cap">멈춘 지점</span><p>첫 방문 후, 다음 행동 없이 나감</p></div><span class="ar">→</span><div class="dk-card fill blue"><span class="dk-cap" style="color:rgba(255,255,255,.8)">바꾼 것</span><p>취향 4택으로 첫 기준 · 새 포트폴리오 알림 구독</p></div><span class="ar">→</span><div class="dk-card"><span class="dk-cap">기대 행동</span><p>다시 방문해 탐색을 이어간다</p></div></div><p class="dk-hyn reveal"><b>주 지표</b> · 광고 첫 유입 재방문율 11.9% (51/429명, GA 23.10.01~24.01.31) — 배포 전후가 섞인 기간이라 개편 전 기준값으로 쓰지 않음 → 해결 B<br><b>보조 지표</b> · 수신 거부 · 알림 클릭 직후 이탈 (나빠지는지 함께 볼 지표로 정했지만, 측정은 다음 검증 계획으로 남음)</p><div class="dk-foot reveal"><div><b class="c-g">채택하지 않은 안</b><p>×  A/B 테스트 — 그룹당 약 44,500명 필요, 당시 트래픽으로 약 7.2년</p></div><div><b>&nbsp;</b><p>×  시공 전후 사진 노출 — 시공 전 사진 확보 불가</p></div><div><b>&nbsp;</b><p>×  실측비 폐지 — 매출 구조 유지, 결제 순서만 변경</p></div></div>
+      <div class="dk-hy reveal"><span class="who dk-bd ok">반복 탐색 집단</span><div class="dk-card"><span class="dk-cap">멈춘 지점</span><p>깊게 본 뒤, 신청 직전에 멈춤</p></div><span class="ar">→</span><div class="dk-card fill"><span class="dk-cap" style="color:rgba(255,255,255,.8)">바꾼 것</span><p>비교 카드 · 예상 비용 범위 · 상담 4단계 안내</p></div><span class="ar">→</span><div class="dk-card"><span class="dk-cap">기대 행동</span><p>비용과 절차를 알고 신청한다</p></div></div><p class="dk-hyn reveal"><b>주 지표</b> · 방문견적 신청 전환율 (개편 전 기준값 미확보) → 해결 A<br><b>보조 지표</b> · 상담 후 취소 · 예상가 관련 불만 · 영업팀 부담 (나빠지는지 함께 볼 지표로 정했지만, 측정은 다음 검증 계획으로 남음)</p><div class="dk-hy reveal"><span class="who dk-bd b">초기 방문 집단</span><div class="dk-card"><span class="dk-cap">멈춘 지점</span><p>첫 방문 후, 다음 행동 없이 나감</p></div><span class="ar">→</span><div class="dk-card fill blue"><span class="dk-cap" style="color:rgba(255,255,255,.8)">바꾼 것</span><p>취향 4택으로 첫 기준 · 새 포트폴리오 알림 구독</p></div><span class="ar">→</span><div class="dk-card"><span class="dk-cap">기대 행동</span><p>다시 방문해 탐색을 이어간다</p></div></div><p class="dk-hyn reveal"><b>주 지표</b> · 광고 첫 유입 재방문율 11.9% (51/429명, GA 23.10.01~24.01.31) — 배포 전후가 섞인 기간이라 개편 전 기준값으로 쓰지 않음 → 해결 B<br><b>보조 지표</b> · 수신 거부 · 알림 클릭 직후 이탈 (나빠지는지 함께 볼 지표로 정했지만, 측정은 다음 검증 계획으로 남음)</p><div class="dk-foot dk-nx reveal"><b class="c-g">채택하지 않은 안</b><p>×  A/B 테스트 — 그룹당 약 44,500명 필요, 당시 트래픽으로 약 7.2년</p><p>×  시공 전후 사진 노출 — 시공 전 사진 확보 불가</p><p>×  실측비 폐지 — 매출 구조 유지, 결제 순서만 변경</p></div>
     </div>
   </section>
   <section class="dk">
     <div class="wrap">
       <p class="dk-k reveal">해결 A · 반복 탐색 집단</p>
       <h2 class="reveal">신청 직전에 멈춘 사람에게, 비교와 비용을 먼저 보여주었습니다.</h2>
-      <p class="dk-sub reveal">조율 · 홈을 집단별로 나누는 대신, 2개월 안 배포를 위해 같은 홈의 배너 영역에 두 해결안을 모두 노출했습니다.</p><div class="sv"><div class="sv-asis reveal"><span class="sv-k">기존</span><div class="sv-st sm"><img src="images/deck2/home-a-asis.jpg" width="284" height="318" alt="기존 화면" loading="lazy"></div><p>정보 6단계를 입력한 뒤에야 실측비 10만 원 선결제를 알 수 있었음</p></div><div class="sv-p reveal"><div class="sv-st"><img src="images/deck2/home-a-p1.jpg" width="336" height="702" alt="비교 정보를 카드 한 장에" loading="lazy"></div><div class="sv-t"><span class="dk-no">01</span><h3>비교 정보를 카드 한 장에</h3><p>평형·비용·유사도를 카드 안 같은 위치에 두어, 상세에 들어가기 전에 후보를 좁힙니다.</p></div></div><div class="sv-p reveal"><div class="sv-st"><img src="images/deck2/home-a-p2.jpg" width="356" height="702" alt="예상 비용을 진입점에서 먼저" loading="lazy"></div><div class="sv-t"><span class="dk-no">02</span><h3>예상 비용을 진입점에서 먼저</h3><p>저장한 스타일 기반 유사 포트폴리오 21건으로 예산 범위를 보여주고, '실제 견적은 상담 후 확정'을 함께 표기했습니다.</p></div><div class="sv-t"><span class="dk-no">03</span><h3>상담 4단계를 신청 전에</h3><p>신청 → 일정 조율 → 실측 → 견적서 순서를 보여주고, 실측비 결제는 상담 이후로 옮겼습니다.</p></div></div></div>
+      <p class="dk-sub reveal">조율 · 홈을 집단별로 나누는 대신, 2개월 안 배포를 위해 같은 홈의 배너 영역에 두 해결안을 모두 노출했습니다.</p><div class="sv2"><div class="sv2-c l reveal"><div class="sv-t" data-i="0" tabindex="0"><span class="dk-no">01</span><h3>비교 정보를 카드 한 장에</h3><p>평형·비용·유사도를 카드 안 같은 위치에 두어, 상세에 들어가기 전에 후보를 좁힙니다.</p></div><div class="sv2-asis"><img src="images/deck2/home-a-asis-2.webp" width="720" height="896" alt="기존 화면" loading="lazy"><div><span class="sv-k">기존</span><p>정보 6단계를 입력한 뒤에야 실측비 10만 원 선결제를 알 수 있었음</p></div></div></div><div class="sv2-r reveal"><figure class="sv2-ph" data-i="0"><div class="sv2-fr"><div class="scr" data-oy="0.3882"><img src="images/deck2/home-a-s1.jpg" width="554" height="2576" alt="비교 정보를 카드 한 장에" loading="lazy"><i class="hl" data-k="0" style="left:2.17%;top:52.02%;width:95.67%;height:19.41%"><svg aria-hidden="true"><rect/></svg><b>01</b></i></div></div></figure><figure class="sv2-ph" data-i="1"><div class="sv2-fr"><div class="scr" data-oy="0.0000"><img src="images/deck2/home-a-s2.jpg" width="670" height="2576" alt="예상 비용을 진입점에서 먼저" loading="lazy"><i class="hl" data-k="1" style="left:2.09%;top:11.34%;width:95.82%;height:22.28%"><svg aria-hidden="true"><rect/></svg><b>02</b></i><i class="hl" data-k="2" style="left:2.09%;top:35.91%;width:95.82%;height:15.72%"><svg aria-hidden="true"><rect/></svg><b>03</b></i></div></div></figure></div><div class="sv2-c r reveal"><div class="sv-t" data-i="1" tabindex="0"><span class="dk-no">02</span><h3>예상 비용을 진입점에서 먼저</h3><p>저장한 스타일 기반 유사 포트폴리오 21건으로 예산 범위를 보여주고, '실제 견적은 상담 후 확정'을 함께 표기했습니다.</p></div><div class="sv-t" data-i="1" tabindex="0"><span class="dk-no">03</span><h3>상담 4단계를 신청 전에</h3><p>신청 → 일정 조율 → 실측 → 견적서 순서를 보여주고, 실측비 결제는 상담 이후로 옮겼습니다.</p></div></div></div>
     </div>
   </section>
   <section class="dk">
     <div class="wrap">
       <p class="dk-k reveal">해결 B · 초기 방문 집단</p>
       <h2 class="reveal">첫 화면에서 나가던 사람에게, 고를 기준과 다시 올 이유를 주었습니다.</h2>
-      <div class="sv blue"><div class="sv-asis reveal"><span class="sv-k">기존</span><div class="sv-st sm"><img src="images/deck2/home-b-asis.jpg" width="284" height="318" alt="기존 화면" loading="lazy"></div><p>같은 목록을 모든 사용자에게 동일하게 노출</p></div><div class="sv-p reveal"><div class="sv-st"><img src="images/deck2/home-b-p1.jpg" width="336" height="702" alt="취향 4택으로 첫 기준" loading="lazy"></div><div class="sv-t"><span class="dk-no" style="color:#3b6ef5">01</span><h3>취향 4택으로 첫 기준</h3><p>고를 기준이 없던 첫 화면에서 인테리어 스타일 4가지(내부 태그 분포 상위 4개)를 먼저 고르게 했습니다. 고르지 않으면 아래 목록으로 계속 탐색할 수 있습니다.</p></div></div><div class="sv-p reveal"><div class="sv-st"><img src="images/deck2/home-b-p2.jpg" width="356" height="702" alt="떠나기 전 알림 구독" loading="lazy"></div><div class="sv-t"><span class="dk-no" style="color:#3b6ef5">02</span><h3>떠나기 전 알림 구독</h3><p>시공 사례를 보던 흐름에 '새 포트폴리오 알림받기' 배너를 두어, 저장·신청 없이도 새 포트폴리오를 카카오 알림톡으로 받게 했습니다.</p><small>발송은 월 3회로 제한, 신청·상담 중인 사람은 제외</small></div></div></div>
+      <div class="sv2 blue"><div class="sv2-c l reveal"><div class="sv-t" data-i="0" tabindex="0"><span class="dk-no" style="color:#3b6ef5">01</span><h3>취향 4택으로 첫 기준</h3><p>고를 기준이 없던 첫 화면에서 인테리어 스타일 4가지(내부 태그 분포 상위 4개)를 먼저 고르게 했습니다. 고르지 않으면 아래 목록으로 계속 탐색할 수 있습니다.</p></div><div class="sv2-asis"><img src="images/deck2/home-b-asis-2.webp" width="720" height="1382" alt="기존 화면" loading="lazy"><div><span class="sv-k">기존</span><p>같은 목록을 모든 사용자에게 동일하게 노출</p></div></div></div><div class="sv2-r reveal"><figure class="sv2-ph" data-i="0"><div class="sv2-fr"><div class="scr" data-oy="0.0000"><img src="images/deck2/home-b-s.jpg" width="698" height="2576" alt="취향 4택으로 첫 기준" loading="lazy"><i class="hl" data-k="0" style="left:2.29%;top:11.84%;width:95.42%;height:26.98%"><svg aria-hidden="true"><rect/></svg><b>01</b></i></div></div></figure><figure class="sv2-ph" data-i="1"><div class="sv2-fr"><div class="scr" data-oy="0.4127"><img src="images/deck2/home-b-s.jpg" width="698" height="2576" alt="떠나기 전 알림 구독" loading="lazy"><i class="hl" data-k="1" style="left:2.58%;top:91.07%;width:94.84%;height:6.68%"><svg aria-hidden="true"><rect/></svg><b>02</b></i></div></div></figure></div><div class="sv2-c r reveal"><div class="sv-t" data-i="1" tabindex="0"><span class="dk-no" style="color:#3b6ef5">02</span><h3>떠나기 전 알림 구독</h3><p>시공 사례를 보던 흐름에 '새 포트폴리오 알림받기' 배너를 두어, 저장·신청 없이도 새 포트폴리오를 카카오 알림톡으로 받게 했습니다.</p><small>발송은 월 3회로 제한, 신청·상담 중인 사람은 제외</small></div></div></div>
     </div>
   </section>
   <section class="dk">
@@ -1125,6 +1203,40 @@ function run(){clearTimeout(tm);if(!auto)return;s.classList.add('auto');tm=setTi
 function stop(){auto=false;clearTimeout(tm);s.classList.remove('auto')}
 bs.forEach(function(b,k){b.addEventListener('click',function(){stop();go(k)})});
 new IntersectionObserver(function(es){if(es[0].isIntersecting){go(i);run()}else{clearTimeout(tm);s.classList.remove('auto')}},{threshold:.4}).observe(s);go(0)})})();
+</script>
+<script>
+(function(){
+  function demo(el,steps,set,ms){var stop=false;['pointerenter','pointermove','focusin'].forEach(function(t){el.addEventListener(t,function(){stop=true})});
+    new IntersectionObserver(function(es,ob){es.forEach(function(e){if(!e.isIntersecting)return;ob.disconnect();var k=0;
+      (function nx(){if(stop)return;if(k<steps.length){set(steps[k++]);setTimeout(nx,ms)}else set(null)})();})},{threshold:.5}).observe(el);}
+  document.querySelectorAll('.dk-vs.bg3').forEach(function(v){
+    var cs=[].slice.call(v.children).filter(function(c){return c.classList.contains('dk-card')});
+    function set(t){cs.forEach(function(c,i){c.classList.toggle('on',t==='ab'||t===(i?'b':'a'))});if(t)v.dataset.on=t;else delete v.dataset.on}
+    cs.forEach(function(c,i){var t=i?'b':'a';c.addEventListener('pointerenter',function(){set(t)});c.addEventListener('pointerleave',function(){set(null)});
+      c.addEventListener('click',function(){set(v.dataset.on===t?null:t)})});
+    setTimeout(function(){demo(v,['a','b','ab'],set,1600)},900);
+  });
+  document.querySelectorAll('.sv2').forEach(function(v){
+    var li=[].slice.call(v.querySelectorAll('.sv-t[data-i]')),ph=[].slice.call(v.querySelectorAll('.sv2-ph')),hl=[].slice.call(v.querySelectorAll('.hl'));
+    var ro=new ResizeObserver(function(es){es.forEach(function(e){var b=e.target,w=b.clientWidth,h=b.clientHeight,r=Math.min(12,h/2),sv=b.querySelector('svg'),rc=sv.querySelector('rect');
+      sv.setAttribute('viewBox','0 0 '+w+' '+h);rc.setAttribute('x',1.5);rc.setAttribute('y',1.5);rc.setAttribute('width',Math.max(0,w-3));rc.setAttribute('height',Math.max(0,h-3));rc.setAttribute('rx',r);
+      var P=2*(w+h-6)-(8-2*Math.PI)*r;rc.style.strokeDasharray=P;rc.style.strokeDashoffset=P;})});
+    hl.forEach(function(b){ro.observe(b);var st=b.style,L=parseFloat(st.left),T=parseFloat(st.top),W=parseFloat(st.width),H=parseFloat(st.height),src=b.parentNode.querySelector('img').getAttribute('src');
+      st.backgroundImage='url("'+src+'")';st.backgroundSize=(10000/W)+'% '+(10000/H)+'%';st.backgroundPosition=(L/(100-W)*100)+'% '+(T/(100-H)*100)+'%';});
+    var pr=new ResizeObserver(function(es){es.forEach(function(e){var sc=e.target.querySelector('.scr'),im=sc.querySelector('img'),
+      ih=e.target.clientWidth*im.height/im.width||sc.clientHeight,vh=e.target.clientHeight,y=Math.max(0,Math.min(+sc.dataset.oy*ih,ih-vh));sc.style.transform='translateY('+(-y)+'px)'})});
+    ph.forEach(function(f){pr.observe(f.querySelector('.sv2-fr'))});
+    function set(n){li.forEach(function(x){x.classList.toggle('on',n!==null&&x===li[n])});
+      var p=n===null?null:li[n].dataset.i;ph.forEach(function(x){x.classList.toggle('on',p!==null&&x.dataset.i===p)});
+      hl.forEach(function(x){x.classList.toggle('on',n!==null&&+x.dataset.k===n)});
+      if(n===null)delete v.dataset.on;else v.dataset.on=n}
+    li.forEach(function(x,n){x.addEventListener('pointerenter',function(){set(n)});x.addEventListener('focus',function(){set(n)});x.addEventListener('click',function(){set(n)})});
+    ph.forEach(function(x){x.querySelectorAll('.hl').forEach(function(b){var k=+b.dataset.k;x.addEventListener('pointermove',function(e){var r=b.getBoundingClientRect();if(e.clientY>=r.top-20&&e.clientY<=r.bottom+20&&+v.dataset.on!==k)set(k)})});
+      x.addEventListener('pointerenter',function(){for(var n=0;n<li.length;n++)if(li[n].dataset.i===x.dataset.i){set(n);break}})});
+    v.addEventListener('pointerleave',function(){set(null)});
+    demo(v,li.map(function(_,n){return n}),set,1500);
+  });
+})();
 </script>
 </body>
 </html>
