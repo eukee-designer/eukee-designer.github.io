@@ -560,9 +560,9 @@
     .card:hover .card-image { --lift: -8px; }
     /* 한 장에 호버하면 나머지는 뒤로 물러난다 */
     .card { transition: opacity .45s ease, filter .45s ease, transform .45s cubic-bezier(.2,.8,.2,1); }
-    .grid.is-hovering .card:not(:hover) { opacity: .35; filter: blur(6px) saturate(.6); }
-    @media (hover: none) { .grid.is-hovering .card:not(:hover) { opacity: 1; filter: none; } }
-    @media (prefers-reduced-motion: reduce) { .grid.is-hovering .card:not(:hover) { filter: none; opacity: .5; } }
+    .grid.is-hovering .card:not(.is-hot) { opacity: .35; filter: blur(6px) saturate(.6); }
+    @media (hover: none) { .grid.is-hovering .card:not(.is-hot) { opacity: 1; filter: none; } }
+    @media (prefers-reduced-motion: reduce) { .grid.is-hovering .card:not(.is-hot) { filter: none; opacity: .5; } }
     .card-image img { width: 100%; height: 100%; object-fit: cover; }
     .placeholder {
       width: 100%; height: 100%;
@@ -1172,21 +1172,21 @@
           </a>
           <a href="projects/project-04.html" class="card reveal" data-cat="uiux">
             <div class="card-image">
-              <div class="placeholder ph-4">04</div>
+              <img src="projects/images/jongro/card-cover.jpg" alt="더종로빈대떡 브랜드 웹사이트">
             </div>
             <div class="card-meta">
               <span class="card-text">
-                <span class="card-title">Project Four</span>
-                <span class="card-tag">Web Design</span>
+                <span class="card-title">더종로빈대떡 브랜드 웹사이트</span>
+                <span class="card-tag">Web Design · Wix</span>
               </span>
               <span class="card-arrow" aria-hidden="true">↘</span>
             </div>
             <div class="card-roles"><div>
-              <div class="roles-head">WEB DESIGN</div>
+              <div class="roles-head">THE JONGRO BINDAETTEOK · WEB</div>
               <ul class="roles-list">
                 <li><span class="arw">→</span> WEB DESIGN</li>
-                <li><span class="arw">→</span> ART DIRECTION</li>
-                <li><span class="arw">→</span> VISUAL SYSTEM</li>
+                <li><span class="arw">→</span> SITE STRUCTURE</li>
+                <li><span class="arw">→</span> WIX BUILD</li>
               </ul>
             </div></div>
           </a>
@@ -1848,8 +1848,17 @@
     (function () {
       const grid = document.getElementById('workGrid');
       if (!grid) return;
-      grid.addEventListener('pointerenter', () => grid.classList.add('is-hovering'), true);
-      grid.addEventListener('pointerleave', () => grid.classList.remove('is-hovering'));
+      // 카드 위에 올라갔을 때만 켠다 — 카드 사이 빈 곳에서는 전부 선명하게
+      let hot = null;
+      function set(card) {
+        if (card === hot) return;
+        if (hot) hot.classList.remove('is-hot');
+        hot = card;
+        if (hot) hot.classList.add('is-hot');
+        grid.classList.toggle('is-hovering', !!hot);
+      }
+      grid.addEventListener('pointerover', e => { if (e.pointerType !== 'touch') set(e.target.closest('.card')); });
+      grid.addEventListener('pointerleave', () => set(null));
     })();
 
     // 스크롤 reveal

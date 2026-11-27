@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>레이아웃 재현 — 빈대떡 프랜차이즈 웹사이트 (포트폴리오)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--y:#f9cf30;--y2:#f5a623;--ink:#111;--mute:#777;--line:#e6e6e6;--soft:#f5f5f5}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:'Noto Sans KR',system-ui,sans-serif;color:var(--ink);background:#fff;font-size:15px;line-height:1.7}
+img{display:block;max-width:100%}a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.note{background:#111;color:#fff;font-size:12px;text-align:center;padding:7px 12px;letter-spacing:.02em}
+header{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line)}
+.bar{max-width:1280px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;gap:36px}
+.logo{border:1.5px dashed #bbb;color:#999;font-size:11px;letter-spacing:.14em;padding:8px 14px;border-radius:4px;white-space:nowrap}
+nav{display:flex;gap:26px;font-size:13px;font-weight:500;overflow-x:auto;white-space:nowrap}
+nav a{padding:6px 0;border-bottom:2px solid transparent}nav a.on{color:var(--y2);border-color:var(--y)}
+.page{display:none}.page.on{display:block}
+/* hero */
+.hero{position:relative;height:min(74vh,720px);min-height:380px;overflow:hidden;background:#222}
+.hero .s{position:absolute;inset:0;opacity:0;transition:opacity 1s}.hero .s.on{opacity:1}
+.hero .s img{width:100%;height:100%;object-fit:cover}
+.hero .box{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(40,40,40,.55);color:#fff;text-align:center;padding:26px 48px;width:min(760px,86%)}
+.hero .box small{display:block;font-size:12px;opacity:.9;margin-bottom:6px}
+.hero .box b{font-family:'Nanum Brush Script',cursive;font-weight:400;font-size:clamp(34px,5.4vw,64px);line-height:1.15;display:block}
+.hero .ar{position:absolute;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--y);font-size:34px;padding:12px}
+.hero .ar.l{left:8px}.hero .ar.r{right:8px}
+.hero .scr{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);color:#fff;font-size:10px;text-align:center}
+.hero .scr i{display:block;width:22px;height:36px;border:1.5px solid #fff;border-radius:12px;margin:0 auto 4px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+h2.t{font-size:clamp(24px,2.6vw,32px);margin:0 0 14px;font-weight:700}
+.rule{width:96px;height:3px;background:var(--y);border:0;margin:0 0 26px}
+.story{display:grid;grid-template-columns:1fr 240px;gap:48px;align-items:center;padding:clamp(56px,7vw,110px) 0}
+.story .lead{color:var(--y2);font-weight:500;font-size:16px;margin:0 0 14px}.story p{margin:0 0 6px;font-size:13.5px;max-width:640px}
+.pill{display:inline-block;margin-top:24px;background:var(--y);border:0;border-radius:40px 40px 40px 0;padding:11px 54px;font-size:12px}
+.comp{text-align:center;padding-bottom:clamp(56px,7vw,100px)}.comp .rule{margin:0 auto 26px}.comp>p{font-size:13px;max-width:720px;margin:0 auto 36px}
+.cards{background:var(--soft);padding:56px 24px;display:grid;grid-template-columns:repeat(3,minmax(0,200px));gap:28px;justify-content:center}
+.cards div{background:#fff;padding:22px 16px;font-size:12px}.cards svg{width:44px;height:44px;margin:0 auto 34px;display:block;stroke:var(--y2);fill:none;stroke-width:1.6}
+.cards b{display:block;font-size:14px;margin-bottom:8px}
+.ceo{display:grid;grid-template-columns:1fr 1.2fr;align-items:center;gap:48px;margin-bottom:clamp(56px,7vw,100px)}
+.ceo .pic{position:relative}.ceo .pic img{width:100%;aspect-ratio:1;object-fit:cover}
+.ceo .pic h3{position:absolute;left:28px;top:50%;margin:0;color:#fff;font-size:24px;line-height:1.7;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.ceo .pic h3:after{content:"";display:block;width:70px;height:3px;background:var(--y);margin-top:8px}
+.ceo p{font-size:13px;margin:0 0 10px;padding-right:24px}.ceo .lead{color:var(--y2)}
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;text-align:center;padding:0 24px clamp(56px,7vw,100px)}
+.feat svg{width:46px;height:46px;stroke:var(--y2);fill:none;stroke-width:1.6;margin-bottom:18px}.feat b{display:block;font-size:15px;line-height:1.5;margin-bottom:10px}.feat p{font-size:12px;color:var(--mute);margin:0}
+footer{background:var(--y);padding:56px 0 36px;font-size:12px}
+.foot{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:32px}.foot b{display:block;margin-bottom:16px}.foot li{list-style:none;margin-bottom:6px}.foot ul{margin:0;padding:0}
+.foot .ph{border:1px dashed rgba(0,0,0,.35);padding:14px;max-width:300px;line-height:1.6}
+.copy{text-align:center;margin-top:40px;font-size:11px}
+.fab{position:fixed;right:18px;bottom:18px;z-index:30;background:var(--y2);color:#111;border:0;padding:14px 22px;font-weight:700;font-size:14px;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:#111;color:#fff;font-size:13px;padding:12px 18px;border-radius:6px;z-index:40;opacity:0;pointer-events:none;transition:opacity .3s;max-width:88%;text-align:center}.toast.on{opacity:1}
+/* sub pages */
+.ph-head{padding:56px 0 30px}.ph-head h1{font-size:clamp(22px,2.4vw,30px);margin:0 0 22px}
+.menu{max-width:760px;margin:0 auto;padding:0 24px 80px}
+.cat img{width:100%;aspect-ratio:1346/416;object-fit:cover}.cat h2{text-align:center;font-size:15px;font-weight:500;margin:10px 0 0;padding-bottom:10px;border-bottom:1px solid #bbb}
+.items{display:grid;grid-template-columns:repeat(3,1fr);gap:22px 16px;margin:16px 0 44px}
+.items figure{margin:0;text-align:center}.items img{width:100%;aspect-ratio:1;object-fit:cover}.items figcaption{font-size:13px;margin-top:10px}
+.items .hot{display:inline-block;background:#e0002a;color:#fff;font-size:9px;padding:1px 6px;margin-top:8px}
+.items small{display:block;color:var(--mute);font-size:11px;line-height:1.5;margin-top:4px}
+.stores{background:var(--soft);padding:36px 28px;display:grid;grid-template-columns:repeat(4,1fr);gap:40px 28px;margin-bottom:80px}
+.store .im{aspect-ratio:1/1.05;background:repeating-linear-gradient(135deg,#e4e4e4 0 12px,#ececec 12px 24px);display:grid;place-items:center;color:#aaa;font-size:11px;letter-spacing:.1em}
+.store div.tx{background:#fff;padding:10px 12px;margin:-18px 0 0 12px;position:relative;font-size:11px;color:var(--mute)}.store b{display:block;color:var(--ink);font-size:13px;margin-bottom:2px}
+.open-h{text-align:center;padding:52px 24px 30px}.open-h h1{font-weight:400;font-size:clamp(24px,3vw,36px);margin:0}.open-h p{margin:6px 0 0;font-size:13px}
+.zz{display:grid;grid-template-columns:1fr 1fr}.zz img{width:100%;height:100%;min-height:340px;object-fit:cover}
+.zz .tx{display:grid;place-content:center;text-align:center;padding:48px 32px}.zz h3{font-weight:400;font-size:24px;margin:0}.zz h4{font-weight:500;font-size:13px;margin:4px 0 18px}.zz p{font-size:12px;max-width:300px;margin:0 auto;color:#444}
+.zz .c{font-size:11px;color:var(--mute);margin-top:18px}
+.zz.flip .tx{order:-1}
+@media(max-width:760px){
+ .bar{gap:16px;padding:0 14px}.story{grid-template-columns:1fr}.story img{max-height:260px;object-fit:cover;width:100%}
+ .cards{grid-template-columns:1fr;justify-items:stretch}.ceo{grid-template-columns:1fr;gap:24px}.ceo p{padding:0 24px}.feat{grid-template-columns:1fr}
+ .foot{grid-template-columns:1fr}.stores{grid-template-columns:repeat(2,1fr);gap:28px 14px;padding:24px 14px}
+ .zz{grid-template-columns:1fr}.zz.flip .tx{order:0}.items{gap:18px 10px}.fab{padding:11px 16px;font-size:13px}
+}
+</style>
+</head>
+<body>
+<div class="note">포트폴리오용 레이아웃 재현본 · 실제 브랜드 사이트가 아닙니다 · 로고 · 연락처 · 사업자 정보는 넣지 않았습니다</div>
+<header><div class="bar">
+ <a class="logo" href="#home">BRAND LOGO</a>
+ <nav id="nav"><a href="#home">브랜드 소개</a><a href="#menu">메뉴 소개</a><a href="#stores">지점 위치</a><a href="#open">가맹 오픈 절차</a></nav>
+</div></header>
+
+<main>
+<section class="page" id="p-home">
+ <div class="hero" id="hero">
+  <div class="s on"><img src="img/b-season.jpg" alt="전 모둠"></div>
+  <div class="s"><img src="img/b-jjigae.jpg" alt="찌개"></div>
+  <div class="s"><img src="img/b-fish.jpg" alt="생선구이"></div>
+  <div class="s"><img src="img/b-special.jpg" alt="볶음 요리"></div>
+  <div class="box"><small>슬로건 한 줄이 들어가는 자리</small><b>최상급 재료로 정직하게 조리하는<br>빈대떡</b></div>
+  <button class="ar l" id="hl" aria-label="이전">‹</button><button class="ar r" id="hr" aria-label="다음">›</button>
+  <div class="scr"><i></i>Scroll</div>
+ </div>
+ <div class="wrap">
+  <div class="story">
+   <div><h2 class="t">Brand Story</h2><hr class="rule">
+    <p class="lead">브랜드가 어디서, 어떻게 시작했는지 한 문장으로 소개하는 자리입니다.</p>
+    <p>브랜드 소개 본문이 들어가는 자리입니다. 재현본에서는 실제 브랜드 문구 대신 자리 표시 문장을 넣었습니다.</p>
+    <a class="pill" href="#open">자세히 보기</a></div>
+   <img src="img/story.jpg" alt="철판 위에서 굽는 전">
+  </div>
+  <div class="comp"><h2 class="t">Brand competence</h2><hr class="rule">
+   <p>브랜드의 경쟁력을 세 가지로 요약해 보여주는 구간입니다.</p>
+   <div class="cards">
+    <div><svg viewBox="0 0 48 48"><path d="M6 20 10 8h28l4 12M8 20v20h32V20M6 20h36M18 40V28h12v12"/></svg><b>폐업률</b>설명 문구 자리</div>
+    <div><svg viewBox="0 0 48 48"><path d="M10 26a14 11 0 1 1 28 0c0 6-6 11-14 11s-14-5-14-11ZM16 36v5M32 36v5M38 22h4M22 12h6"/></svg><b>비 오는 날의 행운</b>설명 문구 자리</div>
+    <div><svg viewBox="0 0 48 48"><path d="M14 6h20v36l-5-3-5 3-5-3-5 3ZM20 16h8M20 24h8M20 32h5"/></svg><b>좋은 수익률</b>설명 문구 자리</div>
+   </div>
+  </div>
+ </div>
+ <div class="ceo">
+  <div class="pic"><img src="img/jeon2.jpg" alt=""><h3>Introducing<br>our CEO</h3></div>
+  <div><p class="lead">대표 인사말의 첫 문장이 강조되어 들어가는 자리입니다.</p><p>대표 인사말 본문이 이어지는 자리입니다. 재현본에서는 실제 인사말과 인물 사진을 넣지 않았습니다.</p></div>
+ </div>
+ <div class="feat">
+  <div><svg viewBox="0 0 48 48"><path d="M24 42V20M24 20c-8 0-12-5-12-12 7 0 12 4 12 12ZM24 24c7 0 11-4 11-10-6 0-11 3-11 10ZM14 42h20"/></svg><b>신선한 재료로 만든 최상의<br>퀄리티 빈대떡</b><p>설명 문구 자리</p></div>
+  <div><svg viewBox="0 0 48 48"><path d="M10 8h28v32H10ZM16 16h10M16 24h16M16 32h8M30 14l3 3 6-6"/></svg><b>철저한 품질 관리로 최상의 맛이<br>나는 빈대떡</b><p>설명 문구 자리</p></div>
+  <div><svg viewBox="0 0 48 48"><path d="M16 22a8 8 0 1 1 16 0v4H16ZM14 26h20v6H14ZM18 32v8h12v-8M24 8V4"/></svg><b>노하우와 최상의 재료를 조합하여 만든 완벽한<br>한 맛의 빈대떡</b><p>설명 문구 자리</p></div>
+ </div>
+</section>
+
+<section class="page" id="p-menu">
+ <div class="wrap ph-head"><h1>메뉴</h1><hr class="rule"></div>
+ <div class="menu" id="menuBox"></div>
+</section>
+
+<section class="page" id="p-stores">
+ <div class="wrap ph-head"><h1>지점 위치</h1><hr class="rule"><p style="font-size:12px;color:#555;margin:0">지점 안내 문구가 들어가는 자리입니다.</p></div>
+ <div class="wrap"><div class="stores" id="storeBox"></div></div>
+</section>
+
+<section class="page" id="p-open">
+ <div class="open-h"><h1>가맹점오픈 절차 안내</h1><p>가맹점주가 되시는 길 축하 드립니다.</p></div>
+ <div id="openBox"></div>
+</section>
+</main>
+
+<footer><div class="wrap">
+ <div class="foot">
+  <div><b>회사 정보</b><div class="ph">사업자 정보 · 주소 · 전화번호가 들어가던 자리입니다.<br>재현본에서는 넣지 않았습니다.</div></div>
+  <div><b>브랜드</b><ul><li><a href="#home">브랜드 소개</a></li><li><a href="#menu">메뉴 소개</a></li><li><a href="#stores">지점 위치</a></li><li><a href="#open">가맹 오픈 절차</a></li></ul></div>
+  <div><b>SNS</b><span style="opacity:.6">링크 자리</span></div>
+ </div>
+ <div class="copy">Portfolio layout reproduction · Designed &amp; built by Eukee</div>
+</div></footer>
+
+<button class="fab" id="fab">매장창업문의</button>
+<div class="toast" id="toast">레이아웃 재현본이라 문의는 연결되지 않습니다.</div>
+
+<script>
+{
+const $=s=>document.querySelector(s);
+/* 페이지 전환 */
+const pages=['home','menu','stores','open'];
+function route(){const k=pages.includes(location.hash.slice(1))?location.hash.slice(1):'home';
+ pages.forEach(p=>$('#p-'+p).classList.toggle('on',p===k));
+ document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+k));scrollTo(0,0);}
+addEventListener('hashchange',route);route();
+/* 히어로 슬라이드 */
+const sl=[...document.querySelectorAll('#hero .s')];let at=0,tm;
+const go=i=>{at=(i+sl.length)%sl.length;sl.forEach((s,k)=>s.classList.toggle('on',k===at));};
+const play=()=>{clearInterval(tm);tm=setInterval(()=>go(at+1),4200);};
+$('#hl').onclick=()=>{go(at-1);play()};$('#hr').onclick=()=>{go(at+1);play()};play();
+/* 메뉴 */
+const M=[
+ ['전류','b-season',[['jeon1','왕새우전',1],['jeon2','녹두빈대떡',1],['jeon3','동태전'],['jeon4','호박전'],['jeon5','두부전'],['jeon6','김치전',1],['jeon7','전'],['jeon8','김치전(고기, 해물)'],['jeon9','야채부추전']]],
+ ['메인 찌개류','b-jjigae',[['jjigae1','생고기 고추장 찌개',1],['jjigae2','돼지 김치찌개',1],['jjigae3','두부젓국(지리)',1]]],
+ ['간편한 찌개류','b-special',[['pot1','육개장 전골'],['pot2','백합탕'],['pot3','국물 요리',1]]],
+ ['생선구이류','b-fish',[['fish1','박대구이',1],['fish2','삼치 구이',1],['fish3','고등어 구이']]]
+];
+$('#menuBox').innerHTML=M.map(c=>`<div class="cat"><img src="img/${c[1]}.jpg" alt="" loading="lazy"><h2>${c[0]}</h2></div><div class="items">${c[2].map(i=>`<figure><img src="img/${i[0]}.jpg" alt="${i[1]}" loading="lazy">${i[2]?'<span class="hot">추천 메뉴</span>':''}<figcaption>${i[1]}<small>메뉴 설명 자리</small></figcaption></figure>`).join('')}</div>`).join('');
+/* 지점 */
+$('#storeBox').innerHTML=Array.from({length:14},(_,i)=>`<div class="store"><div class="im">매장 외관 사진</div><div class="tx"><b>지점 ${String(i+1).padStart(2,'0')}</b>주소 자리<br>TEL 자리</div></div>`).join('');
+/* 가맹 절차 */
+const O=[['open1','매장 입지 선정','내 매장이 될 곳을 찾아라!'],['open2','인테리어 공사 시작','내 매장으로 만들어 가보자!'],['open3','조리교육시작','조리교육이 시작됩니다!'],['open4','매장오픈!','멋진 대표님이 되시는 날입니다.']];
+$('#openBox').innerHTML=O.map((o,i)=>`<div class="zz${i%2?' flip':''}"><img src="img/${o[0]}.jpg" alt="" loading="lazy"><div class="tx"><h3>${o[1]}</h3><h4>${o[2]}</h4><p>단계 설명 문구가 들어가는 자리입니다.</p><div class="c">연락처 자리</div></div></div>`).join('');
+/* 문의 버튼 */
+let tt;$('#fab').onclick=()=>{const t=$('#toast');t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2200);};
+}
+</script>
+</body>
+</html>
