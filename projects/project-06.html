@@ -911,7 +911,9 @@
 .pl6 ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(18px,2.2vw,32px)}
 .pl6-trk{position:absolute;left:0;right:0;top:15px;height:2px;background:rgba(255,255,255,.12)}
 .pl6-trk i{position:absolute;inset:0;background:var(--dk-green);transform-origin:left;transform:scaleX(0);transition:transform 1.6s cubic-bezier(.5,0,.2,1)}
-.pl6 li{position:relative;padding-top:58px;opacity:.25;transition:opacity .3s;transition-delay:calc(var(--i)*.22s)}
+.pl6 li{position:relative;padding-top:58px}
+.pl6 li>:not(.pn){opacity:.25;transition:opacity .3s;transition-delay:calc(var(--i)*.22s)}
+.pl6 .pn{z-index:1;filter:grayscale(1) brightness(.6);transition:filter .3s;transition-delay:calc(var(--i)*.22s)}.pl6.go .pn{filter:none}
 .pl6 .pn{position:absolute;top:0;left:0;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#1b1b1b;border:2px solid rgba(255,255,255,.25);font-size:11.5px;font-weight:700}
 .pl6 .pn i{font-style:normal}
 .pl6 .s-ok .pn{background:var(--dk-green);border-color:var(--dk-green);color:#fff}
@@ -927,23 +929,25 @@
 .pl6-lg span::before{content:"";width:10px;height:10px;border-radius:50%;border:2px solid var(--dk-green)}
 .pl6-lg .s-ok::before{background:var(--dk-green)}.pl6-lg .s-part::before{background:linear-gradient(90deg,var(--dk-green) 50%,transparent 50%)}.pl6-lg .s-no::before{border-color:rgba(255,255,255,.4);border-style:dashed}
 .pl6.go .pl6-trk i{transform:scaleX(1)}
-.pl6.go li{opacity:1}
-.pl6 ol:hover li{opacity:.4}.pl6 ol li:hover{opacity:1}
+.pl6.go li>:not(.pn){opacity:1}
+.pl6 ol:hover li>:not(.pn){opacity:.4;transition-delay:0s}.pl6 ol li:hover>:not(.pn){opacity:1}
 @media(max-width:900px){.pl6 ol{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:26px}.pl6-trk{display:none}}
 
 /* 06 결과 화면: 네 가지 연결을 한 번에 */
 .rs4{background:rgba(127,127,127,.1);border-radius:20px;padding:clamp(22px,2.8vw,40px)}
 .rs4-h{font-size:14px;opacity:.65}
 .rs4 ol{list-style:none;margin:14px 0 0;padding:0;position:relative}
-.rs4 ol::before{content:"";position:absolute;left:15px;top:16px;bottom:16px;width:2px;background:rgba(255,255,255,.12)}
-.rs4 ol::after{content:"";position:absolute;left:15px;top:16px;width:2px;height:calc(100% - 32px);background:var(--dk-green);transform-origin:top;transform:scaleY(0);transition:transform 1.4s cubic-bezier(.5,0,.2,1)}
+.rs4 ol::before{content:"";position:absolute;z-index:0;left:15px;top:16px;bottom:16px;width:2px;background:rgba(255,255,255,.12)}
+.rs4 ol::after{content:"";position:absolute;z-index:0;left:15px;top:16px;width:2px;height:calc(100% - 32px);background:var(--dk-green);transform-origin:top;transform:scaleY(0);transition:transform 1.4s cubic-bezier(.5,0,.2,1)}
 .rs4.go ol::after{transform:scaleY(1)}
-.rs4 li{position:relative;display:grid;grid-template-columns:32px 1fr;gap:16px;padding:12px 0;opacity:.25;transition:opacity .3s,transform .3s;transition-delay:calc(var(--i)*.3s)}
-.rs4.go li{opacity:1}
-.rs4 .pn{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--dk-green);color:#fff;font-size:11.5px;font-weight:700;position:relative;z-index:1}
+.rs4 li{position:relative;z-index:1;display:grid;grid-template-columns:32px 1fr;gap:16px;padding:12px 0;transition:transform .3s}
+.rs4 li>div{opacity:.25;transition:opacity .3s;transition-delay:calc(var(--i)*.3s)}
+.rs4.go li>div{opacity:1}
+.rs4 .pn{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#2b2b2b;border:2px solid #3a3a3a;color:#fff;font-size:11.5px;font-weight:700;position:relative;z-index:1;transition:background .3s,border-color .3s;transition-delay:calc(var(--i)*.3s)}
+.rs4.go .pn{background:var(--dk-green);border-color:var(--dk-green)}
 .rs4 .rk{font-size:13px;opacity:.6}
 .rs4 .rm{font-size:clamp(17px,1.6vw,22px);font-weight:700;letter-spacing:-.03em;line-height:1.4;margin-top:4px;word-break:keep-all}
-.rs4 ol:hover li{opacity:.4;transition-delay:0s}.rs4 ol li:hover{opacity:1;transform:translateX(4px)}
+.rs4 ol:hover li>div{opacity:.4;transition-delay:0s}.rs4 ol li:hover>div{opacity:1}.rs4 ol li:hover{transform:translateX(4px)}
 @media(prefers-reduced-motion:reduce){.bq,.bn,.ff,.pl6 li,.rs4 li{opacity:1!important;transform:none!important}.pl6-trk i,.rs4 ol::after,.bg6-t .trk i{transform:none!important;opacity:1}}
 .pl6+.dk-more{margin-top:0}.pl6~.dk-qrow{margin-top:18px}
 </style>

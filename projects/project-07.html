@@ -1223,7 +1223,7 @@ new IntersectionObserver(function(es){if(es[0].isIntersecting){go(i);run()}else{
       var a=li[cur],box=a.parentNode;if(box.scrollWidth>box.clientWidth)box.scrollTo({left:a.offsetLeft-12,behavior:'smooth'});
       var im=pg[cur].querySelector('img');if(im.loading==='lazy')im.loading='eager';var nx=pg[(cur+1)%pg.length].querySelector('img');nx.loading='eager';}
     function run(){clearTimeout(tm);v.classList.remove('run');void bar.offsetWidth;if(hold||!seen)return;v.classList.add('run');tm=setTimeout(function(){show(cur+1);run()},T)}
-    li.forEach(function(x,i){x.addEventListener('pointerenter',function(){show(i)});x.addEventListener('focus',function(){show(i)});x.addEventListener('click',function(){show(i)})});
+    li.forEach(function(x,i){x.addEventListener('click',function(){show(i)});x.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();show(i)}})});
     v.addEventListener('pointerenter',function(){hold=true;run()});v.addEventListener('pointerleave',function(){hold=false;fr.classList.remove('zm');run()});
     fr.addEventListener('pointermove',function(e){var r=fr.getBoundingClientRect(),im=pg[cur].querySelector('img'),ih=im.getBoundingClientRect().height/(fr.classList.contains('zm')?2.3:1);
       pg[cur].querySelector('img').style.setProperty('--ox',((e.clientX-r.left)/r.width*100)+'%');
