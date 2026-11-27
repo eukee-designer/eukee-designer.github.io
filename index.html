@@ -14,17 +14,17 @@
 
   <style>
     :root {
-      --bg-cream: #f4f1ea;
+      --bg-cream: #f6f6f4;
       --bg-white: #ffffff;
       --bg-beige: #ebe3d2;
       --bg-dark: #1a1a1a;
       --fg: #1a1a1a;
-      --fg-on-dark: #f4f1ea;
+      --fg-on-dark: #f6f6f4;
       --muted: #6b6b6b;
-      --muted-on-dark: #a8a39a;
+      --muted-on-dark: #a6a6a6;
       --line: #1a1a1a14;
       --line-on-dark: #ffffff14;
-      --accent: #ff5722;
+      --accent: #111111;
 
       --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
       --font-serif: "Instrument Serif", "Pretendard Variable", serif;
@@ -79,7 +79,7 @@
     .hero { background: var(--bg-cream); }
     .projects { background: var(--bg-white); }
     .brand { background: var(--bg-beige); }
-    .footer { background: var(--bg-dark); color: var(--fg-on-dark); position: relative; padding: var(--section-y) 0; }
+    .footer { --accent: #ffffff; background: var(--bg-dark); color: var(--fg-on-dark); position: relative; padding: var(--section-y) 0; }
     .footer::before {
       content: "";
       position: absolute;
@@ -387,7 +387,7 @@
       background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 87, 34, 0.3);
+      border: 1px solid rgba(17, 17, 17, 0.3);
       border-radius: 999px;
       cursor: pointer;
       transition: background .2s ease, transform .2s ease;
@@ -497,6 +497,54 @@
     }
     .hero-contact a { color: var(--fg); line-height: 1.5; }
 
+
+    /* ── 푸터 키링 ── */
+    .keyring { position: relative; height: clamp(420px, 56vw, 640px); margin: clamp(56px, 8vw, 120px) 0 0; user-select: none; -webkit-user-select: none; touch-action: pan-y; }
+    .keyring { overflow-x: clip; }
+    .keyring canvas.kr-gl { position: absolute; left: 50%; top: 0; width: min(100%, 760px); height: 100%; transform: translateX(-50%); display: block; cursor: grab; touch-action: pan-y; }
+    .keyring.is-3d .kr-rig { display: none; }
+    .keyring .kr-say, .keyring .kr-side { z-index: 2; }
+    .keyring .kr-side { position: absolute; top: 46%; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-on-dark); }
+    .keyring .kr-say { position: absolute; left: 0; top: 50%; transform: translateY(-50%); margin: 0; font-size: clamp(17px, 1.7vw, 24px); line-height: 1.6; font-weight: 600; letter-spacing: -.02em; color: var(--fg-on-dark); max-width: 30%; word-break: keep-all; }
+    @media (max-width: 900px) { .keyring .kr-say { top: auto; bottom: 34px; transform: none; max-width: none; left: 0; right: 0; text-align: center; } .keyring .kr-side.r { left: 0; right: 0; text-align: center; top: auto; bottom: 0; } .keyring { padding-bottom: 110px; box-sizing: content-box; } }
+    .keyring .kr-side.l { left: 0; } .keyring .kr-side.r { right: 0; text-transform: none; letter-spacing: .04em; }
+    .keyring .kr-side.r a { color: inherit; border-bottom: 1px solid currentColor; }
+    @media (max-width: 700px) { .keyring .kr-side { top: auto; bottom: 0; } }
+    .kr-rig { position: absolute; left: 50%; top: 0; width: 0; height: 0; --u: clamp(0.72px, 0.085vw + 0.42px, 1.15px); }
+    .kr-strap { position: absolute; left: calc(-5 * var(--u)); top: 0; width: calc(10 * var(--u)); height: calc(52 * var(--u)); background: linear-gradient(90deg,#2b2b2b,#4a4a4a 45%,#262626); border-radius: 0 0 3px 3px; }
+    .kr-clasp { position: absolute; left: calc(-27 * var(--u)); top: calc(40 * var(--u)); width: calc(54 * var(--u)); height: calc(96 * var(--u)); filter: drop-shadow(0 6px 10px rgba(0,0,0,.5)); }
+    .kr-arm { position: absolute; left: 0; top: calc(124 * var(--u)); width: 0; height: 0; transform-origin: 0 0; will-change: transform; }
+    .kr-link { position: absolute; left: calc(-6 * var(--u)); top: calc(-5 * var(--u)); width: calc(12 * var(--u)); border-radius: 99px; border: calc(1.6 * var(--u)) solid #dfe3e7; box-shadow: inset 0 0 0 .5px rgba(60,66,74,.8), 0 1px 3px rgba(0,0,0,.5); box-sizing: border-box; }
+    .kr-charm { position: absolute; cursor: grab; filter: drop-shadow(0 calc(14 * var(--u)) calc(16 * var(--u)) rgba(0,0,0,.45)); }
+    .kr-charm:active { cursor: grabbing; }
+    /* 범고래 — 반투명 컬러 아크릴 */
+    .kr-orca { width: calc(262 * var(--u)); height: calc(296 * var(--u)); left: calc(-150 * var(--u)); filter: drop-shadow(0 calc(14 * var(--u)) calc(18 * var(--u)) rgba(0,0,0,.5)) drop-shadow(0 0 calc(18 * var(--u)) rgba(255,255,255,.08)); }
+    .kr-orca i, .kr-orca u, .kr-orca s { position: absolute; inset: 0; -webkit-mask: url(projects/images/keyring/k-orca.png) center/contain no-repeat; mask: url(projects/images/keyring/k-orca.png) center/contain no-repeat; }
+    .kr-orca s { transform: translate(calc(3.5 * var(--u)), calc(4.5 * var(--u))); background: #000; opacity: .9; }                      /* 두께(옆면) */
+    .kr-orca i { background: radial-gradient(120% 90% at 30% 22%, #4a4d52 0%, #1b1c1f 40%, #0a0a0b 100%); }
+    .kr-orca u { background: linear-gradient(118deg, rgba(255,255,255,.75) 4%, rgba(255,255,255,0) 22%, rgba(255,255,255,0) 44%, rgba(255,255,255,.34) 52%, rgba(255,255,255,0) 60%, rgba(255,255,255,0) 82%, rgba(255,220,200,.4) 96%); mix-blend-mode: screen; }
+    /* 태그 공통 */
+    .kr-tag { border-radius: calc(18 * var(--u)); box-sizing: border-box; }
+    .kr-tag::before { content: ""; position: absolute; left: 50%; top: calc(11 * var(--u)); width: calc(13 * var(--u)); height: calc(13 * var(--u)); margin-left: calc(-6.5 * var(--u)); border-radius: 50%; background: var(--bg-dark); box-shadow: inset 0 1px 2px rgba(0,0,0,.7), 0 0 0 calc(1.5 * var(--u)) rgba(255,255,255,.35); z-index: 2; }
+    .kr-tag b { position: absolute; left: 50%; top: 54%; display: block; transform: translate(-50%,-50%) rotate(90deg); -webkit-mask: var(--m) center/contain no-repeat; mask: var(--m) center/contain no-repeat; }
+    /* EUKEE — 글자 모양대로 잘린 유백색 아크릴 */
+    .kr-word { width: calc(96 * var(--u)); height: calc(374 * var(--u)); left: calc(-48 * var(--u)); filter: drop-shadow(0 calc(14 * var(--u)) calc(16 * var(--u)) rgba(0,0,0,.55)) drop-shadow(0 0 calc(16 * var(--u)) rgba(255,255,255,.12)); }
+    .kr-word i, .kr-word u, .kr-word s { position: absolute; inset: 0; -webkit-mask: url(projects/images/keyring/k-eukee-v.png) center/contain no-repeat; mask: url(projects/images/keyring/k-eukee-v.png) center/contain no-repeat; }
+    .kr-word s { transform: translate(calc(3 * var(--u)), calc(4 * var(--u))); background: #8f9aa6; }
+    .kr-word i { background: linear-gradient(100deg, #ffffff 0%, #eef1f4 28%, #cfd6dd 52%, #f6f8fa 70%, #dfe5ea 100%); }
+    .kr-word u { background: linear-gradient(125deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 34%, rgba(255,255,255,.95) 44%, rgba(255,255,255,0) 54%, rgba(120,135,150,.28) 80%, rgba(255,255,255,0) 100%); }
+    /* eun seo — 헤어라인 크롬 + 음각 */
+    .kr-t2 { width: calc(72 * var(--u)); height: calc(258 * var(--u)); left: calc(-36 * var(--u));
+      background: repeating-linear-gradient(180deg, rgba(255,255,255,.09) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(96deg, #6d737b 0%, #f4f6f8 14%, #b9bfc6 30%, #8b9199 46%, #eef1f3 60%, #a3a9b0 76%, #dfe3e6 90%, #7b8189 100%);
+      box-shadow: inset 0 0 0 calc(1.2 * var(--u)) rgba(255,255,255,.55), inset 0 calc(-3 * var(--u)) calc(5 * var(--u)) rgba(40,46,54,.45), calc(2 * var(--u)) calc(3 * var(--u)) 0 #5a6068; }
+    .kr-t2::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(125deg, rgba(255,255,255,0) 30%, rgba(255,255,255,.65) 42%, rgba(255,255,255,0) 52%); mix-blend-mode: soft-light; pointer-events: none; }
+    .kr-t2 b { --m: url(projects/images/keyring/k-eunseo.png); width: calc(198 * var(--u)); height: calc(42 * var(--u)); background: linear-gradient(90deg,#2a2e33,#4b5057); filter: drop-shadow(0 calc(1.2 * var(--u)) 0 rgba(255,255,255,.75)); }
+    /* PRODUCT DESIGNER — 무광 실리콘 + 양각 */
+    .kr-t3 { width: calc(60 * var(--u)); height: calc(198 * var(--u)); left: calc(-30 * var(--u)); border-radius: calc(30 * var(--u));
+      background: radial-gradient(140% 80% at 30% 15%, #fbf6ea 0%, #ece4d2 55%, #d6ccb6 100%);
+      box-shadow: inset calc(2 * var(--u)) calc(2 * var(--u)) calc(4 * var(--u)) rgba(255,255,255,.9), inset calc(-4 * var(--u)) calc(-5 * var(--u)) calc(8 * var(--u)) rgba(120,104,74,.45), calc(2.5 * var(--u)) calc(3.5 * var(--u)) 0 #b9ae96; }
+    .kr-t3 span { position: absolute; left: 50%; top: 56%; transform: translate(-50%,-50%) rotate(90deg); white-space: nowrap; font-size: calc(11 * var(--u)); font-weight: 700; letter-spacing: .14em; color: #e4dbc7; text-shadow: calc(-1 * var(--u)) calc(-1 * var(--u)) 0 rgba(255,255,255,.95), calc(1.2 * var(--u)) calc(1.2 * var(--u)) calc(1.2 * var(--u)) rgba(110,94,64,.6); }
+    @media (prefers-reduced-motion: reduce) { .kr-charm { cursor: default; } }
     /* 섹션 라벨 */
     .section-label {
       font-size: 12px;
@@ -573,11 +621,11 @@
       line-height: 1.4;
       color: rgba(0,0,0,0.18);
     }
-    .ph-1 { background: linear-gradient(135deg, #e8d5c4, #f4f1ea); }
+    .ph-1 { background: linear-gradient(135deg, #dcdcdc, #f6f6f4); }
     .ph-2 { background: linear-gradient(135deg, #d4c5b9, #e8e0d5); }
-    .ph-3 { background: linear-gradient(135deg, #c9d6df, #f4f1ea); }
+    .ph-3 { background: linear-gradient(135deg, #d2d2d2, #f6f6f4); }
     .ph-4 { background: linear-gradient(135deg, #ddd4c0, #efe9dc); }
-    .ph-5 { background: linear-gradient(135deg, #e2c9c9, #f4f1ea); }
+    .ph-5 { background: linear-gradient(135deg, #cfcfcf, #f6f6f4); }
     .ph-6 { background: linear-gradient(135deg, #c9d4c5, #e8ecdf); }
     .ph-b3 { background: linear-gradient(160deg, #ddd4c0, #c9bfa8); }
     .ph-b4 { background: linear-gradient(160deg, #e2c9c9, #d1b5b5); }
@@ -808,11 +856,12 @@
 
     /* 푸터 */
     .footer-quote {
-      font-size: clamp(28px, 4.4vw, 56px);
-      line-height: 1.4;
+      font-size: clamp(21px, 3.1vw, 42px);
+      line-height: 1.5;
       letter-spacing: -0.02em;
       font-weight: 500;
-      max-width: 20ch;
+      max-width: 27em;
+      word-break: keep-all;
       margin: 0 auto 120px;
       text-align: center;
     }
@@ -1041,8 +1090,7 @@
 
     <nav class="site-menu-list">
       <a href="#work"  data-menu-close>Work</a>
-      <a href="#brand" data-menu-close>Brand &amp; Print</a>
-      <a href="mailto:eukee.ke@gmail.com" data-menu-close>Contact</a>
+      <a href="#contact" data-menu-close>Contact</a>
     </nav>
 
     <div class="site-menu-foot">
@@ -1100,18 +1148,18 @@
         <span class="sp-anchor" id="brand" aria-hidden="true"></span>
         <h2 class="sp-title reveal">Selected Projects</h2>
         <div class="filters reveal">
-          <button class="chip is-on" type="button" data-filter="all" aria-pressed="true">All <b>9</b></button>
-          <button class="chip" type="button" data-filter="uiux" aria-pressed="false">UI/UX <b>4</b></button>
-          <button class="chip" type="button" data-filter="brand" aria-pressed="false">Brand &amp; Print <b>5</b></button>
+          <button class="chip is-on" type="button" data-filter="all" aria-pressed="true">All <b>8</b></button>
+          <button class="chip" type="button" data-filter="uiux" aria-pressed="false">UI/UX <b>6</b></button>
+          <button class="chip" type="button" data-filter="brand" aria-pressed="false">Brand &amp; Print <b>2</b></button>
         </div>
         <div class="grid" id="workGrid">
           <a href="projects/hidden-money.html" class="card reveal" data-cat="uiux">
             <div class="card-image">
-              <img src="projects/images/doosil-search/card-cover-wide.jpg" alt="부분시공 탐색 구조 보강">
+              <img src="projects/images/doosil-search/card-cover-v2.jpg" alt="부분시공 탐색 정보 보강">
             </div>
             <div class="card-meta">
               <span class="card-text">
-                <span class="card-title">부분시공 탐색 구조 보강</span>
+                <span class="card-title">부분시공 탐색 정보 보강</span>
                 <span class="card-tag">Product · UX Research</span>
               </span>
               <span class="card-arrow" aria-hidden="true">↘</span>
@@ -1127,28 +1175,72 @@
               </ul>
             </div></div>
           </a>
-          <a href="projects/project-02.html" class="card reveal" data-cat="uiux">
+          <a href="projects/project-05.html" class="card reveal" data-cat="uiux">
             <div class="card-image">
-              <div class="placeholder ph-2">02</div>
+              <img src="projects/images/deck2/card-home.jpg" alt="홈화면 관여도별 개편">
             </div>
             <div class="card-meta">
               <span class="card-text">
-                <span class="card-title">DOOSIL 부분시공 퍼널 재설계</span>
-                <span class="card-tag">Product · UX Research</span>
+                <span class="card-title">홈화면 관여도별 개편</span>
+                <span class="card-tag">Product · Data Analysis</span>
               </span>
               <span class="card-arrow" aria-hidden="true">↘</span>
             </div>
             <div class="card-roles"><div>
-              <div class="roles-head">FUNNEL REDESIGN</div>
+              <div class="roles-head">DOOSIL · HOME</div>
               <ul class="roles-list">
-                <li><span class="arw">→</span> UX RESEARCH</li>
-                <li><span class="arw">→</span> DATA ANALYSIS</li>
-                <li><span class="arw">→</span> USABILITY TEST</li>
+                <li><span class="arw">→</span> GA BEHAVIOR ANALYSIS</li>
+                <li><span class="arw">→</span> USER SEGMENTATION</li>
+                <li><span class="arw">→</span> ENTRY STRUCTURE</li>
                 <li><span class="arw">→</span> UX/UI DESIGN</li>
-                <li><span class="arw">→</span> PRODUCT STRATEGY</li>
               </ul>
             </div></div>
           </a>
+
+          <a href="projects/project-06.html" class="card reveal" data-cat="uiux">
+            <div class="card-image">
+              <img src="projects/images/deck2/card-mbti.jpg" alt="MBTI 브랜드 캠페인">
+            </div>
+            <div class="card-meta">
+              <span class="card-text">
+                <span class="card-title">MBTI 브랜드 캠페인</span>
+                <span class="card-tag">Campaign · Character</span>
+              </span>
+              <span class="card-arrow" aria-hidden="true">↘</span>
+            </div>
+            <div class="card-roles"><div>
+              <div class="roles-head">DOOSIL · MBTI CAMPAIGN</div>
+              <ul class="roles-list">
+                <li><span class="arw">→</span> CAMPAIGN PLANNING</li>
+                <li><span class="arw">→</span> CHARACTER DESIGN</li>
+                <li><span class="arw">→</span> RESULT SCREEN</li>
+                <li><span class="arw">→</span> SHARE FLOW</li>
+              </ul>
+            </div></div>
+          </a>
+
+          <a href="projects/project-07.html" class="card reveal" data-cat="uiux">
+            <div class="card-image">
+              <img src="projects/images/deck2/card-layout.jpg" alt="컴포넌트·레이아웃 시스템 재설계">
+            </div>
+            <div class="card-meta">
+              <span class="card-text">
+                <span class="card-title">컴포넌트·레이아웃 시스템 재설계</span>
+                <span class="card-tag">Design System</span>
+              </span>
+              <span class="card-arrow" aria-hidden="true">↘</span>
+            </div>
+            <div class="card-roles"><div>
+              <div class="roles-head">DOOSIL · LAYOUT SYSTEM</div>
+              <ul class="roles-list">
+                <li><span class="arw">→</span> COMPONENT RULES</li>
+                <li><span class="arw">→</span> DESIGN SYSTEM</li>
+                <li><span class="arw">→</span> DEV HANDOFF</li>
+                <li><span class="arw">→</span> PROCESS</li>
+              </ul>
+            </div></div>
+          </a>
+
           <a href="projects/project-03.html" class="card reveal" data-cat="uiux">
             <div class="card-image">
               <img src="projects/images/doosil-builders/card-cover.jpg" alt="두실빌더스 상업공간 사례 탐색">
@@ -1192,7 +1284,7 @@
           </a>
           <a href="projects/brand-01.html" class="card reveal" data-cat="brand">
             <div class="card-image">
-              <img src="projects/images/musinsa/card-cover.jpg" alt="MUSINSA Campaign Archive">
+              <img src="projects/images/musinsa/card-cover-v2.jpg" alt="MUSINSA Campaign Archive">
             </div>
             <div class="card-meta">
               <span class="card-text">
@@ -1230,76 +1322,19 @@
               </ul>
             </div></div>
           </a>
-          <a href="projects/brand-03.html" class="card reveal" data-cat="brand">
-            <div class="card-image">
-              <div class="placeholder ph-b3">03</div>
-            </div>
-            <div class="card-meta">
-              <span class="card-text">
-                <span class="card-title">Project Name</span>
-                <span class="card-tag">Brand Identity</span>
-              </span>
-              <span class="card-arrow" aria-hidden="true">↘</span>
-            </div>
-            <div class="card-roles"><div>
-              <div class="roles-head">BRAND IDENTITY</div>
-              <ul class="roles-list">
-                <li><span class="arw">→</span> LOGO DESIGN</li>
-                <li><span class="arw">→</span> BRAND SYSTEM</li>
-              </ul>
-            </div></div>
-          </a>
-          <a href="projects/brand-04.html" class="card reveal" data-cat="brand">
-            <div class="card-image">
-              <div class="placeholder ph-b4">04</div>
-            </div>
-            <div class="card-meta">
-              <span class="card-text">
-                <span class="card-title">Project Name</span>
-                <span class="card-tag">Editorial</span>
-              </span>
-              <span class="card-arrow" aria-hidden="true">↘</span>
-            </div>
-            <div class="card-roles"><div>
-              <div class="roles-head">EDITORIAL</div>
-              <ul class="roles-list">
-                <li><span class="arw">→</span> EDITORIAL DESIGN</li>
-                <li><span class="arw">→</span> LAYOUT</li>
-              </ul>
-            </div></div>
-          </a>
-          <a href="projects/brand-05.html" class="card reveal" data-cat="brand">
-            <div class="card-image">
-              <div class="placeholder ph-b5">05</div>
-            </div>
-            <div class="card-meta">
-              <span class="card-text">
-                <span class="card-title">Project Name</span>
-                <span class="card-tag">Print</span>
-              </span>
-              <span class="card-arrow" aria-hidden="true">↘</span>
-            </div>
-            <div class="card-roles"><div>
-              <div class="roles-head">PRINT</div>
-              <ul class="roles-list">
-                <li><span class="arw">→</span> PRINT DESIGN</li>
-                <li><span class="arw">→</span> PRODUCTION</li>
-              </ul>
-            </div></div>
-          </a>
         </div>
       </div>
     </section>
 
   </main>
 
-  <footer class="footer">
+  <footer class="footer" id="contact">
     <div class="container">
       <div class="section-label reveal">Get in touch</div>
       <h2 class="footer-quote reveal">
-        저는 디자인이<br>
-        세상을 <span class="serif">바꿀 수 있다</span>고<br>
-        생각합니다.
+        복잡함 속에 숨겨진 <span class="serif">유저의 불편</span>을 찾아내고,<br>
+        지표 너머의 사용자 맥락에 집중하여<br>
+        비즈니스의 성장을 만드는 디자인을 이어가겠습니다.
       </h2>
       <div class="footer-grid">
         <div class="footer-contact">
@@ -1314,6 +1349,25 @@
           <div class="label">Social</div>
           <a href="#">Instagram</a>
           <a href="#">LinkedIn</a>
+        </div>
+      </div>
+      <div class="keyring" id="keyring" aria-label="Eukee 키링">
+        <p class="kr-say">사용자의 신호를 듣고<br>화면으로 답하는 디자이너입니다.</p>
+        <div class="kr-side r"><a href="mailto:eukee.ke@gmail.com">eukee.ke@gmail.com</a></div>
+        <div class="kr-rig" aria-hidden="true">
+          <div class="kr-strap"></div>
+          <svg class="kr-clasp" viewBox="0 0 54 96"><defs>
+            <linearGradient id="krm" x1="0" x2="1"><stop offset="0" stop-color="#4f545b"/><stop offset=".18" stop-color="#f7f9fa"/><stop offset=".36" stop-color="#9aa0a7"/><stop offset=".52" stop-color="#e9ecef"/><stop offset=".7" stop-color="#6c7178"/><stop offset=".86" stop-color="#d5d9dd"/><stop offset="1" stop-color="#4a4f55"/></linearGradient>
+            <linearGradient id="krb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3f5f6"/><stop offset=".45" stop-color="#8e949b"/><stop offset=".55" stop-color="#5c6168"/><stop offset="1" stop-color="#c3c8cd"/></linearGradient></defs>
+            <path d="M13 50V22a14 14 0 0 1 28 0v28" fill="none" stroke="url(#krm)" stroke-width="7" stroke-linecap="round"/>
+            <rect x="6" y="46" width="42" height="17" rx="3.5" fill="url(#krb)"/><rect x="6.6" y="46.6" width="40.8" height="2" rx="1" fill="#fff" opacity=".7"/>
+            <rect x="22" y="63" width="10" height="5" fill="#70757c"/>
+            <circle cx="27" cy="78" r="11" fill="none" stroke="url(#krm)" stroke-width="4.2"/>
+          </svg>
+          <div class="kr-arm" data-len="1.25" data-damp="0.9" data-rest="-30" data-link="34"><i class="kr-link"></i><div class="kr-charm kr-orca"><s></s><i></i><u></u></div></div>
+          <div class="kr-arm" data-len="1.7" data-damp="1.0" data-rest="-13" data-link="26"><i class="kr-link"></i><div class="kr-charm kr-tag kr-t2"><b></b></div></div>
+          <div class="kr-arm" data-len="0.95" data-damp="1.15" data-rest="38" data-link="46"><i class="kr-link"></i><div class="kr-charm kr-tag kr-t3"><span>PRODUCT DESIGNER</span></div></div>
+          <div class="kr-arm" data-len="2.0" data-damp="0.8" data-rest="9" data-link="18"><i class="kr-link"></i><div class="kr-charm kr-word"><s></s><i></i><u></u></div></div>
         </div>
       </div>
       <div class="footer-thanks">Thank you</div>
@@ -1861,6 +1915,169 @@
       grid.addEventListener('pointerleave', () => set(null));
     })();
 
+
+    // ============================
+    // 🔑 푸터 키링 — 길이·무게가 다른 진자 네 개
+    // ============================
+    (function () {
+      const root = document.getElementById('keyring'); if (!root) return;
+      const rig = root.querySelector('.kr-rig');
+      const arms = [...root.querySelectorAll('.kr-arm')].map(el => {
+        const link = el.querySelector('.kr-link'), charm = el.querySelector('.kr-charm'), L = +el.dataset.link;
+        link.style.height = 'calc(' + (L + 8) + ' * var(--u))';
+        charm.style.top = 'calc(' + L + ' * var(--u))';
+        return { el, len: +el.dataset.len, damp: +el.dataset.damp, rest: +el.dataset.rest * Math.PI / 180, a: +el.dataset.rest * Math.PI / 180, v: 0, held: false };
+      });
+      const draw = () => arms.forEach(m => { m.el.style.transform = 'rotate(' + (m.a * 180 / Math.PI).toFixed(2) + 'deg)'; });
+      draw();
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const G = 30; let last = 0, running = false, visible = false;
+      function step(t) {
+        const dt = Math.min(0.032, (t - last) / 1000 || 0.016); last = t; let energy = 0;
+        arms.forEach(m => {
+          if (m.held) return;
+          const acc = -(G / m.len) * Math.sin(m.a - m.rest) - m.damp * m.v;
+          m.v += acc * dt; m.a += m.v * dt;
+          if (m.a > 1.25) { m.a = 1.25; m.v *= -0.4; } if (m.a < -1.25) { m.a = -1.25; m.v *= -0.4; }
+          energy += Math.abs(m.v) + Math.abs(m.a - m.rest);
+        });
+        draw();
+        if (visible && (energy > 0.004 || arms.some(m => m.held))) requestAnimationFrame(step); else running = false;
+      }
+      const wake = () => { if (!running && visible) { running = true; last = performance.now(); requestAnimationFrame(step); } };
+      const kick = (f) => { arms.forEach((m, i) => { m.v += f * (0.75 + 0.2 * i) / Math.sqrt(m.len); }); wake(); };
+      // 화면에 들어오면 한 번 출렁
+      new IntersectionObserver(es => es.forEach(e => { const was = visible; visible = e.isIntersecting; if (visible && !was) kick(2.6); }), { threshold: 0.35 }).observe(root);
+      // 마우스가 스치면 그 방향으로 밀림
+      let px = null, pt = 0;
+      root.addEventListener('pointermove', e => {
+        const now = performance.now();
+        if (px !== null && now - pt < 80 && !arms.some(m => m.held)) {
+          const r = rig.getBoundingClientRect(), dx = e.clientX - px, dist = Math.hypot(e.clientX - r.left, e.clientY - (r.top + 260));
+          if (dist < 300 && Math.abs(dx) > 1.5) kick(Math.max(-1.6, Math.min(1.6, dx * 0.035)));
+        }
+        px = e.clientX; pt = now;
+      }, { passive: true });
+      // 잡아서 끌었다 놓기
+      arms.forEach(m => {
+        const charm = m.el.querySelector('.kr-charm'); let lastA = 0, lastT = 0;
+        const angle = e => { const r = rig.getBoundingClientRect(), o = m.el.getBoundingClientRect(); return Math.max(-1.2, Math.min(1.2, Math.atan2(-(e.clientX - o.left), Math.max(20, e.clientY - o.top)))); };
+        charm.addEventListener('pointerdown', e => { m.held = true; m.v = 0; lastA = m.a; lastT = performance.now(); charm.setPointerCapture(e.pointerId); wake(); e.preventDefault(); });
+        charm.addEventListener('pointermove', e => { if (!m.held) return; const a = angle(e), now = performance.now(); m.v = (a - lastA) / Math.max(0.008, (now - lastT) / 1000) * 0.5; lastA = a; lastT = now; m.a = a; });
+        const up = () => { if (!m.held) return; m.held = false; m.v = Math.max(-9, Math.min(9, m.v)); arms.forEach(o => { if (o !== m) o.v += m.v * 0.12; }); wake(); };
+        charm.addEventListener('pointerup', up); charm.addEventListener('pointercancel', up);
+      });
+    })();
+
+    // ============================
+    // 🔑 푸터 키링 (3D) — 실제 재질·조명으로 렌더
+    // ============================
+    (function () {
+      const root = document.getElementById('keyring'); if (!root) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const SH = {"orca":{"w":0.8781,"parts":[{"o":[[0.0257,0.0],[-0.0294,0.0],[-0.0912,-0.02],[-0.1479,-0.0551],[-0.208,-0.1119],[-0.2581,-0.182],[-0.2982,-0.2671],[-0.3432,-0.3072],[-0.4184,-0.4124],[-0.4785,-0.5242],[-0.5185,-0.6227],[-0.5336,-0.6745],[-0.5436,-0.7295],[-0.5436,-0.8047],[-0.5336,-0.8381],[-0.5235,-0.8548],[-0.5035,-0.8748],[-0.4785,-0.8848],[-0.4351,-0.8848],[-0.3967,-0.8748],[-0.3249,-0.8397],[-0.2147,-0.7696],[-0.1579,-0.7245],[-0.1295,-0.6945],[-0.1095,-0.6611],[-0.1062,-0.616],[-0.1195,-0.5659],[-0.1346,-0.5326],[-0.1346,-0.4825],[-0.1245,-0.4641],[-0.1145,-0.4574],[-0.1062,-0.4591],[-0.0945,-0.4725],[-0.0628,-0.586],[-0.0611,-0.6427],[-0.0678,-0.6728],[-0.0928,-0.7162],[-0.1179,-0.788],[-0.1396,-0.823],[-0.178,-0.8564],[-0.2514,-0.8915],[-0.2715,-0.9065],[-0.2881,-0.9265],[-0.3032,-0.9583],[-0.3048,-0.9716],[-0.3032,-0.9933],[-0.2965,-1.0],[-0.2648,-1.0],[-0.1963,-0.9699],[-0.1763,-0.9649],[-0.1245,-0.9399],[-0.0828,-0.9098],[-0.0477,-0.8748],[-0.0194,-0.8381],[0.0508,-0.7129],[0.0908,-0.6628],[0.1526,-0.6093],[0.2561,-0.5442],[0.2912,-0.5075],[0.3112,-0.4808],[0.3312,-0.4441],[0.3346,-0.4274],[0.3312,-0.4023],[0.3112,-0.3856],[0.2344,-0.3706],[0.2277,-0.3656],[0.1543,-0.3456],[0.1075,-0.3255],[0.0825,-0.3105],[0.0658,-0.2938],[0.0558,-0.2538],[0.0474,-0.1553],[0.0457,-0.0701],[0.0508,-0.02],[0.0441,-0.01]],"h":[[[-0.2414,-0.4791],[-0.2297,-0.4925],[-0.2247,-0.5109],[-0.2331,-0.5476],[-0.2481,-0.5676],[-0.2898,-0.6077],[-0.3182,-0.626],[-0.3366,-0.626],[-0.3449,-0.6144],[-0.3449,-0.586],[-0.3349,-0.5459],[-0.3149,-0.5075],[-0.2765,-0.4741],[-0.2598,-0.4725]]]}]},"word":{"w":0.2483,"parts":[{"o":[[-0.1186,-0.8179],[-0.1223,-0.824],[-0.1253,-0.8394],[-0.1241,-0.8731],[-0.1112,-0.9565],[-0.1057,-0.973],[-0.1002,-0.9816],[-0.0928,-0.9871],[-0.0855,-0.989],[-0.0671,-0.989],[-0.0616,-0.9871],[-0.0548,-0.981],[-0.0548,-0.9736],[-0.0677,-0.9589],[-0.075,-0.9473],[-0.0787,-0.9319],[-0.0806,-0.9148],[-0.0812,-0.8829],[-0.0787,-0.8639],[-0.0726,-0.8565],[-0.0683,-0.8547],[-0.0616,-0.8547],[-0.0462,-0.862],[-0.0395,-0.8688],[-0.0358,-0.8749],[-0.0321,-0.897],[-0.0284,-0.9375],[-0.0229,-0.9595],[-0.0137,-0.9724],[-0.0076,-0.9773],[0.0016,-0.9816],[0.0083,-0.9816],[0.0126,-0.9761],[0.0114,-0.9675],[0.0059,-0.9534],[0.0004,-0.927],[-0.0009,-0.9001],[0.0022,-0.8853],[0.004,-0.8817],[0.0096,-0.8768],[0.0231,-0.8737],[0.0396,-0.8749],[0.0494,-0.8804],[0.0562,-0.889],[0.0592,-0.9031],[0.0549,-0.9632],[0.0562,-0.9816],[0.0598,-0.9871],[0.0727,-0.9982],[0.0776,-1.0],[0.0844,-1.0],[0.0887,-0.9963],[0.0923,-0.9853],[0.0923,-0.9657],[0.0893,-0.9393],[0.0905,-0.9117],[0.1015,-0.867],[0.1034,-0.8645],[0.1052,-0.8541],[0.1107,-0.8381],[0.1107,-0.8314],[0.1052,-0.8222],[0.0997,-0.8185],[0.0868,-0.8185],[0.0721,-0.8277],[0.0592,-0.8302],[0.0372,-0.8296],[0.0298,-0.8277],[-0.0242,-0.8296],[-0.0481,-0.8259],[-0.0708,-0.8167],[-0.0738,-0.8167],[-0.0757,-0.8148],[-0.0953,-0.8099],[-0.11,-0.8112]],"h":[]},{"o":[[0.0862,-0.6058],[0.0807,-0.6052],[0.0703,-0.6162],[0.058,-0.6217],[0.0396,-0.6235],[0.0261,-0.6272],[-0.0125,-0.6327],[-0.0291,-0.6309],[-0.0321,-0.6291],[-0.037,-0.6291],[-0.0781,-0.618],[-0.091,-0.6162],[-0.1026,-0.618],[-0.1112,-0.6291],[-0.1167,-0.6475],[-0.1204,-0.6714],[-0.121,-0.6983],[-0.1204,-0.7174],[-0.1149,-0.7523],[-0.1094,-0.7701],[-0.1008,-0.7848],[-0.0922,-0.7922],[-0.0818,-0.7922],[-0.0769,-0.7879],[-0.0732,-0.7781],[-0.0732,-0.7725],[-0.0806,-0.7394],[-0.0836,-0.7069],[-0.0836,-0.6885],[-0.0806,-0.6738],[-0.0757,-0.6689],[-0.0677,-0.6652],[-0.0505,-0.664],[-0.0352,-0.6671],[-0.0315,-0.6689],[-0.0266,-0.675],[-0.0266,-0.6836],[-0.0321,-0.7063],[-0.034,-0.721],[-0.034,-0.7425],[-0.0303,-0.7615],[-0.0248,-0.775],[-0.0193,-0.783],[-0.0131,-0.7885],[-0.0064,-0.7909],[-0.0015,-0.7903],[0.004,-0.7836],[0.0059,-0.7756],[0.0059,-0.7633],[0.001,-0.74],[0.004,-0.7026],[0.0077,-0.691],[0.0114,-0.6849],[0.0157,-0.6818],[0.0218,-0.6818],[0.0384,-0.6891],[0.0549,-0.6928],[0.0617,-0.6977],[0.0617,-0.7462],[0.0672,-0.7836],[0.0709,-0.7971],[0.0746,-0.8038],[0.0776,-0.8069],[0.0825,-0.8069],[0.085,-0.805],[0.0923,-0.7946],[0.096,-0.7817],[0.0942,-0.7731],[0.0868,-0.7633],[0.085,-0.7554],[0.085,-0.7364],[0.0942,-0.7002],[0.0979,-0.6671],[0.0979,-0.6401],[0.096,-0.6266],[0.0923,-0.6143]],"h":[]},{"o":[[-0.1259,-0.3906],[-0.1278,-0.3955],[-0.1259,-0.4114],[-0.1223,-0.4188],[-0.1174,-0.4243],[-0.1112,-0.428],[-0.1002,-0.4267],[-0.0824,-0.428],[-0.0671,-0.4335],[-0.0591,-0.439],[-0.0481,-0.45],[-0.0297,-0.4629],[-0.0248,-0.4678],[-0.0223,-0.4752],[-0.0229,-0.4838],[-0.0284,-0.496],[-0.0426,-0.5126],[-0.0941,-0.5445],[-0.1167,-0.5635],[-0.1204,-0.5684],[-0.121,-0.5727],[-0.1198,-0.5812],[-0.1149,-0.5886],[-0.1002,-0.5935],[-0.0934,-0.5935],[-0.0824,-0.5917],[-0.0597,-0.5843],[-0.0358,-0.5714],[-0.0125,-0.5512],[0.009,-0.5365],[0.0224,-0.531],[0.0298,-0.531],[0.0445,-0.5383],[0.0568,-0.5475],[0.0746,-0.5647],[0.0856,-0.5794],[0.0893,-0.5874],[0.0911,-0.5966],[0.0985,-0.6101],[0.1089,-0.6193],[0.115,-0.6193],[0.1199,-0.6107],[0.1199,-0.5904],[0.1126,-0.569],[0.0739,-0.5156],[0.0574,-0.4838],[0.0421,-0.4672],[0.0249,-0.4519],[0.0255,-0.45],[0.0335,-0.45],[0.0623,-0.4574],[0.0862,-0.4666],[0.1021,-0.4776],[0.1126,-0.4776],[0.1181,-0.4721],[0.1199,-0.4672],[0.1205,-0.4513],[0.1181,-0.4304],[0.1101,-0.4194],[0.104,-0.4157],[0.0966,-0.4151],[0.0917,-0.4163],[0.0801,-0.4249],[0.0752,-0.4267],[0.0537,-0.4267],[0.05,-0.4249],[0.0181,-0.4194],[-0.018,-0.4065],[-0.0284,-0.4047],[-0.0652,-0.4028],[-0.0818,-0.3973],[-0.1051,-0.3863],[-0.1204,-0.3863]],"h":[]},{"o":[[-0.102,-0.2299],[-0.1075,-0.2459],[-0.1112,-0.2771],[-0.1112,-0.2961],[-0.1075,-0.3231],[-0.1039,-0.3335],[-0.0983,-0.3421],[-0.0867,-0.3513],[-0.0671,-0.3709],[-0.0444,-0.3801],[-0.0119,-0.3875],[-0.0088,-0.3893],[0.0231,-0.393],[0.0482,-0.393],[0.0801,-0.3893],[0.0868,-0.3857],[0.096,-0.3758],[0.1034,-0.3599],[0.1046,-0.3489],[0.1015,-0.3366],[0.0929,-0.3274],[0.0825,-0.3243],[0.0684,-0.3243],[0.0433,-0.3292],[0.0108,-0.3384],[-0.0045,-0.3391],[-0.0156,-0.3372],[-0.0327,-0.3384],[-0.0401,-0.3348],[-0.0493,-0.3262],[-0.0567,-0.3096],[-0.0597,-0.2937],[-0.0597,-0.2777],[-0.0567,-0.2679],[-0.0499,-0.2606],[-0.0462,-0.2587],[-0.0358,-0.2575],[-0.0235,-0.2587],[-0.0009,-0.2698],[0.0114,-0.2735],[0.0402,-0.2735],[0.0506,-0.2753],[0.0647,-0.2802],[0.0807,-0.279],[0.0905,-0.2692],[0.0942,-0.2594],[0.0942,-0.2446],[0.0923,-0.2385],[0.0868,-0.2287],[0.0813,-0.2244],[0.069,-0.2244],[0.0629,-0.2269],[0.0519,-0.2262],[0.0335,-0.2207],[0.0077,-0.217],[-0.018,-0.2097],[-0.034,-0.2085],[-0.0622,-0.2134],[-0.0836,-0.2189],[-0.0922,-0.2226]],"h":[]},{"o":[[-0.1149,-0.0061],[-0.1186,-0.011],[-0.1223,-0.0233],[-0.1223,-0.0564],[-0.1094,-0.1429],[-0.1039,-0.1613],[-0.0965,-0.1723],[-0.0867,-0.1778],[-0.0689,-0.179],[-0.0579,-0.176],[-0.053,-0.1717],[-0.0517,-0.1686],[-0.053,-0.1619],[-0.0658,-0.1478],[-0.0732,-0.1355],[-0.0769,-0.1153],[-0.0787,-0.0938],[-0.0787,-0.0681],[-0.0769,-0.0558],[-0.0732,-0.049],[-0.0689,-0.0454],[-0.0603,-0.0448],[-0.0554,-0.0454],[-0.045,-0.0509],[-0.034,-0.0625],[-0.0303,-0.0791],[-0.0266,-0.1226],[-0.0211,-0.1471],[-0.0156,-0.1576],[-0.007,-0.1655],[0.0016,-0.1704],[0.0126,-0.1704],[0.0151,-0.1668],[0.0151,-0.1606],[0.0077,-0.1404],[0.0022,-0.1116],[0.0022,-0.0834],[0.004,-0.0766],[0.0108,-0.0674],[0.0206,-0.0638],[0.039,-0.0638],[0.0513,-0.0693],[0.058,-0.0773],[0.0617,-0.0883],[0.0617,-0.1079],[0.058,-0.1416],[0.058,-0.1686],[0.0635,-0.1784],[0.0739,-0.187],[0.0819,-0.1895],[0.088,-0.1888],[0.0905,-0.187],[0.0942,-0.1796],[0.0948,-0.1723],[0.0917,-0.1226],[0.0923,-0.1055],[0.0997,-0.073],[0.1089,-0.0435],[0.1089,-0.0399],[0.1107,-0.0374],[0.1107,-0.0337],[0.1126,-0.0313],[0.1126,-0.0184],[0.1089,-0.0129],[0.0997,-0.0074],[0.0917,-0.0074],[0.077,-0.0166],[0.0617,-0.0202],[0.0506,-0.0202],[0.028,-0.0172],[-0.0327,-0.0184],[-0.0481,-0.0147],[-0.0885,0.0],[-0.1051,0.0]],"h":[]}]}};
+      const CDN = 'https://cdn.jsdelivr.net/npm/three@0.147.0/';
+      const load = src => new Promise((ok, no) => { const el = document.createElement('script'); el.src = src; el.onload = ok; el.onerror = no; document.head.appendChild(el); });
+      const img = src => new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = src; });
+      let started = false;
+      new IntersectionObserver((es, o) => { if (es.some(e => e.isIntersecting) && !started) { started = true; o.disconnect(); boot().catch(() => {}); } }, { rootMargin: '700px' }).observe(root);
+
+      async function boot() {
+        await load(CDN + 'build/three.min.js'); await load(CDN + 'examples/js/environments/RoomEnvironment.js');
+        const T = window.THREE; if (!T) return;
+        const lettering = await img('projects/images/keyring/k-eunseo.png');
+        const cv = document.createElement('canvas'); cv.className = 'kr-gl';
+        let R; try { R = new T.WebGLRenderer({ canvas: cv, antialias: true, alpha: true }); } catch (e) { return; }
+        R.setPixelRatio(Math.min(2, window.devicePixelRatio || 1)); R.outputEncoding = T.sRGBEncoding; R.toneMapping = T.ACESFilmicToneMapping; R.toneMappingExposure = 1.15; R.physicallyCorrectLights = true;
+        const scene = new T.Scene(), cam = new T.PerspectiveCamera(30, 1, 0.1, 50); cam.position.set(0, -1.45, 11); cam.lookAt(0, -1.45, 0);
+        const pm = new T.PMREMGenerator(R); scene.environment = pm.fromScene(new T.RoomEnvironment(), 0.03).texture;
+        const key = new T.DirectionalLight(0xffffff, 2.2); key.position.set(-3, 4, 6); scene.add(key);
+        const rim = new T.DirectionalLight(0xfff1e0, 2.6); rim.position.set(5, -1, -2); scene.add(rim); const rim2 = new T.DirectionalLight(0xdfe8ff, 2.6); rim2.position.set(-6, 1, -1.5); scene.add(rim2); 
+
+        const chrome = new T.MeshStandardMaterial({ color: 0xe9ecef, metalness: 1, roughness: 0.08, envMapIntensity: 1.5 });
+        const ext = (shape, depth, bevel) => { const g = new T.ExtrudeGeometry(shape, { depth, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel, bevelSegments: 5, curveSegments: 18 }); g.translate(0, 0, -depth / 2); return g; };
+        const fromPts = (part, k) => { const sh = new T.Shape(part.o.map(p => new T.Vector2(p[0] * k, p[1] * k))); part.h.forEach(h => sh.holes.push(new T.Path(h.map(p => new T.Vector2(p[0] * k, p[1] * k))))); return sh; };
+        const torus = (r, t) => new T.Mesh(new T.TorusGeometry(r, t, 14, 40), chrome);
+
+        // ── 걸쇠
+        const top = new T.Group(); scene.add(top);
+        const strap = new T.Mesh(new T.CylinderGeometry(0.05, 0.05, 2.2, 16), new T.MeshStandardMaterial({ color: 0x1b1b1b, roughness: 0.75 })); strap.position.y = 2.25; top.add(strap);
+        const U = new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3([[-.2, .55], [-.2, .98], [-.12, 1.14], [0, 1.19], [.12, 1.14], [.2, .98], [.2, .55]].map(p => new T.Vector3(p[0], p[1], 0))), 40, 0.05, 14), chrome); top.add(U);
+        const blockShape = new T.Shape(); (function (w, h, r) { blockShape.moveTo(-w + r, -h); blockShape.lineTo(w - r, -h); blockShape.absarc(w - r, -h + r, r, -Math.PI / 2, 0); blockShape.lineTo(w, h - r); blockShape.absarc(w - r, h - r, r, 0, Math.PI / 2); blockShape.lineTo(-w + r, h); blockShape.absarc(-w + r, h - r, r, Math.PI / 2, Math.PI); blockShape.lineTo(-w, -h + r); blockShape.absarc(-w + r, -h + r, r, Math.PI, Math.PI * 1.5); })(0.3, 0.12, 0.04);
+        const block = new T.Mesh(ext(blockShape, 0.2, 0.02), chrome); block.position.y = 0.5; top.add(block);
+        const neck = new T.Mesh(new T.CylinderGeometry(0.06, 0.06, 0.12, 16), chrome); neck.position.y = 0.33; top.add(neck);
+        const ring = torus(0.2, 0.035); ring.position.y = 0.1; top.add(ring);
+
+        // ── 재질
+        const blackGloss = new T.MeshPhysicalMaterial({ color: 0x030303, metalness: 0, roughness: 0.2, clearcoat: 1, clearcoatRoughness: 0.05, envMapIntensity: 1.15 });
+        const milk = new T.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0, roughness: 0.06, transmission: 0.96, thickness: 0.7, ior: 1.5, specularIntensity: 1, clearcoat: 1, clearcoatRoughness: 0.03, envMapIntensity: 3 }); /* 유리 */
+        { const bgp = new T.Mesh(new T.PlaneGeometry(60, 40), new T.MeshBasicMaterial({ color: new T.Color(0x1a1a1a).convertSRGBToLinear(), toneMapped: false })); bgp.position.z = -6; scene.add(bgp); } /* 유리가 굴절해 비칠 배경 */
+        const tex = (w, h, draw) => { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h); const t = new T.CanvasTexture(c); t.encoding = T.sRGBEncoding; t.anisotropy = 8; return t; };
+        const fit = (t, w, h) => { t.repeat.set(1 / w, 1 / h); t.offset.set(0.5, 1); return t; };   // 모양 좌표(x∈±w/2, y∈[-h,0]) → UV
+
+        // 프로스트 아크릴 태그 (eun seo 인쇄)
+        const TW = 0.62, TH = 2.25;
+        const tagShape = new T.Shape(); (function (w, h, r) { tagShape.moveTo(-w / 2 + r, -h); tagShape.lineTo(w / 2 - r, -h); tagShape.absarc(w / 2 - r, -h + r, r, -Math.PI / 2, 0); tagShape.lineTo(w / 2, -r); tagShape.absarc(w / 2 - r, -r, r, 0, Math.PI / 2); tagShape.lineTo(-w / 2 + r, 0); tagShape.absarc(-w / 2 + r, -r, r, Math.PI / 2, Math.PI); tagShape.lineTo(-w / 2, -h + r); tagShape.absarc(-w / 2 + r, -h + r, r, Math.PI, Math.PI * 1.5); const ho = new T.Path(); ho.absarc(0, -0.17, 0.055, 0, Math.PI * 2, true); tagShape.holes.push(ho); })(TW, TH, 0.15);
+        const print = tex(256, 928, (g, w, h) => { g.fillStyle = '#ffffff'; g.fillRect(0, 0, w, h); g.save(); g.translate(w / 2, h * 0.54); g.rotate(Math.PI / 2); const lw = h * 0.74, lh = lw * lettering.height / lettering.width; g.globalAlpha = 0.9; g.drawImage(lettering, -lw / 2, -lh / 2, lw, lh); g.restore(); g.fillStyle = 'rgba(20,24,30,.55)'; g.fillRect(w * 0.16, h * 0.955, w * 0.68, 2); });
+        const frost = new T.MeshPhysicalMaterial({ color: 0xffffff, map: fit(print, TW, TH), metalness: 0, roughness: 0.32, transparent: true, opacity: 0.8, clearcoat: 1, clearcoatRoughness: 0.2, envMapIntensity: 1.3, side: T.DoubleSide });
+        const frostEdge = new T.MeshPhysicalMaterial({ color: 0xdfe8ee, roughness: 0.15, transparent: true, opacity: 0.6, clearcoat: 1, envMapIntensity: 1.6 });
+
+        // 헤어라인 메탈 마름모 (PRODUCT DESIGNER 음각)
+        const DS = 0.74;
+        const dia = new T.Shape(); (function (a, r) { const P = [[0, 0], [a, -a], [0, -2 * a], [-a, -a]], n = P.length; for (let i = 0; i < n; i++) { const p = P[i], q = P[(i + 1) % n], o = P[(i + n - 1) % n], v = (u, w) => { const d = Math.hypot(w[0] - u[0], w[1] - u[1]); return [(w[0] - u[0]) / d, (w[1] - u[1]) / d]; }, d1 = v(p, o), d2 = v(p, q), s1 = [p[0] + d1[0] * r, p[1] + d1[1] * r], s2 = [p[0] + d2[0] * r, p[1] + d2[1] * r]; if (i === 0) dia.moveTo(s1[0], s1[1]); else dia.lineTo(s1[0], s1[1]); dia.quadraticCurveTo(p[0], p[1], s2[0], s2[1]); } dia.closePath(); const ho = new T.Path(); ho.absarc(0, -0.2, 0.05, 0, Math.PI * 2, true); dia.holes.push(ho); })(DS, 0.12);
+        const drawMetal = (bump) => (g, w, h) => { g.fillStyle = bump ? '#808080' : '#c9cdd2'; g.fillRect(0, 0, w, h); for (let i = 0; i < 900; i++) { const y = Math.random() * h, a = Math.random() * 0.1; g.fillStyle = (Math.random() > .5 ? 'rgba(255,255,255,' : 'rgba(0,0,0,') + a + ')'; g.fillRect(0, y, w, 1); } g.fillStyle = bump ? '#000' : '#3a3f46'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.font = '700 ' + Math.round(w * 0.105) + 'px Inter, Pretendard, Arial, sans-serif'; const sp = (t, y) => { const L = [...t], tr = w * 0.016; let tw = L.reduce((s, c) => s + g.measureText(c).width + tr, -tr), x = w / 2 - tw / 2; L.forEach(c => { const cw = g.measureText(c).width; g.fillText(c, x + cw / 2, y); x += cw + tr; }); }; sp('PRODUCT', h * 0.47); sp('DESIGNER', h * 0.59); g.fillRect(w * 0.42, h * 0.7, w * 0.16, bump ? 3 : 2); };
+        const mMap = fit(tex(512, 512, drawMetal(false)), 2 * DS, 2 * DS), mBump = fit(tex(512, 512, drawMetal(true)), 2 * DS, 2 * DS);
+        const brushed = new T.MeshStandardMaterial({ color: 0xffffff, map: mMap, bumpMap: mBump, bumpScale: 0.012, metalness: 1, roughness: 0.34, envMapIntensity: 1.5 });
+
+        // ── 참 조립: 각자 고리(O링) → 모양
+        const charms = [];
+        function add(build, o) {
+          const pivot = new T.Group(); pivot.position.set(0, -0.1, o.z); scene.add(pivot);
+          const spin = new T.Group(); pivot.add(spin);
+          const wire = torus(o.link / 2 + 0.03, 0.012); wire.scale.x = 0.5; wire.position.y = -o.link / 2; wire.rotation.y = 0.5; spin.add(wire);
+          const body = build(); body.position.y = -o.link + (o.dy || 0); spin.add(body);
+          const c = Object.assign({ pivot, spin, a: o.rest, v: 0, tw: o.twist || 0, tv: 0, held: false }, o); charms.push(c); body.traverse(m => { m.userData.charm = c; });
+        }
+        add(() => { const g = new T.Group(), k = 2.15; SH.orca.parts.forEach(p => g.add(new T.Mesh(ext(fromPts(p, k), 0.13, 0.035), [blackGloss, chrome]))); const e = torus(0.075, 0.018); e.position.y = 0.02; g.add(e); return g; }, { rest: -0.34, len: 1.25, damp: 0.9, link: 0.34, z: -0.2, dy: -0.04, twist: 0.3 });
+        add(() => new T.Mesh(ext(tagShape, 0.07, 0.014), [frost, frostEdge]), { rest: -0.13, len: 1.7, damp: 1.0, link: 0.26, z: -0.06, dy: 0.17, twist: -0.3 });
+        add(() => new T.Mesh(ext(dia, 0.06, 0.02), [brushed, chrome]), { rest: 0.42, len: 0.95, damp: 1.15, link: 0.42, z: 0.08, dy: 0.2, twist: 0.3 });
+        add(() => { const g = new T.Group(), k = 3.3; SH.word.parts.forEach(p => g.add(new T.Mesh(ext(fromPts(p, k), 0.3, 0.07), milk))); const rod = new T.Mesh(new T.CylinderGeometry(0.014, 0.014, k * 0.98, 10), chrome); rod.position.set(0, -k / 2, -0.11); g.add(rod); const e = torus(0.07, 0.018); e.position.y = 0.03; g.add(e); return g; }, { rest: 0.1, len: 2.0, damp: 0.8, link: 0.2, z: 0.22, dy: -0.03, twist: -0.2 });
+
+        root.insertBefore(cv, root.firstChild); root.classList.add('is-3d');
+        const size = () => { const w = cv.clientWidth, h = cv.clientHeight; if (!w || !h) return; R.setSize(w, h, false); cam.aspect = w / h; cam.fov = w / h < 0.9 ? 36 : 28; cam.updateProjectionMatrix(); };
+        size(); window.addEventListener('resize', size);
+
+        const G = 30; let last = 0, visible = false, raf = 0, t0 = performance.now();
+        function frame(t) {
+          raf = 0; const dt = Math.min(0.032, (t - last) / 1000 || 0.016); last = t; const time = (t - t0) / 1000;
+          charms.forEach((c, i) => {
+            if (!c.held) { const acc = -(G / c.len) * Math.sin(c.a - c.rest) - c.damp * c.v; c.v += acc * dt; c.a += c.v * dt; if (Math.abs(c.a) > 1.3) { c.a = Math.sign(c.a) * 1.3; c.v *= -0.4; } }
+            const target = c.twist + 0.22 * Math.sin(time * (0.5 + i * 0.13) + i * 1.7);       // 가만히 있어도 천천히 돈다
+            c.tv += ((target - c.tw) * 9 - c.tv * 2.2 + c.v * 1.4) * dt; c.tw += c.tv * dt;
+            c.pivot.rotation.z = c.a; c.spin.rotation.y = c.tw;
+          });
+          R.render(scene, cam); if (visible) raf = requestAnimationFrame(frame);
+        }
+        const wake = () => { if (!raf && visible) { last = performance.now(); raf = requestAnimationFrame(frame); } };
+        const kick = f => { charms.forEach((c, i) => { c.v += f * (0.75 + 0.2 * i) / Math.sqrt(c.len); c.tv += f * (i % 2 ? -1.6 : 1.6); }); wake(); };
+        new IntersectionObserver(es => es.forEach(e => { const was = visible; visible = e.isIntersecting; if (visible) { wake(); if (!was) kick(2.4); } }), { threshold: 0.3 }).observe(root);
+
+        // 스치면 밀리고, 잡으면 끌린다
+        const ray = new T.Raycaster(), ndc = new T.Vector2(); let px = null, pt = 0, held = null, lastA = 0, lastT = 0;
+        const pick = e => { const r = cv.getBoundingClientRect(); ndc.set((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height * 2 - 1)); ray.setFromCamera(ndc, cam); const hit = ray.intersectObjects(scene.children, true).find(h => h.object.userData.charm); return hit ? hit.object.userData.charm : null; };
+        const angleOf = e => { const r = cv.getBoundingClientRect(), v = new T.Vector3(0, -0.1, 0).project(cam), ox = r.left + (v.x + 1) / 2 * r.width, oy = r.top + (1 - v.y) / 2 * r.height; return Math.max(-1.2, Math.min(1.2, Math.atan2(e.clientX - ox, Math.max(20, e.clientY - oy)))); };
+        cv.addEventListener('pointerdown', e => { const c = pick(e); if (!c) return; held = c; c.held = true; c.v = 0; lastA = c.a; lastT = performance.now(); cv.setPointerCapture(e.pointerId); cv.style.cursor = 'grabbing'; e.preventDefault(); });
+        cv.addEventListener('pointermove', e => {
+          const now = performance.now();
+          if (held) { const a = angleOf(e); held.v = (a - lastA) / Math.max(0.008, (now - lastT) / 1000) * 0.5; lastA = a; lastT = now; held.a = a; return; }
+          if (px !== null && now - pt < 80) { const dx = e.clientX - px; if (Math.abs(dx) > 1.5 && pick(e)) kick(Math.max(-1.6, Math.min(1.6, dx * 0.035))); }
+          px = e.clientX; pt = now;
+        }, { passive: true });
+        const up = () => { if (!held) return; const c = held; held = null; c.held = false; c.v = Math.max(-9, Math.min(9, c.v)); charms.forEach(o => { if (o !== c) { o.v += c.v * 0.12; o.tv += c.v * 0.5; } }); cv.style.cursor = 'grab'; };
+        cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
+        window.__kr = { charms, kick };
+      }
+    })();
     // 스크롤 reveal
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -1871,6 +2088,28 @@
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
+  <script>
+  // 프로젝트에서 돌아오면 보던 위치로 복귀
+  (function () {
+    var KEY = 'eukee:homeY';
+    try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+    function save() { try { sessionStorage.setItem(KEY, String(Math.round(window.scrollY))); } catch (e) {} }
+    window.addEventListener('pagehide', save);
+    document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('a[href]')) save(); }, true);
+    var y = 0;
+    try { y = parseInt(sessionStorage.getItem(KEY) || '0', 10) || 0; } catch (e) {}
+    if (!y || location.hash) return;
+    var root = document.documentElement, tries = 0;
+    function go() {
+      var prev = root.style.scrollBehavior; root.style.scrollBehavior = 'auto';
+      window.scrollTo(0, y); root.style.scrollBehavior = prev;
+      if (Math.abs(window.scrollY - y) > 4 && tries++ < 20) setTimeout(go, 80);
+    }
+    if (document.readyState === 'complete') go(); else { document.addEventListener('DOMContentLoaded', go); window.addEventListener('load', go); }
+    window.addEventListener('pageshow', function (e) { if (e.persisted) go(); });
+  })();
   </script>
 </body>
 </html>
