@@ -162,6 +162,16 @@
       .hero-card { height: auto; width: min(340px, 82vw); }
     }
 
+
+    /* 표지: 메인 썸네일과 같은 구성 — 기획전 표지 다섯 장 */
+    .hero{background:#0b0b0b}
+    .hero-fan{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:clamp(8px,1.4vw,22px);width:min(1200px,100%);height:100%;padding-bottom:6%}
+    .hero-fan img{width:clamp(120px,17vw,250px);aspect-ratio:720/993;object-fit:cover;border-radius:6px;box-shadow:0 24px 50px rgba(0,0,0,.55);
+      transform:translateY(calc(var(--y) + 40px)) rotate(var(--r));opacity:0;animation:fanin .9s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--i)*.09s + .15s);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+    @keyframes fanin{to{opacity:1;transform:translateY(var(--y)) rotate(var(--r))}}
+    .hero-fan img:hover{transform:translateY(calc(var(--y) - 16px)) rotate(0) scale(1.06)!important;z-index:2;opacity:1}
+    @media(max-width:720px){.hero-fan{height:auto;padding:30px 0 0;gap:6px}.hero-fan img{width:18vw}}
+    @media(prefers-reduced-motion:reduce){.hero-fan img{animation:none;opacity:1;transform:translateY(var(--y)) rotate(var(--r))}}
     /* ===== 인트로 ===== */
     .project-intro {
       position: relative;
@@ -601,10 +611,7 @@
     <!-- Hero -->
     <div class="hero-wrap">
       <div class="hero">
-        <div class="hero-bg"></div>
-        <div class="hero-card">
-          <img src="images/musinsa/hero.jpg" alt="무신사 기획전 아카이브 대표 이미지">
-        </div>
+        <div class="hero-fan" role="img" aria-label="무신사 기획전 표지 다섯 장"><img src="images/musinsa/fan-no-manual.jpg" alt="" style="--r:-5deg;--y:6%;--i:0"><img src="images/musinsa/fan-northface.jpg" alt="" style="--r:4deg;--y:12%;--i:1"><img src="images/musinsa/fan-setter.jpg" alt="" style="--r:2deg;--y:0%;--i:2"><img src="images/musinsa/fan-rockfish.jpg" alt="" style="--r:4deg;--y:8%;--i:3"><img src="images/musinsa/fan-yesic.jpg" alt="" style="--r:3deg;--y:2%;--i:4"></div>
         <div class="hero-title">
           <div class="eyebrow">Musinsa Campaign Archive</div>
           <div class="big">15 Editorial Pages</div>
