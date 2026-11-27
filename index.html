@@ -8,8 +8,8 @@
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DynaPuff:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -1052,6 +1052,19 @@
       .site-menu-foot{ opacity:1; transform:none; }
       .site-menu-list.hovering a{ filter:none; }
     }
+  
+    /* 히어로 하단 글씨: 좌우 크기 통일 · 굵게 */
+    .hero-bio, .hero-contact, .hero-contact a, .hero-contact .contact-label { font-size: clamp(15px, 1.35vw, 22px); font-weight: 600; line-height: 1.6; letter-spacing: -0.02em; }
+    .hero-contact { gap: 6px; }
+    .hero-contact .contact-label { margin-bottom: 6px; }
+  
+    /* 카드 아래 작은 글씨: 굵기 올림 */
+    .roles-head, .roles-list li { font-weight: 600; }
+    /* 푸터 문장: 기울인 단어가 뒤 글자와 붙지 않게 */
+    .footer-quote { letter-spacing: -0.01em; word-spacing: 0.04em; }
+    .footer-quote .serif { display: inline-block; padding: 0 0.16em 0 0.04em; letter-spacing: 0.01em; }
+    /* Thank you: 로고 레터링과 비슷한 둥근 글씨 */
+    .footer-thanks { font-family: "DynaPuff", var(--font-sans); font-style: normal; font-weight: 700; letter-spacing: -0.01em; }
   </style>
 </head>
 <body>
