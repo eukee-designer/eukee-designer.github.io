@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
@@ -411,6 +410,7 @@
         max-width: calc(100% - 48px);
       }
       .corner-br { text-align: left; }
+      .corner-bl { bottom: 118px; }
       .corner-tr {
         font-size: 11px;
         gap: 3px;
@@ -1483,9 +1483,12 @@
 
         // 글자가 길어서 폰트 크기를 좀 더 작게 조정
         // EUKEE - 5글자 짧은 텍스트, 작게
-        const fontSize = Math.min(W * 0.18, H * 0.42);
+        // 상단 로고와 같은 서체(Instrument Serif 이탤릭)로 "Eukee"
+        octx.font = `italic 100px "Instrument Serif", serif`;
+        const w100 = octx.measureText(text).width || 260;
+        const fontSize = Math.min(W * 0.74 / w100 * 100, H * 0.62);
         octx.fillStyle = '#000';
-        octx.font = `${fontSize}px "Great Vibes", cursive`;
+        octx.font = `italic ${fontSize}px "Instrument Serif", serif`;
         octx.textAlign = 'center';
         octx.textBaseline = 'middle';
         octx.fillText(text, W / 2, H / 2);
@@ -1505,7 +1508,8 @@
         }
 
         // 별 간 최소거리 - 폰트 크기에 비례
-        const MIN = Math.max(14, fontSize * 0.045);
+        const MIN = Math.max(5, fontSize * 0.03);
+        lastFont = fontSize;
         const cell = MIN;
         const grid = new Map();
         const key = (cx, cy) => cx + ',' + cy;
@@ -1533,12 +1537,12 @@
       }
 
       function init() {
-        const targets = sampleText("EUKEE");
+        const targets = sampleText("Eukee");
         particles = targets.map((t) => ({
           x: Math.random() * W,
           y: Math.random() * H,
           tx: t.x, ty: t.y,
-          R: 9 + Math.random() * 13,           // 별 크기 (풀화면 기준)
+          R: Math.max(2.5, lastFont * (0.013 + Math.random() * 0.018)),           // 별 크기 (풀화면 기준)
           rot: Math.random() * Math.PI * 2,
           spin: (Math.random() - 0.5) * 0.01,
           bob: Math.random() * Math.PI * 2,
@@ -1549,6 +1553,7 @@
         donePostTyping = false;
       }
 
+      let lastFont = 500;
       const HOLD = 0.1;
       const ASSEMBLE = 2.2;
       let donePostTyping = false;
@@ -1639,7 +1644,7 @@
       }
 
       if (document.fonts && document.fonts.load) {
-        document.fonts.load('100px "Great Vibes"').then(boot).catch(boot);
+        document.fonts.load('italic 100px "Instrument Serif"').then(boot).catch(boot);
         setTimeout(() => { if (!particles.length) boot(); }, 1500);
       } else {
         boot();
@@ -1658,15 +1663,22 @@
 
       // 트레일에 사용할 이미지들 (본인 이미지로 교체 가능)
       // 같은 폴더의 파일명이나 URL 둘 다 가능
+      // 포트폴리오 작업 이미지
       const IMAGES = [
-        'https://picsum.photos/seed/eukee1/440/300',
-        'https://picsum.photos/seed/eukee2/440/300',
-        'https://picsum.photos/seed/eukee3/440/300',
-        'https://picsum.photos/seed/eukee4/440/300',
-        'https://picsum.photos/seed/eukee5/440/300',
-        'https://picsum.photos/seed/eukee6/440/300',
-        'https://picsum.photos/seed/eukee7/440/300',
-        'https://picsum.photos/seed/eukee8/440/300',
+        'projects/images/trail/t00.jpg',
+        'projects/images/trail/t01.jpg',
+        'projects/images/trail/t02.jpg',
+        'projects/images/trail/t03.jpg',
+        'projects/images/trail/t04.jpg',
+        'projects/images/trail/t05.jpg',
+        'projects/images/trail/t06.jpg',
+        'projects/images/trail/t07.jpg',
+        'projects/images/trail/t08.jpg',
+        'projects/images/trail/t09.jpg',
+        'projects/images/trail/t11.jpg',
+        'projects/images/trail/t12.jpg',
+        'projects/images/trail/t13.jpg',
+        'projects/images/trail/t14.jpg',
       ];
 
       // 카드 풀 생성
